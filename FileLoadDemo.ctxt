@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=FileLoadDemo
+comment0.text=\n\ This\ class\ is\ a\ short\ demo\ showing\ how\ to\ use\ the\ DataLoader\ to\ load\ the\ pollution\ data\ \n\ csv\ files\ from\ disk\ and\ access\ the\ data.\n\n\ @author\ Michael\ K\u00F6lling\n\ @version\ 1.0\n
+comment1.params=
+comment1.target=FileLoadDemo()
+comment1.text=\n\ Create\ and\ run\ the\ demo.\n
+comment2.params=
+comment2.target=void\ showFile()
+comment2.text=\n\ This\ method\ loads\ one\ of\ the\ pollution\ data\ files.\n
+numComments=3
