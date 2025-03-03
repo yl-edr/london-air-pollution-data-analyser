@@ -40,10 +40,6 @@ public class MainMenu extends Application
         stage.show();
     }
 
-
-    private void createTabPane()
-    {
-
     private void createTabPane() {
 
         tabPane = new TabPane();
@@ -181,7 +177,7 @@ public class MainMenu extends Application
             // Load data and overlay data points
             DataLoader loader = new DataLoader();
             DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
-            dataSet = DataFilter.filterDataSet(dataSet);
+            dataSet = DataFilter.filterLondonData(dataSet);
             if (dataSet != null) {
                 // Calculate min and max values for scaling
                 int minX = Integer.MAX_VALUE;
