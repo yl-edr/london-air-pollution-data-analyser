@@ -1,23 +1,18 @@
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import java.io.FileInputStream;
-import java.io.IOException;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.IOException;
-import javafx.stage.Stage;
-import javafx.geometry.Insets;
 
-
-public class MainMenu extends Application
-{
+public class MainMenu extends Application {
     private BorderPane root;
     private TabPane tabPane;
 
@@ -41,7 +36,6 @@ public class MainMenu extends Application
     }
 
     private void createTabPane() {
-
         tabPane = new TabPane();
 
         homeTab = new Tab("Welcome");
@@ -87,7 +81,6 @@ public class MainMenu extends Application
             BorderPane borderPane = new BorderPane();
             borderPane.setCenter(anchorPane);
 
-
             HBox bottomBar = new HBox(10);
             bottomBar.getChildren().add(new Label("Test"));
             bottomBar.setPrefHeight(50);
@@ -97,7 +90,6 @@ public class MainMenu extends Application
             GridPane rightBar = new GridPane();
             rightBar.setPadding(new Insets(10));
             rightBar.setPrefWidth(150);
-
             rightBar.setMinWidth(50);
             rightBar.setMaxWidth(200);
 
@@ -154,6 +146,8 @@ public class MainMenu extends Application
             aqiBarContainer.setPrefHeight(50);
             aqiBarContainer.setMinHeight(30);
             aqiBarContainer.setMaxHeight(80);
+            aqiBarContainer.setPadding(new Insets(10));
+            BorderPane.setMargin(aqiBarContainer, new Insets(10));
 
             Label lowLabel = new Label("GOOD");
             Label highLabel = new Label("POOR");
@@ -177,7 +171,6 @@ public class MainMenu extends Application
             DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
             dataSet = DataFilter.filterLondonData(dataSet);
             if (dataSet != null) {
-                // Calculate min and max values for scaling
                 int minX = Integer.MAX_VALUE;
                 int maxX = Integer.MIN_VALUE;
                 int minY = Integer.MAX_VALUE;
@@ -186,23 +179,19 @@ public class MainMenu extends Application
                 for (DataPoint dataPoint : dataSet.getData()) {
                     if (dataPoint.x() < minX) minX = dataPoint.x();
                     if (dataPoint.x() > maxX) maxX = dataPoint.x();
-                    if (dataPoint.x() < minX) minX = dataPoint.x();
-                    if (dataPoint.x() > maxX) maxX = dataPoint.x();
                     if (dataPoint.y() < minY) minY = dataPoint.y();
                     if (dataPoint.y() > maxY) maxY = dataPoint.y();
                 }
 
-                // Calculate scaling factors
                 double scaleX = mapView.getFitWidth() / (maxX - minX);
                 double scaleY = mapView.getFitHeight() / (maxY - minY);
 
-                // Overlay data points on the map
                 for (DataPoint dataPoint : dataSet.getData()) {
                     double x = mapView.getX() + (dataPoint.x() - minX) * scaleX;
                     double y = mapView.getY() + (maxY - dataPoint.y()) * scaleY;
 
                     Circle dataPointCircle = new Circle(x, y, 5);
-                    dataPointCircle.setFill(javafx.scene.paint.Color.RED);
+                    dataPointCircle.setFill(Color.RED);
                     dataPointCircle.setOnMouseClicked(event -> showDataPointInfo(dataPoint));
                     anchorPane.getChildren().add(dataPointCircle);
                 }
@@ -225,5 +214,3 @@ public class MainMenu extends Application
         launch(args);
     }
 }
-
-
