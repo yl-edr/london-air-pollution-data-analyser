@@ -18,8 +18,4 @@ public class MapImage {
         return image;
     }
 
-    public void makePixelRedder(int x, int y) {
-        int colour = image.getPixelReader().getArgb(x, y);
-        System.out.println("Colour: " + colour);
-    }
 }
