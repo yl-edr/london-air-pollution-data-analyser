@@ -71,7 +71,6 @@ public class MainMenu extends Application
 
         tabPane.getTabs().addAll(homeTab, mapViewTab, statsTab, gridDataTab);
             MapImage map = new MapImage("resources/London.png");
-            map.makePixelRedder(100, 100);
             Image mapImage = map.getImage();
             ImageView mapView = new ImageView(mapImage);
             mapView.setPreserveRatio(true);
