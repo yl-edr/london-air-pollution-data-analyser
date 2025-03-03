@@ -7,6 +7,7 @@ import javafx.scene.layout.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javafx.stage.Stage;
+import javafx.geometry.Insets;
 
 /**
  * Creates the window for the main menu.
@@ -99,11 +100,29 @@ public class MainMenu extends Application
             bottomBar.setMinHeight(30);
             bottomBar.setMaxHeight(80);
 
-            VBox rightBar = new VBox(10);
-            rightBar.getChildren().add(new Label("Test"));
-            rightBar.setPrefWidth(75);
+// Create a GridPane for the right sidebar
+            GridPane rightBar = new GridPane();
+            rightBar.setPadding(new Insets(10));
+            rightBar.setPrefWidth(150);
             rightBar.setMinWidth(50);
-            rightBar.setMaxWidth(100);
+            rightBar.setMaxWidth(200);
+
+            Label pollutantLabel = new Label("Choose a pollutant:");
+            ComboBox<String> pollutantComboBox = new ComboBox<>();
+            pollutantComboBox.setPromptText("Pollutant");
+            pollutantComboBox.getItems().addAll("Pm2.5", "No2", "Pm10");
+
+            Label yearLabel = new Label("Choose a year:");
+            ComboBox<String> yearComboBox = new ComboBox<>();
+            yearComboBox.setPromptText("Year");
+            yearComboBox.getItems().addAll("2019", "2020", "2021", "2022", "2023");
+
+            rightBar.add(pollutantLabel, 0, 0);
+            rightBar.add(pollutantComboBox, 0, 1);
+            rightBar.add(yearLabel, 0, 3);
+            rightBar.add(yearComboBox, 0, 4);
+
+            GridPane.setMargin(yearLabel, new Insets(10, 0, 0, 0));
 
             borderPane.setBottom(bottomBar);
             borderPane.setRight(rightBar);
