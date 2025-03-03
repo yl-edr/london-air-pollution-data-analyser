@@ -153,6 +153,8 @@ public class MainMenu extends Application {
 
             Label lowLabel = new Label("GOOD");
             Label highLabel = new Label("POOR");
+            lowLabel.setMinWidth(Region.USE_PREF_SIZE);
+            highLabel.setMinWidth(Region.USE_PREF_SIZE);
 
             Region aqiBar = new Region();
             aqiBar.setPrefHeight(20);
