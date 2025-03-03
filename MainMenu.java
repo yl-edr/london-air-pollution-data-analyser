@@ -72,10 +72,9 @@ public class MainMenu extends Application
         gridDataTab.setContent(gridContent);
 
         tabPane.getTabs().addAll(homeTab, mapViewTab, statsTab, gridDataTab);
-
-        try {
-            FileInputStream input = new FileInputStream("resources/London.png");
-            Image mapImage = new Image(input);
+            MapImage map = new MapImage("resources/London.png");
+            map.makePixelRedder(100, 100);
+            Image mapImage = map.getImage();
             ImageView mapView = new ImageView(mapImage);
             mapView.setPreserveRatio(true);
             mapView.setSmooth(true);
@@ -157,7 +156,7 @@ public class MainMenu extends Application
             // Load data and overlay data points
             DataLoader loader = new DataLoader();
             DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
-            dataSet = DataFilter.filterDataSet(dataSet);
+            dataSet = DataFilter.filterLondonData(dataSet);
             if (dataSet != null) {
                 // Calculate min and max values for scaling
                 int minX = Integer.MAX_VALUE;
@@ -192,11 +191,7 @@ public class MainMenu extends Application
 
             mapViewTab.setContent(borderPane);
 
-        } catch (IOException e) {
-            Label errorLabel = new Label("Error loading map: " + e.getMessage());
-            mapViewTab.setContent(errorLabel);
-            e.printStackTrace();
-        }
+
     }
 
     private void showDataPointInfo(DataPoint dataPoint) {
