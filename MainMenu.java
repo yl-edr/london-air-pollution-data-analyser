@@ -4,18 +4,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.IOException;
-import javafx.stage.Stage;
 
-/**
- * Creates the window for the main menu.
- *
- * @author Anton Davidouski, Nicolas Alcala Olea, Yaal Luka Edrey Gatignol,  Rom Steinberg
- * @version v1.0
- */
-public class MainMenu extends Application
-{
+public class MainMenu extends Application {
     private BorderPane root;
     private TabPane tabPane;
 
@@ -25,8 +19,7 @@ public class MainMenu extends Application
     private Tab gridDataTab;
 
     @Override
-    public void start(Stage stage)
-    {
+    public void start(Stage stage) {
         root = new BorderPane();
         createTabPane();
         root.setCenter(tabPane);
@@ -41,9 +34,7 @@ public class MainMenu extends Application
         stage.show();
     }
 
-
-    private void createTabPane()
-    {
+    private void createTabPane() {
         tabPane = new TabPane();
 
         homeTab = new Tab("Welcome");
@@ -108,6 +99,41 @@ public class MainMenu extends Application
             borderPane.setBottom(bottomBar);
             borderPane.setRight(rightBar);
 
+            // Load data and overlay data points
+            DataLoader loader = new DataLoader();
+            DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
+            if (dataSet != null) {
+                // Calculate min and max values for scaling
+                int minX = Integer.MAX_VALUE;
+                int maxX = Integer.MIN_VALUE;
+                int minY = Integer.MAX_VALUE;
+                int maxY = Integer.MIN_VALUE;
+
+                for (DataPoint dataPoint : dataSet.getData()) {
+                    if (dataPoint.x() < minX) minX = dataPoint.x();
+                    if (dataPoint.x() > maxX) maxX = dataPoint.x();
+                    if (dataPoint.x() < minX) minX = dataPoint.x();
+                    if (dataPoint.x() > maxX) maxX = dataPoint.x();
+                    if (dataPoint.y() < minY) minY = dataPoint.y();
+                    if (dataPoint.y() > maxY) maxY = dataPoint.y();
+                }
+
+                // Calculate scaling factors
+                double scaleX = mapView.getFitWidth() / (maxX - minX);
+                double scaleY = mapView.getFitHeight() / (maxY - minY);
+
+                // Overlay data points on the map
+                for (DataPoint dataPoint : dataSet.getData()) {
+                    double x = mapView.getX() + (dataPoint.x() - minX) * scaleX;
+                    double y = mapView.getY() + (maxY - dataPoint.y()) * scaleY;
+
+                    Circle dataPointCircle = new Circle(x, y, 5);
+                    dataPointCircle.setFill(javafx.scene.paint.Color.RED);
+                    dataPointCircle.setOnMouseClicked(event -> showDataPointInfo(dataPoint));
+                    anchorPane.getChildren().add(dataPointCircle);
+                }
+            }
+
             mapViewTab.setContent(borderPane);
 
         } catch (IOException e) {
@@ -117,4 +143,16 @@ public class MainMenu extends Application
         }
     }
 
+    private void showDataPointInfo(DataPoint dataPoint) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Data Point Information");
+        alert.setHeaderText(null);
+        alert.setContentText("Grid Code: " + dataPoint.gridCode() + "\nX: " + dataPoint.x() + "\nY: " + dataPoint.y() + "\nValue: " + dataPoint.value());
+        alert.showAndWait();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
+
