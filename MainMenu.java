@@ -210,8 +210,6 @@ public class MainMenu extends Application
             }
 
             mapViewTab.setContent(borderPane);
-
-
     }
 
     private void showDataPointInfo(DataPoint dataPoint) {

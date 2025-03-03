@@ -5,8 +5,6 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
-import javax.imageio.ImageIO;
-
 public class MapImage {
     private Image image;
     private WritableImage writableImage;
@@ -38,30 +36,42 @@ public class MapImage {
         return writableImage;
     }
 
-    public int getPixel(int x, int y) {
-        PixelReader reader = writableImage.getPixelReader();
-        return reader.getArgb(x, y);
-    }
-
-    public void setPixel(int x, int y, int argb) {
-        PixelWriter writer = writableImage.getPixelWriter();
-        writer.setArgb(x, y, argb);
-    }
-
     private void makePixelRedder(int x, int y, double percentage){
-        PixelReader reader = image.getPixelReader();
-        PixelWriter writer = writableImage.getPixelWriter();
+        int[] rgb = getPixel(x, y);
+        int red = Math.min(255, (int)(rgb[0] * (1 + percentage)));
+        int green = rgb[1];
+        int blue = rgb[2];
+        int argb = (0xFF << 24) | (red << 16) | (green << 8) | blue;
+        writableImage.getPixelWriter().setArgb(x, y, argb);
     }
 
     public void testPixelAltering() {
-        for (int y = 0; y < writableImage.getHeight(); y++) {
-            for (int x = 0; x < writableImage.getWidth(); x++) {
-                int argb = getPixel(x, y);
-                argb = (argb & 0xFF00FF00) | 0x000000FF;
-                setPixel(x, y, argb);
+        for (int y = 0; y < writableImage.getHeight() - 500; y++) {
+            for (int x = 0; x < writableImage.getWidth() - 400; x++) {
+                makePixelRedder(x, y, 0.9);
+            }
+        }
+        for (int y = 0; y < writableImage.getHeight() - 300; y++) {
+            for (int x = 0; x < writableImage.getWidth() - 300; x++) {
+                makePixelRedder(x, y, 0.7);
+            }
+        }
+        for (int y = 0; y < writableImage.getHeight() - 200; y++) {
+            for (int x = 0; x < writableImage.getWidth() - 100; x++) {
+                makePixelRedder(x, y, 0.5);
             }
         }
 
+    }
+
+    public int[] getPixel(int x, int y) {
+        PixelReader reader = writableImage.getPixelReader();
+        int argb = reader.getArgb(x, y);
+        int[] rgb = new int[3];
+        rgb[0] = (argb >> 16) & 0xFF;
+        rgb[1] = (argb >> 8) & 0xFF;
+        rgb[2] = argb & 0xFF;
+        return rgb;
     }
     }
 
