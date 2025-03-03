@@ -4,8 +4,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javafx.stage.Stage;
@@ -13,7 +11,7 @@ import javafx.stage.Stage;
 /**
  * Creates the window for the main menu.
  *
- * @author Anton Dvidouski, Nicolas Alcala Olea, Yaal Luka Edrey Gatignol,  Rom Steinberg
+ * @author Anton Davidouski, Nicolas Alcala Olea, Yaal Luka Edrey Gatignol,  Rom Steinberg
  * @version v1.0
  */
 public class MainMenu extends Application
@@ -33,7 +31,8 @@ public class MainMenu extends Application
         createTabPane();
         root.setCenter(tabPane);
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 950, 600);
+
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         stage.setTitle("London Air Pollution Data Viewer");
@@ -57,10 +56,6 @@ public class MainMenu extends Application
 
         mapViewTab = new Tab("Map View");
         mapViewTab.setClosable(false);
-        VBox mapContent = new VBox(10);
-        Label mapPlaceholder = new Label("Map visualization will be implemented here.");
-        mapContent.getChildren().addAll(mapPlaceholder);
-        mapViewTab.setContent(mapContent);
 
         statsTab = new Tab("Pollution Statistics");
         statsTab.setClosable(false);
@@ -83,13 +78,35 @@ public class MainMenu extends Application
             Image mapImage = new Image(input);
             ImageView mapView = new ImageView(mapImage);
             mapView.setPreserveRatio(true);
-            mapView.setFitWidth(780);
+            mapView.setSmooth(true);
+            mapView.setFitWidth(500);
+
+            AnchorPane anchorPane = new AnchorPane();
+            anchorPane.getChildren().add(mapView);
+
+            anchorPane.setMinWidth(500);
+            anchorPane.setMinHeight(300);
+
+            mapView.fitWidthProperty().bind(anchorPane.widthProperty());
+            mapView.fitHeightProperty().bind(anchorPane.heightProperty());
 
             BorderPane borderPane = new BorderPane();
-            borderPane.setCenter(mapView);
+            borderPane.setCenter(anchorPane);
 
-            borderPane.setRight(new VBox(new Label("Right Panel Content")));
-            borderPane.setBottom(new HBox(new Label("Bottom Panel Content")));
+            HBox bottomBar = new HBox(10);
+            bottomBar.getChildren().add(new Label("Test"));
+            bottomBar.setPrefHeight(50);
+            bottomBar.setMinHeight(30);
+            bottomBar.setMaxHeight(80);
+
+            VBox rightBar = new VBox(10);
+            rightBar.getChildren().add(new Label("Test"));
+            rightBar.setPrefWidth(75);
+            rightBar.setMinWidth(50);
+            rightBar.setMaxWidth(100);
+
+            borderPane.setBottom(bottomBar);
+            borderPane.setRight(rightBar);
 
             mapViewTab.setContent(borderPane);
 
@@ -99,21 +116,5 @@ public class MainMenu extends Application
             e.printStackTrace();
         }
     }
-
-// In your createTabPane method, replace the drawMap method with this:
-private void createMapView() {
-    mapViewTab = new Tab("Map View");
-    mapViewTab.setClosable(false);
-    VBox mapContent = new VBox(10);
-    
-    // Load the map image
-    Image mapImage = new Image("C:\\Users\\yaale\\OneDrive - King's College London\\Documents\\king's college london\\semester 2\\programming practice and applications\\assignment 4 - london air pollution\\londonAirPollution\\London.png"); // Replace with your actual map image path
-    ImageView mapView = new ImageView(mapImage);
-    mapView.setFitWidth(800);
-    mapView.setFitHeight(600);
-    
-    mapContent.getChildren().add(mapView);
-    mapViewTab.setContent(mapContent);
-}
 
 }
