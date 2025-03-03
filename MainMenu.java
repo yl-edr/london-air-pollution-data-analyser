@@ -100,7 +100,6 @@ public class MainMenu extends Application
             bottomBar.setMinHeight(30);
             bottomBar.setMaxHeight(80);
 
-// Create a GridPane for the right sidebar
             GridPane rightBar = new GridPane();
             rightBar.setPadding(new Insets(10));
             rightBar.setPrefWidth(150);
@@ -117,12 +116,41 @@ public class MainMenu extends Application
             yearComboBox.setPromptText("Year");
             yearComboBox.getItems().addAll("2019", "2020", "2021", "2022", "2023");
 
+            Label dataPointLabel = new Label("Value: ");
+            Label dataPointValue = new Label("select a data point");
+
+            Label gridCodeLabel = new Label("Grid Code: ");
+            Label gridCodeValue = new Label("select a data point");
+
+            Label xLabel = new Label("X: ");
+            Label xValue = new Label("select a data point");
+
+            Label yLabel = new Label("Y: ");
+            Label yValue = new Label("select a data point");
+
             rightBar.add(pollutantLabel, 0, 0);
             rightBar.add(pollutantComboBox, 0, 1);
             rightBar.add(yearLabel, 0, 3);
             rightBar.add(yearComboBox, 0, 4);
+            rightBar.add(dataPointLabel, 0, 6);
+            rightBar.add(dataPointValue, 0, 7);
+            rightBar.add(gridCodeLabel, 0, 8);
+            rightBar.add(gridCodeValue, 0, 9);
+            rightBar.add(xLabel, 0, 10);
+            rightBar.add(xValue, 0, 11);
+            rightBar.add(yLabel, 0, 12);
+            rightBar.add(yValue, 0, 13);
 
             GridPane.setMargin(yearLabel, new Insets(10, 0, 0, 0));
+            GridPane.setMargin(yearComboBox, new Insets(0, 0, 10, 0));
+            GridPane.setMargin(dataPointLabel, new Insets(10, 0, 0, 0));
+            GridPane.setMargin(dataPointValue, new Insets(0, 0, 10, 0));
+            GridPane.setMargin(gridCodeLabel, new Insets(10, 0, 0, 0));
+            GridPane.setMargin(gridCodeValue, new Insets(0, 0, 10, 0));
+            GridPane.setMargin(xLabel, new Insets(10, 0, 0, 0));
+            GridPane.setMargin(xValue, new Insets(0, 0, 10, 0));
+            GridPane.setMargin(yLabel, new Insets(10, 0, 0, 0));
+            GridPane.setMargin(yValue, new Insets(0, 0, 10, 0));
 
             borderPane.setBottom(bottomBar);
             borderPane.setRight(rightBar);
