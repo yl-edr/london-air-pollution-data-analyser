@@ -8,8 +8,17 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import javafx.stage.Stage;
+import javafx.geometry.Insets;
 
-public class MainMenu extends Application {
+/**
+ * Creates the window for the main menu.
+ *
+ * @author Anton Davidouski, Nicolas Alcala Olea, Yaal Luka Edrey Gatignol,  Rom Steinberg
+ * @version v1.0
+ */
+public class MainMenu extends Application
+{
     private BorderPane root;
     private TabPane tabPane;
 
@@ -90,11 +99,57 @@ public class MainMenu extends Application {
             bottomBar.setMinHeight(30);
             bottomBar.setMaxHeight(80);
 
-            VBox rightBar = new VBox(10);
-            rightBar.getChildren().add(new Label("Test"));
-            rightBar.setPrefWidth(75);
+            GridPane rightBar = new GridPane();
+            rightBar.setPadding(new Insets(10));
+            rightBar.setPrefWidth(150);
             rightBar.setMinWidth(50);
-            rightBar.setMaxWidth(100);
+            rightBar.setMaxWidth(200);
+
+            Label pollutantLabel = new Label("Choose a pollutant:");
+            ComboBox<String> pollutantComboBox = new ComboBox<>();
+            pollutantComboBox.setPromptText("Pollutant");
+            pollutantComboBox.getItems().addAll("Pm2.5", "No2", "Pm10");
+
+            Label yearLabel = new Label("Choose a year:");
+            ComboBox<String> yearComboBox = new ComboBox<>();
+            yearComboBox.setPromptText("Year");
+            yearComboBox.getItems().addAll("2019", "2020", "2021", "2022", "2023");
+
+            Label dataPointLabel = new Label("Value: ");
+            Label dataPointValue = new Label("select a data point");
+
+            Label gridCodeLabel = new Label("Grid Code: ");
+            Label gridCodeValue = new Label("select a data point");
+
+            Label xLabel = new Label("X: ");
+            Label xValue = new Label("select a data point");
+
+            Label yLabel = new Label("Y: ");
+            Label yValue = new Label("select a data point");
+
+            rightBar.add(pollutantLabel, 0, 0);
+            rightBar.add(pollutantComboBox, 0, 1);
+            rightBar.add(yearLabel, 0, 3);
+            rightBar.add(yearComboBox, 0, 4);
+            rightBar.add(dataPointLabel, 0, 6);
+            rightBar.add(dataPointValue, 0, 7);
+            rightBar.add(gridCodeLabel, 0, 8);
+            rightBar.add(gridCodeValue, 0, 9);
+            rightBar.add(xLabel, 0, 10);
+            rightBar.add(xValue, 0, 11);
+            rightBar.add(yLabel, 0, 12);
+            rightBar.add(yValue, 0, 13);
+
+            GridPane.setMargin(yearLabel, new Insets(10, 0, 0, 0));
+            GridPane.setMargin(yearComboBox, new Insets(0, 0, 10, 0));
+            GridPane.setMargin(dataPointLabel, new Insets(10, 0, 0, 0));
+            GridPane.setMargin(dataPointValue, new Insets(0, 0, 10, 0));
+            GridPane.setMargin(gridCodeLabel, new Insets(10, 0, 0, 0));
+            GridPane.setMargin(gridCodeValue, new Insets(0, 0, 10, 0));
+            GridPane.setMargin(xLabel, new Insets(10, 0, 0, 0));
+            GridPane.setMargin(xValue, new Insets(0, 0, 10, 0));
+            GridPane.setMargin(yLabel, new Insets(10, 0, 0, 0));
+            GridPane.setMargin(yValue, new Insets(0, 0, 10, 0));
 
             borderPane.setBottom(bottomBar);
             borderPane.setRight(rightBar);
@@ -102,6 +157,7 @@ public class MainMenu extends Application {
             // Load data and overlay data points
             DataLoader loader = new DataLoader();
             DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
+            dataSet = DataFilter.filterDataSet(dataSet);
             if (dataSet != null) {
                 // Calculate min and max values for scaling
                 int minX = Integer.MAX_VALUE;
