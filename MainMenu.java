@@ -27,6 +27,10 @@ public class MainMenu extends Application
     private Tab statsTab;
     private Tab gridDataTab;
 
+    private AnchorPane anchorPane;
+    private DataSet londonDataSet;
+    private ImageView mapView;
+
     @Override
     public void start(Stage stage) {
         root = new BorderPane();
@@ -76,12 +80,12 @@ public class MainMenu extends Application
         try {
             FileInputStream input = new FileInputStream("resources/London.png");
             Image mapImage = new Image(input);
-            ImageView mapView = new ImageView(mapImage);
+            mapView = new ImageView(mapImage);
             mapView.setPreserveRatio(true);
             mapView.setSmooth(true);
             mapView.setFitWidth(500);
 
-            AnchorPane anchorPane = new AnchorPane();
+            anchorPane = new AnchorPane();
             anchorPane.getChildren().add(mapView);
 
             anchorPane.setMinWidth(500);
@@ -157,38 +161,24 @@ public class MainMenu extends Application
             // Load data and overlay data points
             DataLoader loader = new DataLoader();
             DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
-            dataSet = DataFilter.filterDataSet(dataSet);
+            londonDataSet = DataFilter.filterLondonData(dataSet);
             if (dataSet != null) {
-                // Calculate min and max values for scaling
-                int minX = Integer.MAX_VALUE;
-                int maxX = Integer.MIN_VALUE;
-                int minY = Integer.MAX_VALUE;
-                int maxY = Integer.MIN_VALUE;
-
-                for (DataPoint dataPoint : dataSet.getData()) {
-                    if (dataPoint.x() < minX) minX = dataPoint.x();
-                    if (dataPoint.x() > maxX) maxX = dataPoint.x();
-                    if (dataPoint.x() < minX) minX = dataPoint.x();
-                    if (dataPoint.x() > maxX) maxX = dataPoint.x();
-                    if (dataPoint.y() < minY) minY = dataPoint.y();
-                    if (dataPoint.y() > maxY) maxY = dataPoint.y();
-                }
-
-                // Calculate scaling factors
-                double scaleX = mapView.getFitWidth() / (maxX - minX);
-                double scaleY = mapView.getFitHeight() / (maxY - minY);
 
                 // Overlay data points on the map
-                for (DataPoint dataPoint : dataSet.getData()) {
-                    double x = mapView.getX() + (dataPoint.x() - minX) * scaleX;
-                    double y = mapView.getY() + (maxY - dataPoint.y()) * scaleY;
-
-                    Circle dataPointCircle = new Circle(x, y, 5);
+                /*for (DataPoint dataPoint : londonDataSet.getData()) {
+                    int testX = dataPoint.x() - 510394;
+                    int testY = dataPoint.y() - 168504;
+                    System.out.println(testX + " " + testY);
+                    Circle dataPointCircle = new Circle(50, 50, 10);
                     dataPointCircle.setFill(javafx.scene.paint.Color.RED);
                     dataPointCircle.setOnMouseClicked(event -> showDataPointInfo(dataPoint));
                     anchorPane.getChildren().add(dataPointCircle);
-                }
+                }*/
+                updateDataPointCircles();
             }
+
+            anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> updateDataPointCircles());
+            anchorPane.heightProperty().addListener((obs, oldVal, newVal) -> updateDataPointCircles());
 
             mapViewTab.setContent(borderPane);
 
@@ -196,6 +186,35 @@ public class MainMenu extends Application
             Label errorLabel = new Label("Error loading map: " + e.getMessage());
             mapViewTab.setContent(errorLabel);
             e.printStackTrace();
+        }
+    }
+
+    private void updateDataPointCircles() {
+        // Clear existing circles
+        anchorPane.getChildren().removeIf(node -> node instanceof Circle);
+
+        // Calculate the scale factors based on the original image size
+        double scaleX = mapView.getFitWidth() / mapView.getImage().getWidth();
+        double scaleY = mapView.getFitHeight() / mapView.getImage().getHeight();
+
+        System.out.println("this is getImage " + mapView.getImage().getWidth() + " " + mapView.getImage().getHeight());
+        System.out.println("this is regular " + mapView.getFitWidth() + " " + mapView.getFitHeight());
+
+        //System.out.println(scaleX + " " + scaleY);
+
+        // Create and position circles based on the data points
+        for (DataPoint dataPoint : londonDataSet.getData()) {            
+            double x = (dataPoint.x()- 510394)* scaleX ; // Scale the x coordinate
+            double y = (dataPoint.y() - 168504) * scaleY; // Scale the y coordinate
+            //System.out.println(x + " " + y);
+            System.out.println(anchorPane.getWidth() + " " + anchorPane.getHeight());
+            //System.out.println("this is getImage" + mapView.getImage().getWidth() + " " + mapView.getImage().getHeight());
+            //System.out.println("this is regular" + mapView.getFitWidth() + " " + mapView.getFitHeight());
+            Circle dataPointCircle = new Circle(x, y, 10); // Radius of 10
+            dataPointCircle.setFill(javafx.scene.paint.Color.RED);
+            // Uncomment the following line to add click event for data point info
+            // dataPointCircle.setOnMouseClicked(event -> showDataPointInfo(dataPoint));
+            anchorPane.getChildren().add(dataPointCircle);
         }
     }
 
