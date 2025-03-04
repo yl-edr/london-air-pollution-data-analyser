@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -55,11 +56,29 @@ public class MainMenu extends Application {
         stage.setScene(scene);
         stage.show();
 
-        dataAggregator = new DataAggregator();
-        dataAggregator.processDirectory("UKAirPollutionData/NO2/");
-        dataAggregator.processDirectory("UKAirPollutionData/pm10/");
-        dataAggregator.processDirectory("UKAirPollutionData/pm2.5/");
+        Alert startAlert = new Alert(Alert.AlertType.INFORMATION);
+        startAlert.setTitle("Loading Data");
+        startAlert.setHeaderText("Please wait...");
+        startAlert.setContentText("Data is being loaded. " + "This popup will close when the data is loaded.");
+        startAlert.initOwner(stage);
+        startAlert.show();
 
+        Task<Void> dataLoadingTask = new Task<>() {
+            @Override
+            protected Void call() {
+                dataAggregator = new DataAggregator();
+                dataAggregator.processDirectory("UKAirPollutionData/NO2/");
+                dataAggregator.processDirectory("UKAirPollutionData/pm10/");
+                dataAggregator.processDirectory("UKAirPollutionData/pm2.5/");
+                return null;
+            }
+
+            protected void succeeded(){
+                startAlert.close();
+            }
+        };
+
+        new Thread(dataLoadingTask).start();
     }
 
     private void createTabPane() {
