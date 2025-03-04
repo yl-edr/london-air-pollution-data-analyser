@@ -296,6 +296,7 @@ public class MainMenu extends Application {
         if (selectedDataSet == null) {
             return;
         }
+
         int imageWidth = (int) mapView.getFitWidth();
         int imageHeight = (int) mapView.getFitHeight();
         int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
