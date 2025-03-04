@@ -95,11 +95,11 @@ public class  DataSet
     }
 
     public DataPoint findNearestDataPoint(int x, int y) {
-        int minDistance = Integer.MAX_VALUE;
+        double minDistance = Double.MAX_VALUE;
         DataPoint nearestDataPoint = null;
-        for (int i = 0; i < data.size(); i++) {
-            DataPoint dataPoint = data.get(i);
-            int distance = Math.abs(dataPoint.x() - x) + Math.abs(dataPoint.y() - y);
+
+        for (DataPoint dataPoint : data) {
+            double distance = Math.sqrt(Math.pow(dataPoint.x() - x, 2) + Math.pow(dataPoint.y() - y, 2));
             if (distance < minDistance) {
                 minDistance = distance;
                 nearestDataPoint = dataPoint;
