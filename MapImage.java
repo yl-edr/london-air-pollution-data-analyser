@@ -10,6 +10,11 @@ public class MapImage {
     private WritableImage colourImage;
     private double blendAplha = 0.5;
 
+    private static final int MIN_X = 510394;
+    private static final int MAX_X = 553297;
+    private static final int MIN_Y = 168504;
+    private static final int MAX_Y = 193305;
+
     public MapImage(String fileName) {
         try {
             FileInputStream input = new FileInputStream(fileName);
@@ -37,6 +42,19 @@ public class MapImage {
         return baseImage;
     }
 
+    public void processDataPoint(DataPoint dataPoint, double min, double max) {
+        double dataPercentage = (dataPoint.value() - min) / (max - min);
+        int x = dataPoint.x();
+        int y = dataPoint.y();
+
+        int imageX = (int) (colourImage.getWidth() * (x - MIN_X) / (MAX_X - MIN_X));
+        int imageY = (int) (colourImage.getHeight() * (y - MIN_Y) / (MAX_Y - MIN_Y));
+        int width = 44;
+        int height = 46;
+        imageX -= width / 2;
+        imageY -= height / 2;
+        placeOverlayBlock(imageX, imageY, width, height, dataPercentage);
+    }
 
     /**
      * Place a colour block on the overlay colour image at full opacity.
@@ -49,39 +67,20 @@ public class MapImage {
     private void placeOverlayBlock(int startX, int startY, int width, int height, double dataPercentage) {
         PixelWriter writer = colourImage.getPixelWriter();
         int alpha = 255;
-        int green = (int)(255 * (1 - dataPercentage));
-        int red = (int)(255 * dataPercentage);
+        int green = (int) (255 * (1 - dataPercentage));
+        int red = (int) (255 * dataPercentage);
         int blue = 0;
         int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
+
         for (int y = startY; y < startY + height; y++) {
             for (int x = startX; x < startX + width; x++) {
-                writer.setArgb(x, y, argb);
+                try {
+                    writer.setArgb(x, y, argb);
+                } catch (IndexOutOfBoundsException e) {
+                    // Ignore pixels that are outside the image
+                }
             }
         }
-    }
-
-    public void testPixelAltering() {
-        placeOverlayBlock(0, 0, 100, 100, 0.0);
-        placeOverlayBlock(100, 100, 100, 100, 0.1);
-        placeOverlayBlock(200, 200, 100, 100, 0.2);
-        placeOverlayBlock(300, 300, 100, 100, 0.3);
-        placeOverlayBlock(400, 400, 100, 100, 0.4);
-        placeOverlayBlock(500, 500, 100, 100, 0.5);
-        placeOverlayBlock(600, 600, 100, 100, 0.6);
-        placeOverlayBlock(700, 700, 100, 100, 0.7);
-        placeOverlayBlock(800, 800, 100, 100, 0.8);
-        placeOverlayBlock(900, 900, 100, 100, 0.9);
-        placeOverlayBlock(1000, 1000, 100, 100, 1.0);
-    }
-
-    public int[] getPixel(int x, int y) {
-        PixelReader reader = colourImage.getPixelReader();
-        int argb = reader.getArgb(x, y);
-        int[] rgb = new int[3];
-        rgb[0] = (argb >> 16) & 0xFF;
-        rgb[1] = (argb >> 8) & 0xFF;
-        rgb[2] = argb & 0xFF;
-        return rgb;
     }
 
     public Image getCombined() {
@@ -119,8 +118,7 @@ public class MapImage {
                 writer.setArgb(x, y, newArgb);
             }
         }
-
         return newImage;
     }
-    }
+}
 

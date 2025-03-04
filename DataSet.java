@@ -73,6 +73,40 @@ public class  DataSet
     {
         return data;
     }
+
+    public int getMax() {
+        int max = Integer.MIN_VALUE;
+        for (DataPoint dataPoint : data) {
+            if (dataPoint.value() > max){
+                max = (int) dataPoint.value();
+            }
+        }
+        return max;
+    }
+
+    public int getMin() {
+        int min = Integer.MAX_VALUE;
+        for (DataPoint dataPoint : data) {
+            if (dataPoint.value() < min){
+                min = (int) dataPoint.value();
+            }
+        }
+        return min;
+    }
+
+    public DataPoint findNearestDataPoint(int x, int y) {
+        int minDistance = Integer.MAX_VALUE;
+        DataPoint nearestDataPoint = null;
+        for (int i = 0; i < data.size(); i++) {
+            DataPoint dataPoint = data.get(i);
+            int distance = Math.abs(dataPoint.x() - x) + Math.abs(dataPoint.y() - y);
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestDataPoint = dataPoint;
+            }
+        }
+        return nearestDataPoint;
+    }
     
     /**
      * Add a data point to this dataset. 

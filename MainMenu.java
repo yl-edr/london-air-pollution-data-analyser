@@ -11,6 +11,12 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class MainMenu extends Application {
+
+    private static final int MIN_X = 510394;
+    private static final int MAX_X = 553297;
+    private static final int MIN_Y = 168504;
+    private static final int MAX_Y = 193305;
+
     private BorderPane root;
     private TabPane tabPane;
 
@@ -19,18 +25,41 @@ public class MainMenu extends Application {
     private Tab statsTab;
     private Tab gridDataTab;
 
+    private String pollutantSelected;
+    private String yearSelected;
+
+    private DataAggregator dataAggregator;
+    private DataSet selectedDataSet;
+    private MapImage map;
+    private Image mapImage;
+    private ImageView mapView;
+
+    private Label dataPointValue;
+    private Label gridCodeValue;
+    private Label xValue;
+    private Label yValue;
+
+    private int mouseX;
+    private int mouseY;
+
     @Override
     public void start(Stage stage) {
         root = new BorderPane();
         createTabPane();
         root.setCenter(tabPane);
 
-        Scene scene = new Scene(root, 950, 600);
+        Scene scene = new Scene(root, 1150, 650);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         stage.setTitle("London Air Pollution Data Viewer");
         stage.setScene(scene);
         stage.show();
+
+        dataAggregator = new DataAggregator();
+        dataAggregator.processDirectory("UKAirPollutionData/NO2/");
+        dataAggregator.processDirectory("UKAirPollutionData/pm10/");
+        dataAggregator.processDirectory("UKAirPollutionData/pm2.5/");
+
     }
 
     private void createTabPane() {
@@ -62,9 +91,9 @@ public class MainMenu extends Application {
         gridDataTab.setContent(gridContent);
 
         tabPane.getTabs().addAll(homeTab, mapViewTab, statsTab, gridDataTab);
-        MapImage map = new MapImage("resources/London.png");
-        Image mapImage = map.getImage();
-        ImageView mapView = new ImageView(mapImage);
+        map = new MapImage("resources/London.png");
+        mapImage = map.getImage();
+        mapView = new ImageView(mapImage);
         mapView.setPreserveRatio(true);
         mapView.setSmooth(true);
         mapView.setFitWidth(500);
@@ -87,44 +116,62 @@ public class MainMenu extends Application {
 
         GridPane rightBar = new GridPane();
         rightBar.setPadding(new Insets(10));
-        rightBar.setPrefWidth(150);
-        rightBar.setMinWidth(50);
-        rightBar.setMaxWidth(200);
+        rightBar.setPrefWidth(250);
+        rightBar.setMinWidth(150);
+        rightBar.setMaxWidth(300);
 
         Label pollutantLabel = new Label("Choose a pollutant:");
         ComboBox<String> pollutantComboBox = new ComboBox<>();
+        pollutantComboBox.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    pollutantSelected = newValue;
+                    updateColourMap();
+                });
         pollutantComboBox.setPromptText("Pollutant");
-        pollutantComboBox.getItems().addAll("Pm2.5", "No2", "Pm10");
+        pollutantComboBox.getItems().addAll("pm2.5", "no2", "pm10");
 
         Label yearLabel = new Label("Choose a year:");
         ComboBox<String> yearComboBox = new ComboBox<>();
+        yearComboBox.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    yearSelected = newValue;
+                    updateColourMap();
+                });
         yearComboBox.setPromptText("Year");
         yearComboBox.getItems().addAll("2019", "2020", "2021", "2022", "2023");
 
         Label dataPointLabel = new Label("Value: ");
-        Label dataPointValue = new Label("select a data point");
+        dataPointValue = new Label("select a data point");
 
         Label gridCodeLabel = new Label("Grid Code: ");
-        Label gridCodeValue = new Label("select a data point");
+        gridCodeValue = new Label("select a data point");
 
         Label xLabel = new Label("X: ");
-        Label xValue = new Label("select a data point");
+        xValue = new Label("select a data point");
 
         Label yLabel = new Label("Y: ");
-        Label yValue = new Label("select a data point");
+        yValue = new Label("select a data point");
+
+        mapView.setOnMouseMoved(event -> {
+            xValue.setText("X: " + (int) event.getX());
+            yValue.setText("Y: " + (int) event.getY());
+            mouseX = (int) event.getX();
+            mouseY = (int) event.getY();
+            updateStats();
+        });
 
         rightBar.add(pollutantLabel, 0, 0);
         rightBar.add(pollutantComboBox, 0, 1);
-        rightBar.add(yearLabel, 0, 3);
-        rightBar.add(yearComboBox, 0, 4);
-        rightBar.add(dataPointLabel, 0, 6);
-        rightBar.add(dataPointValue, 0, 7);
-        rightBar.add(gridCodeLabel, 0, 8);
-        rightBar.add(gridCodeValue, 0, 9);
-        rightBar.add(xLabel, 0, 10);
-        rightBar.add(xValue, 0, 11);
-        rightBar.add(yLabel, 0, 12);
-        rightBar.add(yValue, 0, 13);
+        rightBar.add(yearLabel, 0, 2);
+        rightBar.add(yearComboBox, 0, 3);
+        rightBar.add(dataPointLabel, 0, 4);
+        rightBar.add(dataPointValue, 0, 5);
+        rightBar.add(gridCodeLabel, 0, 6);
+        rightBar.add(gridCodeValue, 0, 7);
+        rightBar.add(xLabel, 0, 8);
+        rightBar.add(xValue, 0, 9);
+        rightBar.add(yLabel, 0, 10);
+        rightBar.add(yValue, 0, 11);
 
         GridPane.setMargin(yearLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(yearComboBox, new Insets(0, 0, 10, 0));
@@ -208,7 +255,34 @@ public class MainMenu extends Application {
         alert.showAndWait();
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    public void updateColourMap(){
+        if (pollutantSelected == null || yearSelected == null) {
+            return;
+        }
+        selectedDataSet = dataAggregator.getDataSet(yearSelected, pollutantSelected);
+        for (DataPoint dataPoint : selectedDataSet.getData()) {
+            if (dataPoint.value() > 0) {
+                map.processDataPoint(dataPoint, selectedDataSet.getMin(), selectedDataSet.getMax());
+            }
+        }
+        Image mapImage = map.getCombined();
+        mapView.setImage(mapImage);
+
+    }
+
+    public void updateStats(){
+        if (pollutantSelected == null || yearSelected == null) {
+            return;
+        }
+        if (selectedDataSet == null) {
+            return;
+        }
+        int imageWidth = (int) mapView.getFitWidth();
+        int imageHeight = (int) mapView.getFitHeight();
+        int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
+        int y = (int) ((mouseY / (double) imageHeight) * (MAX_Y - MIN_Y) + MIN_Y);
+        DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
+        dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
+        gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
     }
 }
