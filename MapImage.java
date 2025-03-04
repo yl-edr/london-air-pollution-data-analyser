@@ -8,7 +8,7 @@ import javafx.scene.image.WritableImage;
 public class MapImage {
     private Image baseImage;
     private WritableImage colourImage;
-    private double blendAplha = 0.5;
+    private double blendAplha = 0.35;
 
     private static final int MIN_X = 510394;
     private static final int MAX_X = 553297;
