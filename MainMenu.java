@@ -10,9 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-
 public class MainMenu extends Application {
     private BorderPane root;
     private TabPane tabPane;

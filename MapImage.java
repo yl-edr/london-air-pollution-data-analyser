@@ -37,6 +37,15 @@ public class MapImage {
         return baseImage;
     }
 
+
+    /**
+     * Place a colour block on the overlay colour image at full opacity.
+     * @param startX The x-coordinate of the top-left corner of the block
+     * @param startY The y-coordinate of the top-left corner of the block
+     * @param width The width of the block
+     * @param height The height of the block
+     * @param dataPercentage The data points location in the colour spectrum as a percentage relative to min and max values. Used tio determine the colour of the block.
+     */
     private void placeOverlayBlock(int startX, int startY, int width, int height, double dataPercentage) {
         PixelWriter writer = colourImage.getPixelWriter();
         int alpha = 255;
