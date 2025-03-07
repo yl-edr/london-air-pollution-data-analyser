@@ -18,5 +18,4 @@ public class DataFilter {
     private static String[] dataPointArray(DataPoint dp){
         return new String[]{dp.gridCode()+"",dp.x()+"",dp.y()+"",dp.value()+""};
     }
-    
 }
