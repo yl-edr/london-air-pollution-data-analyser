@@ -8,7 +8,7 @@ import javafx.scene.image.WritableImage;
 public class MapImage {
     private Image baseImage;
     private WritableImage colourImage;
-    private double blendAplha = 0.5;
+    private double blendAplha = 0.3;
 
     private static final int MIN_X = 510394;
     private static final int MAX_X = 553297;
@@ -47,12 +47,16 @@ public class MapImage {
         int x = dataPoint.x();
         int y = dataPoint.y();
 
+        if (dataPoint.gridCode() == 771961){
+            System.out.println(x + " " + y + " " + dataPercentage);
+        }
+
         int imageX = (int) (colourImage.getWidth() * (x - MIN_X) / (MAX_X - MIN_X));
         int imageY = (int) (colourImage.getHeight() * (y - MIN_Y) / (MAX_Y - MIN_Y));
-        int width = 10;
-        int height = 10;
-//        imageX -= (width / 2 - 1);
-//        imageY -= (height / 2 - 1);
+        int width = 44;
+        int height = 46;
+        imageX -= (width / 2);
+        imageY -= (height / 2);
         placeOverlayBlock(imageX, imageY, width, height, dataPercentage);
     }
 
@@ -69,7 +73,6 @@ public class MapImage {
         int alpha = 255;
         int green = (int) (255 * (1 - dataPercentage));
         int red = (int) (255 * dataPercentage);
-        System.out.println("Red: " + red + " Green: " + green);
         int blue = 0;
         int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
 

@@ -275,25 +275,7 @@ public class MainMenu extends Application {
             int y = (int) ((mouseY / (double) imageHeight) * (MAX_Y - MIN_Y) + MIN_Y);
 
             DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
-
-            if (nearestDataPoint != null) {
-                System.out.println("Pollution Data at (" + nearestDataPoint.x() + ", " + nearestDataPoint.y() + "):");
-                System.out.println("Grid Code: " + nearestDataPoint.gridCode());
-                System.out.println("Pollutant Value: " + nearestDataPoint.value());
-                    // Convert real-world coordinates to screen coordinates
-                int scaledX = (int) ( (nearestDataPoint.x() - 510394)/ (42903 / mapView.getFitWidth()));
-                int scaledY = (int) ( ((nearestDataPoint.y() -193305)*-1)/(24801 / mapView.getFitHeight()));
-                System.out.println("Scaled X: " + scaledX + ", Scaled Y: " + scaledY);
-                    // Create a circle at the data point location
-                Circle dataPointCircle = new Circle(scaledX, scaledY, 3); // Radius of 10
-                dataPointCircle.setFill(javafx.scene.paint.Color.RED);
-                // Uncomment the following line to add click event for data point info
-                anchorPane.getChildren().add(dataPointCircle);
-                // Show in an alert
-                showDataPointInfo(nearestDataPoint);
-            } else {
-                System.out.println("No pollution data found near this location.");
-            }
+            showDataPointInfo(nearestDataPoint);
         });
     }
 
@@ -350,7 +332,6 @@ public class MainMenu extends Application {
         int imageHeight = (int) mapView.getFitHeight();
         int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
         int y = (int) ((mouseY / (double) imageHeight) * (MAX_Y - MIN_Y) + MIN_Y);
-        System.out.println("x: " + x + " y: " + y);
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
         dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
