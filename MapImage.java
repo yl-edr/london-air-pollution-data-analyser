@@ -12,8 +12,8 @@ public class MapImage {
 
     private static final int MIN_X = 510394;
     private static final int MAX_X = 553297;
-    private static final int MIN_Y = 168504;
-    private static final int MAX_Y = 193305;
+    private static final int MIN_Y = 193305;
+    private static final int MAX_Y = 168504;
 
     public MapImage(String fileName) {
         try {
@@ -49,10 +49,10 @@ public class MapImage {
 
         int imageX = (int) (colourImage.getWidth() * (x - MIN_X) / (MAX_X - MIN_X));
         int imageY = (int) (colourImage.getHeight() * (y - MIN_Y) / (MAX_Y - MIN_Y));
-        int width = 44;
-        int height = 46;
-        imageX -= width / 2;
-        imageY -= height / 2;
+        int width = 30;
+        int height = 30;
+        imageX -= (width / 2 - 1);
+        imageY -= (height / 2 - 1);
         placeOverlayBlock(imageX, imageY, width, height, dataPercentage);
     }
 
@@ -69,6 +69,7 @@ public class MapImage {
         int alpha = 255;
         int green = (int) (255 * (1 - dataPercentage));
         int red = (int) (255 * dataPercentage);
+        System.out.println("Red: " + red + " Green: " + green);
         int blue = 0;
         int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
 

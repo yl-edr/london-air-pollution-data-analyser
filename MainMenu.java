@@ -13,10 +13,11 @@ import javafx.stage.Stage;
 
 public class MainMenu extends Application {
 
+    // min and max Y are swapped because the top left of the image is actually the max Y
     private static final int MIN_X = 510394;
     private static final int MAX_X = 553297;
-    private static final int MIN_Y = 168504;
-    private static final int MAX_Y = 193305;
+    private static final int MIN_Y = 193305;
+    private static final int MAX_Y = 168504;
 
     private BorderPane root;
     private TabPane tabPane;
@@ -275,7 +276,7 @@ public class MainMenu extends Application {
                 double scaledY = ((nearestDataPoint.y() -193305)*-1)/(24801 / mapView.getFitHeight());
                 System.out.println("Scaled X: " + scaledX + ", Scaled Y: " + scaledY);
                     // Create a circle at the data point location
-                Circle dataPointCircle = new Circle(scaledX, scaledY, 10); // Radius of 10
+                Circle dataPointCircle = new Circle(scaledX, scaledY, 3); // Radius of 10
                 dataPointCircle.setFill(javafx.scene.paint.Color.RED);
                 // Uncomment the following line to add click event for data point info
                 anchorPane.getChildren().add(dataPointCircle);
@@ -342,6 +343,7 @@ public class MainMenu extends Application {
         int imageHeight = (int) mapView.getFitHeight();
         int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
         int y = (int) ((mouseY / (double) imageHeight) * (MAX_Y - MIN_Y) + MIN_Y);
+        System.out.println("x: " + x + " y: " + y);
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
         dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
