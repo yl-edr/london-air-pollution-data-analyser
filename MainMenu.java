@@ -240,63 +240,18 @@ public class MainMenu extends Application {
     }
 
     private void trackMouseLocation() {
-//        mapView.setOnMouseClicked(event -> {
-//            System.out.println("Mouse Location - X: " + mouseX + ", Y: " + mouseY);
-//            double scaleMouseX = (mouseX * (42903 / mapView.getFitWidth()))+510394;
-//            double scaleMouseY = 193305-(mouseY * (24801 / mapView.getFitHeight()));
-//            System.out.println("Mouse Location Relative to the pic - X: " + (scaleMouseX) + ", Y: " + (scaleMouseY));
-//                // Find nearest data point
-//            DataPoint nearestDataPoint = findNearestDataPoint(scaleMouseX, scaleMouseY);
-//
-//            if (nearestDataPoint != null) {
-//                System.out.println("Pollution Data at (" + nearestDataPoint.x() + ", " + nearestDataPoint.y() + "):");
-//                System.out.println("Grid Code: " + nearestDataPoint.gridCode());
-//                System.out.println("Pollutant Value: " + nearestDataPoint.value());
-//                    // Convert real-world coordinates to screen coordinates
-//                double scaledX = (nearestDataPoint.x() - 510394)/ (42903 / mapView.getFitWidth());
-//                double scaledY = ((nearestDataPoint.y() -193305)*-1)/(24801 / mapView.getFitHeight());
-//                System.out.println("Scaled X: " + scaledX + ", Scaled Y: " + scaledY);
-//                    // Create a circle at the data point location
-//                Circle dataPointCircle = new Circle(scaledX, scaledY, 3); // Radius of 10
-//                dataPointCircle.setFill(javafx.scene.paint.Color.RED);
-//                // Uncomment the following line to add click event for data point info
-//                anchorPane.getChildren().add(dataPointCircle);
-//                // Show in an alert
-//                showDataPointInfo(nearestDataPoint);
-//            } else {
-//                System.out.println("No pollution data found near this location.");
-//            }
-//        });
-
         mapView.setOnMouseClicked(event -> {
-            int imageWidth = (int) mapView.getFitWidth();
-            int imageHeight = (int) mapView.getFitHeight();
-            int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
-            int y = (int) ((mouseY / (double) imageHeight) * (MAX_Y - MIN_Y) + MIN_Y);
+            if (selectedDataSet != null) {
+                int imageWidth = (int) mapView.getFitWidth();
+                int imageHeight = (int) mapView.getFitHeight();
+                int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
+                int y = (int) ((mouseY / (double) imageHeight) * (MAX_Y - MIN_Y) + MIN_Y);
 
-            DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
-            showDataPointInfo(nearestDataPoint);
+                DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
+                showDataPointInfo(nearestDataPoint);
+            }
         });
     }
-
-    private DataPoint findNearestDataPoint(double mouseX, double mouseY) {
-        DataPoint nearestDataPoint = null;
-        double minDistance = Double.MAX_VALUE;
-
-        for (DataPoint dp : selectedDataSet.getData()) {
-            double x = dp.x();
-            double y = dp.y();
-            double distance = Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2));
-
-            if (distance < minDistance) {
-                minDistance = distance;
-                nearestDataPoint = dp;
-            }
-        }
-
-        return nearestDataPoint;
-    }
-
 
     private void showDataPointInfo(DataPoint dataPoint) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -313,6 +268,7 @@ public class MainMenu extends Application {
         selectedDataSet = dataAggregator.getDataSet(yearSelected, pollutantSelected);
         for (DataPoint dataPoint : selectedDataSet.getData()) {
             if (dataPoint.value() > 0) {
+//                System.out.println("Value: " + dataPoint.value() + "Min: " + selectedDataSet.getMin() + "Max: " + selectedDataSet.getMax());
                 map.processDataPoint(dataPoint, selectedDataSet.getMin(), selectedDataSet.getMax());
             }
         }
@@ -322,9 +278,9 @@ public class MainMenu extends Application {
     }
 
     public void updateStats(){
-        if (pollutantSelected == null || yearSelected == null) {
-            return;
-        }
+//        if (pollutantSelected == null || yearSelected == null) {
+//            return;
+//        }
         if (selectedDataSet == null) {
             return;
         }

@@ -8,7 +8,7 @@ import javafx.scene.image.WritableImage;
 public class MapImage {
     private Image baseImage;
     private WritableImage colourImage;
-    private double blendAplha = 0.3;
+    private double blendAplha = 0.35;
 
     private static final int MIN_X = 510394;
     private static final int MAX_X = 553297;
@@ -46,6 +46,10 @@ public class MapImage {
         double dataPercentage = (dataPoint.value() - min) / (max - min);
         int x = dataPoint.x();
         int y = dataPoint.y();
+
+        if (dataPercentage > 1){
+            System.out.println("Data point value out of range: " + dataPoint.value() + "with min: " + min + " and max: " + max);
+        }
 
         if (dataPoint.gridCode() == 771961){
             System.out.println(x + " " + y + " " + dataPercentage);
