@@ -159,7 +159,7 @@ public class MainMenu extends Application {
                     updateColourMap();
                 });
         yearComboBox.setPromptText("Year");
-        yearComboBox.getItems().addAll("2019", "2020", "2021", "2022", "2023");
+        yearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
 
         Label dataPointLabel = new Label("Value: ");
         dataPointValue = new Label("select a data point");
