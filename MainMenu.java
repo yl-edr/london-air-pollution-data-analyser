@@ -234,46 +234,55 @@ public class MainMenu extends Application {
         aqiBarContainer.getChildren().addAll(lowLabel, aqiStack, highLabel);
         borderPane.setBottom(aqiBarContainer);
 
-        // Load data and overlay data points
-        DataLoader loader = new DataLoader();
-        DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
-        dataSet = DataFilter.filterLondonData(dataSet);
-        if (dataSet != null) {
-            int minX = Integer.MAX_VALUE;
-            int maxX = Integer.MIN_VALUE;
-            int minY = Integer.MAX_VALUE;
-            int maxY = Integer.MIN_VALUE;
-
-            for (DataPoint dataPoint : dataSet.getData()) {
-                if (dataPoint.x() < minX) minX = dataPoint.x();
-                if (dataPoint.x() > maxX) maxX = dataPoint.x();
-                if (dataPoint.y() < minY) minY = dataPoint.y();
-                if (dataPoint.y() > maxY) maxY = dataPoint.y();
-            }
-
-            
-        }
+        trackMouseLocation();
 
         mapViewTab.setContent(borderPane);
     }
 
     private void trackMouseLocation() {
+//        mapView.setOnMouseClicked(event -> {
+//            System.out.println("Mouse Location - X: " + mouseX + ", Y: " + mouseY);
+//            double scaleMouseX = (mouseX * (42903 / mapView.getFitWidth()))+510394;
+//            double scaleMouseY = 193305-(mouseY * (24801 / mapView.getFitHeight()));
+//            System.out.println("Mouse Location Relative to the pic - X: " + (scaleMouseX) + ", Y: " + (scaleMouseY));
+//                // Find nearest data point
+//            DataPoint nearestDataPoint = findNearestDataPoint(scaleMouseX, scaleMouseY);
+//
+//            if (nearestDataPoint != null) {
+//                System.out.println("Pollution Data at (" + nearestDataPoint.x() + ", " + nearestDataPoint.y() + "):");
+//                System.out.println("Grid Code: " + nearestDataPoint.gridCode());
+//                System.out.println("Pollutant Value: " + nearestDataPoint.value());
+//                    // Convert real-world coordinates to screen coordinates
+//                double scaledX = (nearestDataPoint.x() - 510394)/ (42903 / mapView.getFitWidth());
+//                double scaledY = ((nearestDataPoint.y() -193305)*-1)/(24801 / mapView.getFitHeight());
+//                System.out.println("Scaled X: " + scaledX + ", Scaled Y: " + scaledY);
+//                    // Create a circle at the data point location
+//                Circle dataPointCircle = new Circle(scaledX, scaledY, 3); // Radius of 10
+//                dataPointCircle.setFill(javafx.scene.paint.Color.RED);
+//                // Uncomment the following line to add click event for data point info
+//                anchorPane.getChildren().add(dataPointCircle);
+//                // Show in an alert
+//                showDataPointInfo(nearestDataPoint);
+//            } else {
+//                System.out.println("No pollution data found near this location.");
+//            }
+//        });
+
         mapView.setOnMouseClicked(event -> {
-            
-            System.out.println("Mouse Location - X: " + mouseX + ", Y: " + mouseY);
-            double scaleMouseX = (mouseX * (42903 / mapView.getFitWidth()))+510394;
-            double scaleMouseY = 193305-(mouseY * (24801 / mapView.getFitHeight()));
-            System.out.println("Mouse Location Relative to the pic - X: " + (scaleMouseX) + ", Y: " + (scaleMouseY));
-                // Find nearest data point
-            DataPoint nearestDataPoint = findNearestDataPoint(scaleMouseX, scaleMouseY);
+            int imageWidth = (int) mapView.getFitWidth();
+            int imageHeight = (int) mapView.getFitHeight();
+            int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
+            int y = (int) ((mouseY / (double) imageHeight) * (MAX_Y - MIN_Y) + MIN_Y);
+
+            DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
 
             if (nearestDataPoint != null) {
                 System.out.println("Pollution Data at (" + nearestDataPoint.x() + ", " + nearestDataPoint.y() + "):");
                 System.out.println("Grid Code: " + nearestDataPoint.gridCode());
                 System.out.println("Pollutant Value: " + nearestDataPoint.value());
                     // Convert real-world coordinates to screen coordinates
-                double scaledX = (nearestDataPoint.x() - 510394)/ (42903 / mapView.getFitWidth());
-                double scaledY = ((nearestDataPoint.y() -193305)*-1)/(24801 / mapView.getFitHeight());
+                int scaledX = (int) ( (nearestDataPoint.x() - 510394)/ (42903 / mapView.getFitWidth()));
+                int scaledY = (int) ( ((nearestDataPoint.y() -193305)*-1)/(24801 / mapView.getFitHeight()));
                 System.out.println("Scaled X: " + scaledX + ", Scaled Y: " + scaledY);
                     // Create a circle at the data point location
                 Circle dataPointCircle = new Circle(scaledX, scaledY, 3); // Radius of 10
@@ -285,7 +294,6 @@ public class MainMenu extends Application {
             } else {
                 System.out.println("No pollution data found near this location.");
             }
-                
         });
     }
 
@@ -338,7 +346,6 @@ public class MainMenu extends Application {
         if (selectedDataSet == null) {
             return;
         }
-        trackMouseLocation();
         int imageWidth = (int) mapView.getFitWidth();
         int imageHeight = (int) mapView.getFitHeight();
         int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);

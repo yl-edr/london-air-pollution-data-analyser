@@ -49,10 +49,10 @@ public class MapImage {
 
         int imageX = (int) (colourImage.getWidth() * (x - MIN_X) / (MAX_X - MIN_X));
         int imageY = (int) (colourImage.getHeight() * (y - MIN_Y) / (MAX_Y - MIN_Y));
-        int width = 30;
-        int height = 30;
-        imageX -= (width / 2 - 1);
-        imageY -= (height / 2 - 1);
+        int width = 10;
+        int height = 10;
+//        imageX -= (width / 2 - 1);
+//        imageY -= (height / 2 - 1);
         placeOverlayBlock(imageX, imageY, width, height, dataPercentage);
     }
 
