@@ -43,6 +43,8 @@ public class MainMenu extends Application {
     private int mouseX;
     private int mouseY;
 
+    private PollutionStatistics pollutionStatistics;
+
     @Override
     public void start(Stage stage) {
         root = new BorderPane();
@@ -95,12 +97,10 @@ public class MainMenu extends Application {
         mapViewTab = new Tab("Map View");
         mapViewTab.setClosable(false);
 
+        pollutionStatistics = new PollutionStatistics();
         statsTab = new Tab("Pollution Statistics");
         statsTab.setClosable(false);
-        VBox statsContent = new VBox(10);
-        Label statsPlaceholder = new Label("Pollution statistics will be displayed here.");
-        statsContent.getChildren().addAll(statsPlaceholder);
-        statsTab.setContent(statsContent);
+        statsTab.setContent(pollutionStatistics.getBorderPane());
 
         gridDataTab = new Tab("Detailed Grid Data");
         gridDataTab.setClosable(false);
