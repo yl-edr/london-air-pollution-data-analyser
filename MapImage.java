@@ -153,5 +153,115 @@ public class MapImage {
         }
         return newImage;
     }
+
+    public void applyBlur(int radius) {
+        WritableImage horizontalBlur = applyHorizontalBlur(radius);
+        WritableImage verticalBlur = applyVerticalBlur(horizontalBlur, radius);
+        colourImage = verticalBlur;
+    }
+
+    private WritableImage applyHorizontalBlur(int radius) {
+        int width = (int) colourImage.getWidth();
+        int height = (int) colourImage.getHeight();
+        WritableImage result = new WritableImage(width, height);
+        PixelReader reader = colourImage.getPixelReader();
+        PixelWriter writer = result.getPixelWriter();
+
+        for (int y = 0; y < height; y++) {
+            int[] cumulativeRed = new int[width];
+            int[] cumulativeGreen = new int[width];
+
+            int currentRed = 0;
+            int currentGreen = 0;
+
+            for (int x = 0; x < width; x++) {
+                int argb = reader.getArgb(x, y);
+                int r = (argb >> 16) & 0xFF;
+                int g = (argb >> 8) & 0xFF;
+
+                currentRed += r;
+                currentGreen += g;
+
+                cumulativeRed[x] = currentRed;
+                cumulativeGreen[x] = currentGreen;
+            }
+
+            for (int x = 0; x < width; x++) {
+                int startX = Math.max(0, x - radius);
+                int endX = Math.min(width - 1, x + radius);
+                int windowSize = endX - startX + 1;
+
+                int startSumR, startSumG;
+
+                if (startX > 0) {
+                    startSumR = cumulativeRed[startX - 1];
+                    startSumG = cumulativeGreen[startX - 1];
+                } else {
+                    startSumR = 0;
+                    startSumG = 0;
+                }
+
+                int sumR = cumulativeRed[endX] - startSumR;
+                int sumG = cumulativeGreen[endX] - startSumG;
+
+                int avgR = (sumR / windowSize);
+                int avgG = (sumG / windowSize);
+
+                writer.setArgb(x, y, (255 << 24) | (avgR << 16) | (avgG << 8) | 0);
+            }
+        }
+        return result;
+    }
+
+    private WritableImage applyVerticalBlur(WritableImage source, int radius) {
+        int width = (int) source.getWidth();
+        int height = (int) source.getHeight();
+        WritableImage result = new WritableImage(width, height);
+        PixelReader reader = source.getPixelReader();
+        PixelWriter writer = result.getPixelWriter();
+
+        for (int x = 0; x < width; x++) {
+            int[] cumulativeRed = new int[height];
+            int[] cumulativeGreen = new int[height];
+
+            int currentRed = 0, currentGreen = 0;
+            for (int y = 0; y < height; y++) {
+                int argb = reader.getArgb(x, y);
+                int r = (argb >> 16) & 0xFF;
+                int g = (argb >> 8) & 0xFF;
+
+                currentRed += r;
+                currentGreen += g;
+
+                cumulativeRed[y] = currentRed;
+                cumulativeGreen[y] = currentGreen;
+            }
+
+            for (int y = 0; y < height; y++) {
+                int startY = Math.max(0, y - radius);
+                int endY = Math.min(height - 1, y + radius);
+                int windowSize = endY - startY + 1;
+
+                int startSumR, startSumG;
+
+                if (startY > 0) {
+                    startSumR = cumulativeRed[startY - 1];
+                    startSumG = cumulativeGreen[startY - 1];
+                } else {
+                    startSumR = 0;
+                    startSumG = 0;
+                }
+
+                int sumR = cumulativeRed[endY] - startSumR;
+                int sumG = cumulativeGreen[endY] - startSumG;
+
+                int avgR = (sumR / windowSize);
+                int avgG = (sumG / windowSize);
+
+                writer.setArgb(x, y, (255 << 24) | (avgR << 16) | (avgG << 8) | 0);
+            }
+        }
+        return result;
+    }
 }
 

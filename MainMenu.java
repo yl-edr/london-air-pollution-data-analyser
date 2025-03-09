@@ -285,6 +285,7 @@ public class MainMenu extends Application {
                 map.processDataPoint(dataPoint, selectedDataSet.getMin(), selectedDataSet.getMax());
             }
         }
+        map.applyBlur(60);
         Image mapImage = map.getCombined();
         mapView.setImage(mapImage);
     }
