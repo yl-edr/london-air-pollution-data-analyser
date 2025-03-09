@@ -149,7 +149,7 @@ public class MainMenu extends Application {
                     updateColourMap();
                 });
         pollutantComboBox.setPromptText("Pollutant");
-        pollutantComboBox.getItems().addAll("pm2.5", "no2", "pm10");
+        pollutantComboBox.getItems().addAll("PM2.5", "no2", "pm10");
 
         Label yearLabel = new Label("Choose a year:");
         ComboBox<String> yearComboBox = new ComboBox<>();
@@ -234,25 +234,6 @@ public class MainMenu extends Application {
         aqiBarContainer.getChildren().addAll(lowLabel, aqiStack, highLabel);
         borderPane.setBottom(aqiBarContainer);
 
-        // Load data and overlay data points
-        DataLoader loader = new DataLoader();
-        DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
-        dataSet = DataFilter.filterLondonData(dataSet);
-        if (dataSet != null) {
-            int minX = Integer.MAX_VALUE;
-            int maxX = Integer.MIN_VALUE;
-            int minY = Integer.MAX_VALUE;
-            int maxY = Integer.MIN_VALUE;
-
-            for (DataPoint dataPoint : dataSet.getData()) {
-                if (dataPoint.x() < minX) minX = dataPoint.x();
-                if (dataPoint.x() > maxX) maxX = dataPoint.x();
-                if (dataPoint.y() < minY) minY = dataPoint.y();
-                if (dataPoint.y() > maxY) maxY = dataPoint.y();
-            }
-
-            
-        }
 
         mapViewTab.setContent(borderPane);
     }
