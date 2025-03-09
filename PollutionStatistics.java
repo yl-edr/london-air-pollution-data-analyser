@@ -8,7 +8,7 @@ public class PollutionStatistics {
     private MapImage map;
     private Image mapImage;
     private ImageView mapView;
-    private AnchorPane anchorPane;
+    private AnchorPane mapPane;
     private BorderPane borderPane;
 
     public PollutionStatistics() {
@@ -21,13 +21,13 @@ public class PollutionStatistics {
         mapView.setSmooth(true);
         mapView.setFitWidth(400);
 
-        anchorPane = new AnchorPane();
-        anchorPane.getChildren().add(mapView);
-        anchorPane.setMinWidth(400);
-        anchorPane.setMinHeight(240);
-        mapView.fitWidthProperty().bind(anchorPane.widthProperty());
-        mapView.fitHeightProperty().bind(anchorPane.heightProperty());
-        borderPane.setCenter(anchorPane);
+        mapPane = new AnchorPane();
+        mapPane.getChildren().add(mapView);
+        mapPane.setMinWidth(400);
+        mapPane.setMinHeight(240);
+        mapView.fitWidthProperty().bind(mapPane.widthProperty());
+        mapView.fitHeightProperty().bind(mapPane.heightProperty());
+        borderPane.setCenter(mapPane);
 
     }
 
