@@ -51,7 +51,7 @@ public class MainMenu extends Application {
         createTabPane();
         root.setCenter(tabPane);
 
-        Scene scene = new Scene(root, 1150, 650);
+        Scene scene = new Scene(root, 1150, 700);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         stage.setTitle("London Air Pollution Data Viewer");
@@ -100,7 +100,10 @@ public class MainMenu extends Application {
         pollutionStatistics = new PollutionStatistics(dataAggregator);
         statsTab = new Tab("Pollution Statistics");
         statsTab.setClosable(false);
+        statsTab.setClosable(false);
         statsTab.setContent(pollutionStatistics.getBorderPane());
+
+        gridDataTab = new Tab("Detailed Grid Data");
 
         gridDataTab = new Tab("Detailed Grid Data");
         gridDataTab.setClosable(false);

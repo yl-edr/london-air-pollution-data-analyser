@@ -2,6 +2,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -19,7 +20,7 @@ public class PollutionStatistics {
     private AnchorPane mapPane;
     private BorderPane borderPane;
     private AnchorPane chartPane;
-    private Chart Chart;
+    private Chart chart;
 
     private String pollutantSelected;
 
@@ -40,6 +41,7 @@ public class PollutionStatistics {
         this.dataAggregator = dataAggregator;
         borderPane = new BorderPane();
 
+        // Initialize the map
         map = new MapImage("resources/London.png");
         mapImage = map.getImage();
         mapView = new ImageView(mapImage);
@@ -47,17 +49,13 @@ public class PollutionStatistics {
         mapView.setSmooth(true);
         mapView.setFitWidth(400);
 
+        // Create the anchor pane for the map
         mapPane = new AnchorPane();
         mapPane.getChildren().add(mapView);
-        mapPane.setMinWidth(400);
-        mapPane.setMinHeight(240);
+        mapPane.setMinWidth(250);
+        mapPane.setMinHeight(200);
         mapView.fitWidthProperty().bind(mapPane.widthProperty());
         mapView.fitHeightProperty().bind(mapPane.heightProperty());
-
-        chartPane = new AnchorPane();
-        Chart = new Chart();
-        borderPane.setBottom(chartPane);
-        chartPane.getChildren().add(Chart.getChart());
         borderPane.setCenter(mapPane);
 
         GridPane rightBar = new GridPane();
@@ -149,6 +147,18 @@ public class PollutionStatistics {
 
         borderPane.setRight(rightBar);
 
+        chartPane = new AnchorPane();
+        chart = new Chart();
+        chartPane.getChildren().add(chart.getChart());
+
+        chart.getChart().prefWidthProperty().bind(mapPane.widthProperty().multiply(0.9));
+        chart.getChart().prefHeightProperty().bind(mapPane.heightProperty().multiply(0.2));
+
+        chartPane.setMinHeight(50);
+        chartPane.setMinWidth(300);
+
+        BorderPane.setMargin(chartPane, new Insets(5, 20, 5, 2));
+        borderPane.setBottom(chartPane);
     }
 
     private void validateYearSelection(String fromYear, String toYear) {
