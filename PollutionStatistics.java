@@ -8,12 +8,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
-public class PollutionStatistics {
+import java.util.HashMap;
 
-    private static final int MIN_X = 510394;
-    private static final int MAX_X = 553297;
-    private static final int MIN_Y = 193305;
-    private static final int MAX_Y = 168504;
+public class PollutionStatistics {
 
     private MapImage map;
     private Image mapImage;
@@ -25,7 +22,6 @@ public class PollutionStatistics {
     private Chart Chart;
 
     private String pollutantSelected;
-    private String yearSelected;
 
     private Label dataPointValue;
     private Label gridCodeValue;
@@ -38,7 +34,10 @@ public class PollutionStatistics {
     private String fromYearSelected;
     private String toYearSelected;
 
-    public PollutionStatistics() {
+    private DataAggregator dataAggregator;
+
+    public PollutionStatistics(DataAggregator dataAggregator) {
+        this.dataAggregator = dataAggregator;
         borderPane = new BorderPane();
 
         map = new MapImage("resources/London.png");
@@ -171,4 +170,16 @@ public class PollutionStatistics {
         return borderPane;
     }
 
+    public HashMap<String, DataSet> dataSetRange(){
+        int startYear = Integer.parseInt(fromYearSelected);
+        int endYear = Integer.parseInt(toYearSelected);
+
+        HashMap<String, DataSet> dataRange = new HashMap<>();
+
+        for(int i = startYear; i <= endYear; i++){
+            dataRange.put(Integer.toString(i), dataAggregator.getDataSet(Integer.toString(i), pollutantSelected));
+        }
+        return dataRange;
+
+    }
 }

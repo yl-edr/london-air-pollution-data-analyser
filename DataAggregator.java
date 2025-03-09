@@ -39,5 +39,4 @@ public class DataAggregator {
     public DataSet getDataSet(String year, String pollutant) {
         return dataSets.get(year + pollutant);
     }
-
 }
