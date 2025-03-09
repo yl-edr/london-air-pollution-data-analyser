@@ -12,16 +12,14 @@ import javafx.scene.image.WritableImage;
  */
 
 public class MapImage {
-    private Image baseImage; //  will hold the map png
-    private WritableImage colourImage; //  will hold a png of coloured blocks representing pollution data
-    private double blendAplha = 0.35; // will dwtermine blend ration between base and colour image
+    private Image baseImage;
+    private WritableImage colourImage;
+    private double blendAplha = 0.45;
 
-
-    // Real life Northings and Eastings for given image
     private static final int MIN_X = 510394;
     private static final int MAX_X = 553297;
-    private static final int MIN_Y = 168504;
-    private static final int MAX_Y = 193305;
+    private static final int MIN_Y = 193305;
+    private static final int MAX_Y = 168504;
 
     public MapImage(String fileName) {
         try {
@@ -50,30 +48,25 @@ public class MapImage {
         return baseImage;
     }
 
-    /**
-     * Processes a single data point and place a coloured block on the overlay image, based on the data point's value.
-     * @param dataPoint the dataPoint object to process
-     * @param min the minimum value in the dataset
-     * @param max the maximum value in the dataset
-     */
+    public int getHeight() {
+        return (int) baseImage.getHeight();
+    }
+
+    public int getWidth() {
+        return (int) baseImage.getWidth();
+    }
+
     public void processDataPoint(DataPoint dataPoint, double min, double max) {
         double dataPercentage = (dataPoint.value() - min) / (max - min);
         int x = dataPoint.x();
         int y = dataPoint.y();
 
-        // The following 2 lines convert the real live Norhtings and Eastings to pixel coordinates
-        int imageX = (int) (colourImage.getWidth() * (x - MIN_X) / (MAX_X - MIN_X));
-        int imageY = (int) (colourImage.getHeight() * (y - MIN_Y) / (MAX_Y - MIN_Y));
-
-        // Width and height of the block to place on the overlay image - for some reason data points are more
-        // vertically separated than horizontally, so the block is taller than it is wide to make colour continuous.
-        // Setting height to 44 results in horizontal line of no colour across the image
-        int width = 44;
-        int height = 46;
-
-        // single imageX and Y will define the top corner of the block, and we want the colour block to be centered on the data point, shift they up and left by half the width and height
-        imageX -= width / 2;
-        imageY -= height / 2;
+        int imageX = (int) Math.round((colourImage.getWidth() * (x - MIN_X) / (MAX_X - MIN_X)));
+        int imageY = (int) Math.round((colourImage.getHeight() * (y - MIN_Y) / (MAX_Y - MIN_Y)));
+        int width = 43;
+        int height = 45;
+        imageX -= ((width - 1)/ 2);
+        imageY -= ((height - 1) / 2);
         placeOverlayBlock(imageX, imageY, width, height, dataPercentage);
     }
 
@@ -87,12 +80,19 @@ public class MapImage {
      */
     private void placeOverlayBlock(int startX, int startY, int width, int height, double dataPercentage) {
         PixelWriter writer = colourImage.getPixelWriter();
-        int alpha = 255; // full opacity
-        // Create blend of red and green based on data percentage
-        int green = (int) (255 * (1 - dataPercentage));
-        int red = (int) (255 * dataPercentage);
-        int blue = 0; // no blue
-        int argb = (alpha << 24) | (red << 16) | (green << 8) | blue; // combined into a single integer using bit shifting
+        int alpha = 255;
+        int red, green, blue;
+
+        if (dataPercentage <= 0.25) {
+            red = (int) (255 * (dataPercentage / 0.25));
+            green = 255;
+        } else {
+            red = 255;
+            green = (int) (255 * (((-4/3) * dataPercentage) + 4/3));
+        }
+
+        blue = 0;
+        int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
 
         // set right range of pixels to the colour needed.
         for (int y = startY; y < startY + height; y++) {

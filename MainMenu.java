@@ -7,16 +7,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class MainMenu extends Application {
 
+    // min and max Y are swapped because the top left of the image is actually the max Y
     private static final int MIN_X = 510394;
     private static final int MAX_X = 553297;
-    private static final int MIN_Y = 168504;
-    private static final int MAX_Y = 193305;
+    private static final int MIN_Y = 193305;
+    private static final int MAX_Y = 168504;
 
     private BorderPane root;
     private TabPane tabPane;
@@ -34,6 +33,7 @@ public class MainMenu extends Application {
     private MapImage map;
     private Image mapImage;
     private ImageView mapView;
+    private AnchorPane anchorPane;
 
     private Label dataPointValue;
     private Label gridCodeValue;
@@ -42,6 +42,8 @@ public class MainMenu extends Application {
 
     private int mouseX;
     private int mouseY;
+
+    private double mapImageAspectRatio;
 
     @Override
     public void start(Stage stage) {
@@ -116,8 +118,9 @@ public class MainMenu extends Application {
         mapView.setPreserveRatio(true);
         mapView.setSmooth(true);
         mapView.setFitWidth(500);
+        mapImageAspectRatio = mapImage.getWidth() / mapImage.getHeight();
 
-        AnchorPane anchorPane = new AnchorPane();
+        anchorPane = new AnchorPane();
         anchorPane.getChildren().add(mapView);
         anchorPane.setMinWidth(500);
         anchorPane.setMinHeight(300);
@@ -157,7 +160,7 @@ public class MainMenu extends Application {
                     updateColourMap();
                 });
         yearComboBox.setPromptText("Year");
-        yearComboBox.getItems().addAll("2019", "2020", "2021", "2022", "2023");
+        yearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
 
         Label dataPointLabel = new Label("Value: ");
         dataPointValue = new Label("select a data point");
@@ -232,38 +235,36 @@ public class MainMenu extends Application {
         aqiBarContainer.getChildren().addAll(lowLabel, aqiStack, highLabel);
         borderPane.setBottom(aqiBarContainer);
 
-        // Load data and overlay data points
-        DataLoader loader = new DataLoader();
-        DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
-        dataSet = DataFilter.filterLondonData(dataSet);
-        if (dataSet != null) {
-            int minX = Integer.MAX_VALUE;
-            int maxX = Integer.MIN_VALUE;
-            int minY = Integer.MAX_VALUE;
-            int maxY = Integer.MIN_VALUE;
-
-            for (DataPoint dataPoint : dataSet.getData()) {
-                if (dataPoint.x() < minX) minX = dataPoint.x();
-                if (dataPoint.x() > maxX) maxX = dataPoint.x();
-                if (dataPoint.y() < minY) minY = dataPoint.y();
-                if (dataPoint.y() > maxY) maxY = dataPoint.y();
-            }
-
-            double scaleX = mapView.getFitWidth() / (maxX - minX);
-            double scaleY = mapView.getFitHeight() / (maxY - minY);
-
-            for (DataPoint dataPoint : dataSet.getData()) {
-                double x = mapView.getX() + (dataPoint.x() - minX) * scaleX;
-                double y = mapView.getY() + (maxY - dataPoint.y()) * scaleY;
-
-                Circle dataPointCircle = new Circle(x, y, 5);
-                dataPointCircle.setFill(Color.RED);
-                dataPointCircle.setOnMouseClicked(event -> showDataPointInfo(dataPoint));
-                anchorPane.getChildren().add(dataPointCircle);
-            }
-        }
+        trackMouseLocation();
 
         mapViewTab.setContent(borderPane);
+    }
+
+    public int[] convertMapViewDimensionsToImageDimensions(int x, int y) {
+        double providedAspectRatio = (double) x / y;
+        int[] dimensions = new int[2];
+        if (providedAspectRatio > mapImageAspectRatio) {
+            dimensions[0] = (int) (y * mapImageAspectRatio);
+            dimensions[1] = y;
+        } else {
+            dimensions[0] = x;
+            dimensions[1] = (int) (x / mapImageAspectRatio);
+        }
+        return dimensions;
+    }
+
+    private void trackMouseLocation() {
+        mapView.setOnMouseClicked(event -> {
+            if (selectedDataSet != null) {
+                int[] imageDimensions = convertMapViewDimensionsToImageDimensions((int) mapView.getFitWidth(), (int) mapView.getFitHeight());
+                int imageWidth = imageDimensions[0];
+                int imageHeight = imageDimensions[1];
+                int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
+                int y = (int) (MIN_Y - ((mouseY / (double) imageHeight) * (MIN_Y - MAX_Y)));
+                DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
+                showDataPointInfo(nearestDataPoint);
+            }
+        });
     }
 
     private void showDataPointInfo(DataPoint dataPoint) {
@@ -272,23 +273,6 @@ public class MainMenu extends Application {
         alert.setHeaderText(null);
         alert.setContentText("Grid Code: " + dataPoint.gridCode() + "\nX: " + dataPoint.x() + "\nY: " + dataPoint.y() + "\nValue: " + dataPoint.value());
         alert.showAndWait();
-    }
-
-    public void updateStats(){
-        if (pollutantSelected == null || yearSelected == null) {
-            return;
-        }
-        if (selectedDataSet == null) {
-            return;
-        }
-
-        int imageWidth = (int) mapView.getFitWidth();
-        int imageHeight = (int) mapView.getFitHeight();
-        int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
-        int y = (int) ((mouseY / (double) imageHeight) * (MAX_Y - MIN_Y) + MIN_Y);
-        DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
-        dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
-        gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
     }
 
     public void updateColourMap(){
@@ -303,6 +287,21 @@ public class MainMenu extends Application {
         }
         Image mapImage = map.getCombined();
         mapView.setImage(mapImage);
-
     }
+
+    public void updateStats(){
+        if (selectedDataSet == null) {
+            return;
+        }
+        int[] imageDimensions = convertMapViewDimensionsToImageDimensions((int) mapView.getFitWidth(), (int) mapView.getFitHeight());
+        int imageWidth = imageDimensions[0];
+        int imageHeight = imageDimensions[1];
+        int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
+        int y = (int) (MIN_Y - ((mouseY / (double) imageHeight) * (MIN_Y - MAX_Y)));
+        DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
+        dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
+        gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
+    }
+
+    
 }
