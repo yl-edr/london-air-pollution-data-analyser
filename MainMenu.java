@@ -51,7 +51,7 @@ public class MainMenu extends Application {
         createTabPane();
         root.setCenter(tabPane);
 
-        Scene scene = new Scene(root, 1150, 650);
+        Scene scene = new Scene(root, 1150, 700);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         stage.setTitle("London Air Pollution Data Viewer");
@@ -131,7 +131,6 @@ public class MainMenu extends Application {
         borderPane.setCenter(anchorPane);
 
         HBox bottomBar = new HBox(10);
-        bottomBar.getChildren().add(new Label("Test"));
         bottomBar.setPrefHeight(50);
         bottomBar.setMinHeight(30);
         bottomBar.setMaxHeight(80);

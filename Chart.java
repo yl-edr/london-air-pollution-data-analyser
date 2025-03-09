@@ -14,6 +14,9 @@ public class Chart {
         xAxis.setLowerBound(18);
         xAxis.setUpperBound(23);
         xAxis.setTickUnit(1);
+        yAxis.setAutoRanging(false);
+        yAxis.setLowerBound(10);
+        yAxis.setUpperBound(40);
 
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setCreateSymbols(false);
