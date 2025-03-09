@@ -10,6 +10,8 @@ public class PollutionStatistics {
     private ImageView mapView;
     private AnchorPane mapPane;
     private BorderPane borderPane;
+    private AnchorPane chartPane;
+    private Chart Chart;
 
     public PollutionStatistics() {
         borderPane = new BorderPane();
@@ -27,6 +29,11 @@ public class PollutionStatistics {
         mapPane.setMinHeight(240);
         mapView.fitWidthProperty().bind(mapPane.widthProperty());
         mapView.fitHeightProperty().bind(mapPane.heightProperty());
+
+        chartPane = new AnchorPane();
+        Chart = new Chart();
+        borderPane.setBottom(chartPane);
+        chartPane.getChildren().add(Chart.getChart());
         borderPane.setCenter(mapPane);
 
     }
