@@ -97,7 +97,7 @@ public class MainMenu extends Application {
         mapViewTab = new Tab("Map View");
         mapViewTab.setClosable(false);
 
-        pollutionStatistics = new PollutionStatistics();
+        pollutionStatistics = new PollutionStatistics(dataAggregator);
         statsTab = new Tab("Pollution Statistics");
         statsTab.setClosable(false);
         statsTab.setClosable(false);

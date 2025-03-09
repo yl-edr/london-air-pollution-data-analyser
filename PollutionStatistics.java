@@ -11,12 +11,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class PollutionStatistics {
+import java.util.HashMap;
 
-    private static final int MIN_X = 510394;
-    private static final int MAX_X = 553297;
-    private static final int MIN_Y = 193305;
-    private static final int MAX_Y = 168504;
+public class PollutionStatistics {
 
     private MapImage map;
     private Image mapImage;
@@ -28,7 +25,6 @@ public class PollutionStatistics {
     private Chart chart;
 
     private String pollutantSelected;
-    private String yearSelected;
 
     private Label dataPointValue;
     private Label gridCodeValue;
@@ -41,7 +37,10 @@ public class PollutionStatistics {
     private String fromYearSelected;
     private String toYearSelected;
 
-    public PollutionStatistics() {
+    private DataAggregator dataAggregator;
+
+    public PollutionStatistics(DataAggregator dataAggregator) {
+        this.dataAggregator = dataAggregator;
         borderPane = new BorderPane();
 
         map = new MapImage("resources/London.png");
@@ -55,12 +54,9 @@ public class PollutionStatistics {
         mapPane.getChildren().add(mapView);
         mapPane.setMinWidth(250);
         mapPane.setMinHeight(200);
-        //AnchorPane.setLeftAnchor(mapView, 7.0);
         mapView.fitWidthProperty().bind(mapPane.widthProperty());
         mapView.fitHeightProperty().bind(mapPane.heightProperty());
         borderPane.setCenter(mapPane);
-
-
 
         VBox centerVBox = new VBox();
         centerVBox.getChildren().add(mapPane);
@@ -158,8 +154,6 @@ public class PollutionStatistics {
         rightBar.add(yLabel, 0, 13);
         rightBar.add(yValue, 0, 14);
 
-
-
         GridPane.setMargin(dataPointLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(dataPointValue, new Insets(0, 0, 10, 0));
         GridPane.setMargin(gridCodeLabel, new Insets(10, 0, 0, 0));
@@ -170,20 +164,6 @@ public class PollutionStatistics {
         GridPane.setMargin(yValue, new Insets(0, 0, 10, 0));
 
         borderPane.setRight(rightBar);
-
-        //chartPane = new AnchorPane();
-        //chart = new Chart();
-        //chartPane.getChildren().add(chart.getChart());
-
-        //chart.getChart().prefWidthProperty().bind(mapPane.widthProperty().multiply(0.9));
-        //chart.getChart().prefHeightProperty().bind(mapPane.heightProperty().multiply(0.2));
-
-        
-        //chartPane.setMinHeight(50);
-        //chartPane.setMinWidth(300);
-
-        //BorderPane.setMargin(chartPane, new Insets(5, 20, 5, 2));
-        //borderPane.setBottom(chartPane);
     }
 
     private void validateYearSelection(String fromYear, String toYear) {
@@ -203,5 +183,18 @@ public class PollutionStatistics {
 
     public BorderPane getBorderPane() {
         return borderPane;
+    }
+
+    public HashMap<String, DataSet> dataSetRange(){
+        int startYear = Integer.parseInt(fromYearSelected);
+        int endYear = Integer.parseInt(toYearSelected);
+
+        HashMap<String, DataSet> dataRange = new HashMap<>();
+
+        for(int i = startYear; i <= endYear; i++){
+            dataRange.put(Integer.toString(i), dataAggregator.getDataSet(Integer.toString(i), pollutantSelected));
+        }
+        return dataRange;
+
     }
 }
