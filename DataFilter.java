@@ -1,9 +1,9 @@
 public class DataFilter {
     // London Map Boundaries
     private static final int MIN_X = 510394;
-    private static final int MAX_X = 553297;
-    private static final int MIN_Y = 168504;
-    private static final int MAX_Y = 193305;
+    private static final int MAX_X = 554000;
+    private static final int MIN_Y = 168000;
+    private static final int MAX_Y = 194000;
 
     public static DataSet filterLondonData(DataSet dataSet) {
         DataSet londonDataSet = new DataSet(dataSet.getPollutant(), dataSet.getYear(), dataSet.getMetric(), dataSet.getUnits());

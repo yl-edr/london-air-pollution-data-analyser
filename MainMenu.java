@@ -7,8 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class MainMenu extends Application {
@@ -44,6 +42,8 @@ public class MainMenu extends Application {
 
     private int mouseX;
     private int mouseY;
+
+    private double mapImageAspectRatio;
 
     @Override
     public void start(Stage stage) {
@@ -118,6 +118,7 @@ public class MainMenu extends Application {
         mapView.setPreserveRatio(true);
         mapView.setSmooth(true);
         mapView.setFitWidth(500);
+        mapImageAspectRatio = mapImage.getWidth() / mapImage.getHeight();
 
         anchorPane = new AnchorPane();
         anchorPane.getChildren().add(mapView);
@@ -149,7 +150,7 @@ public class MainMenu extends Application {
                     updateColourMap();
                 });
         pollutantComboBox.setPromptText("Pollutant");
-        pollutantComboBox.getItems().addAll("PM2.5", "no2", "pm10");
+        pollutantComboBox.getItems().addAll("pm2.5", "no2", "pm10");
 
         Label yearLabel = new Label("Choose a year:");
         ComboBox<String> yearComboBox = new ComboBox<>();
@@ -159,7 +160,7 @@ public class MainMenu extends Application {
                     updateColourMap();
                 });
         yearComboBox.setPromptText("Year");
-        yearComboBox.getItems().addAll("2019", "2020", "2021", "2022", "2023");
+        yearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
 
         Label dataPointLabel = new Label("Value: ");
         dataPointValue = new Label("select a data point");
@@ -234,60 +235,37 @@ public class MainMenu extends Application {
         aqiBarContainer.getChildren().addAll(lowLabel, aqiStack, highLabel);
         borderPane.setBottom(aqiBarContainer);
 
+        trackMouseLocation();
 
         mapViewTab.setContent(borderPane);
     }
 
+    public int[] convertMapViewDimensionsToImageDimensions(int x, int y) {
+        double providedAspectRatio = (double) x / y;
+        int[] dimensions = new int[2];
+        if (providedAspectRatio > mapImageAspectRatio) {
+            dimensions[0] = (int) (y * mapImageAspectRatio);
+            dimensions[1] = y;
+        } else {
+            dimensions[0] = x;
+            dimensions[1] = (int) (x / mapImageAspectRatio);
+        }
+        return dimensions;
+    }
+
     private void trackMouseLocation() {
         mapView.setOnMouseClicked(event -> {
-            
-            System.out.println("Mouse Location - X: " + mouseX + ", Y: " + mouseY);
-            double scaleMouseX = (mouseX * (42903 / mapView.getFitWidth()))+510394;
-            double scaleMouseY = 193305-(mouseY * (24801 / mapView.getFitHeight()));
-            System.out.println("Mouse Location Relative to the pic - X: " + (scaleMouseX) + ", Y: " + (scaleMouseY));
-                // Find nearest data point
-            DataPoint nearestDataPoint = findNearestDataPoint(scaleMouseX, scaleMouseY);
-
-            if (nearestDataPoint != null) {
-                System.out.println("Pollution Data at (" + nearestDataPoint.x() + ", " + nearestDataPoint.y() + "):");
-                System.out.println("Grid Code: " + nearestDataPoint.gridCode());
-                System.out.println("Pollutant Value: " + nearestDataPoint.value());
-                    // Convert real-world coordinates to screen coordinates
-                double scaledX = (nearestDataPoint.x() - 510394)/ (42903 / mapView.getFitWidth());
-                double scaledY = ((nearestDataPoint.y() -193305)*-1)/(24801 / mapView.getFitHeight());
-                System.out.println("Scaled X: " + scaledX + ", Scaled Y: " + scaledY);
-                    // Create a circle at the data point location
-                Circle dataPointCircle = new Circle(scaledX, scaledY, 3); // Radius of 10
-                dataPointCircle.setFill(javafx.scene.paint.Color.RED);
-                // Uncomment the following line to add click event for data point info
-                anchorPane.getChildren().add(dataPointCircle);
-                // Show in an alert
+            if (selectedDataSet != null) {
+                int[] imageDimensions = convertMapViewDimensionsToImageDimensions((int) mapView.getFitWidth(), (int) mapView.getFitHeight());
+                int imageWidth = imageDimensions[0];
+                int imageHeight = imageDimensions[1];
+                int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
+                int y = (int) (MIN_Y - ((mouseY / (double) imageHeight) * (MIN_Y - MAX_Y)));
+                DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
                 showDataPointInfo(nearestDataPoint);
-            } else {
-                System.out.println("No pollution data found near this location.");
             }
-                
         });
     }
-
-    private DataPoint findNearestDataPoint(double mouseX, double mouseY) {
-        DataPoint nearestDataPoint = null;
-        double minDistance = Double.MAX_VALUE;
-
-        for (DataPoint dp : selectedDataSet.getData()) {
-            double x = dp.x();
-            double y = dp.y();
-            double distance = Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2));
-
-            if (distance < minDistance) {
-                minDistance = distance;
-                nearestDataPoint = dp;
-            }
-        }
-
-        return nearestDataPoint;
-    }
-
 
     private void showDataPointInfo(DataPoint dataPoint) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -309,22 +287,17 @@ public class MainMenu extends Application {
         }
         Image mapImage = map.getCombined();
         mapView.setImage(mapImage);
-
     }
 
     public void updateStats(){
-        if (pollutantSelected == null || yearSelected == null) {
-            return;
-        }
         if (selectedDataSet == null) {
             return;
         }
-        trackMouseLocation();
-        int imageWidth = (int) mapView.getFitWidth();
-        int imageHeight = (int) mapView.getFitHeight();
+        int[] imageDimensions = convertMapViewDimensionsToImageDimensions((int) mapView.getFitWidth(), (int) mapView.getFitHeight());
+        int imageWidth = imageDimensions[0];
+        int imageHeight = imageDimensions[1];
         int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
-        int y = (int) ((mouseY / (double) imageHeight) * (MAX_Y - MIN_Y) + MIN_Y);
-        System.out.println("x: " + x + " y: " + y);
+        int y = (int) (MIN_Y - ((mouseY / (double) imageHeight) * (MIN_Y - MAX_Y)));
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
         dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));

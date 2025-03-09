@@ -8,7 +8,7 @@ import javafx.scene.image.WritableImage;
 public class MapImage {
     private Image baseImage;
     private WritableImage colourImage;
-    private double blendAplha = 0.5;
+    private double blendAplha = 0.45;
 
     private static final int MIN_X = 510394;
     private static final int MAX_X = 553297;
@@ -42,17 +42,25 @@ public class MapImage {
         return baseImage;
     }
 
+    public int getHeight() {
+        return (int) baseImage.getHeight();
+    }
+
+    public int getWidth() {
+        return (int) baseImage.getWidth();
+    }
+
     public void processDataPoint(DataPoint dataPoint, double min, double max) {
         double dataPercentage = (dataPoint.value() - min) / (max - min);
         int x = dataPoint.x();
         int y = dataPoint.y();
 
-        int imageX = (int) (colourImage.getWidth() * (x - MIN_X) / (MAX_X - MIN_X));
-        int imageY = (int) (colourImage.getHeight() * (y - MIN_Y) / (MAX_Y - MIN_Y));
-        int width = 30;
-        int height = 30;
-        imageX -= (width / 2 - 1);
-        imageY -= (height / 2 - 1);
+        int imageX = (int) Math.round((colourImage.getWidth() * (x - MIN_X) / (MAX_X - MIN_X)));
+        int imageY = (int) Math.round((colourImage.getHeight() * (y - MIN_Y) / (MAX_Y - MIN_Y)));
+        int width = 43;
+        int height = 45;
+        imageX -= ((width - 1)/ 2);
+        imageY -= ((height - 1) / 2);
         placeOverlayBlock(imageX, imageY, width, height, dataPercentage);
     }
 
@@ -67,10 +75,17 @@ public class MapImage {
     private void placeOverlayBlock(int startX, int startY, int width, int height, double dataPercentage) {
         PixelWriter writer = colourImage.getPixelWriter();
         int alpha = 255;
-        int green = (int) (255 * (1 - dataPercentage));
-        int red = (int) (255 * dataPercentage);
-        System.out.println("Red: " + red + " Green: " + green);
-        int blue = 0;
+        int red, green, blue;
+
+        if (dataPercentage <= 0.25) {
+            red = (int) (255 * (dataPercentage / 0.25));
+            green = 255;
+        } else {
+            red = 255;
+            green = (int) (255 * (((-4/3) * dataPercentage) + 4/3));
+        }
+
+        blue = 0;
         int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
 
         for (int y = startY; y < startY + height; y++) {

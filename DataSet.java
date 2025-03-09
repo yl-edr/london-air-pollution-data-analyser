@@ -74,21 +74,21 @@ public class  DataSet
         return data;
     }
 
-    public int getMax() {
-        int max = Integer.MIN_VALUE;
+    public double getMax() {
+        double max = Integer.MIN_VALUE;
         for (DataPoint dataPoint : data) {
             if (dataPoint.value() > max){
-                max = (int) dataPoint.value();
+                max = dataPoint.value();
             }
         }
         return max;
     }
 
-    public int getMin() {
-        int min = Integer.MAX_VALUE;
+    public double getMin() {
+        double min = Integer.MAX_VALUE;
         for (DataPoint dataPoint : data) {
             if (dataPoint.value() < min){
-                min = (int) dataPoint.value();
+                min = dataPoint.value();
             }
         }
         return min;
