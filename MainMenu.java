@@ -100,7 +100,10 @@ public class MainMenu extends Application {
         pollutionStatistics = new PollutionStatistics();
         statsTab = new Tab("Pollution Statistics");
         statsTab.setClosable(false);
+        statsTab.setClosable(false);
         statsTab.setContent(pollutionStatistics.getBorderPane());
+
+        gridDataTab = new Tab("Detailed Grid Data");
 
         gridDataTab = new Tab("Detailed Grid Data");
         gridDataTab.setClosable(false);

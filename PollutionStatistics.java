@@ -1,3 +1,4 @@
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -10,12 +11,12 @@ public class PollutionStatistics {
     private ImageView mapView;
     private AnchorPane mapPane;
     private BorderPane borderPane;
-    private AnchorPane chartPane;
-    private Chart Chart;
+    private Chart chart;
 
     public PollutionStatistics() {
         borderPane = new BorderPane();
 
+        // Initialize the map
         map = new MapImage("resources/London.png");
         mapImage = map.getImage();
         mapView = new ImageView(mapImage);
@@ -23,19 +24,24 @@ public class PollutionStatistics {
         mapView.setSmooth(true);
         mapView.setFitWidth(400);
 
+        // Create the anchor pane for the map
         mapPane = new AnchorPane();
         mapPane.getChildren().add(mapView);
-        mapPane.setMinWidth(400);
-        mapPane.setMinHeight(240);
+        mapPane.setMinWidth(350);
+        mapPane.setMinHeight(350);
         mapView.fitWidthProperty().bind(mapPane.widthProperty());
         mapView.fitHeightProperty().bind(mapPane.heightProperty());
-
-        chartPane = new AnchorPane();
-        Chart = new Chart();
-        borderPane.setBottom(chartPane);
-        chartPane.getChildren().add(Chart.getChart());
         borderPane.setCenter(mapPane);
 
+        // Initialize the line chart
+        Chart chart = new Chart();
+        borderPane.setBottom(chart.getChart()); // Set the line chart at the bottom
+
+        // Bind the size of the line chart to the anchor pane
+        chart.getChart().prefWidthProperty().bind(mapPane.widthProperty().multiply(0.5));
+        chart.getChart().prefHeightProperty().bind(mapPane.heightProperty().multiply(0.5));
+
+        BorderPane.setMargin(chart.getChart(), new Insets(15));
     }
 
     public BorderPane getBorderPane() {
