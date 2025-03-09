@@ -274,21 +274,6 @@ public class MainMenu extends Application {
         alert.showAndWait();
     }
 
-    public void updateColourMap(){
-        if (pollutantSelected == null || yearSelected == null) {
-            return;
-        }
-        selectedDataSet = dataAggregator.getDataSet(yearSelected, pollutantSelected);
-        for (DataPoint dataPoint : selectedDataSet.getData()) {
-            if (dataPoint.value() > 0) {
-                map.processDataPoint(dataPoint, selectedDataSet.getMin(), selectedDataSet.getMax());
-            }
-        }
-        Image mapImage = map.getCombined();
-        mapView.setImage(mapImage);
-
-    }
-
     public void updateStats(){
         if (pollutantSelected == null || yearSelected == null) {
             return;
@@ -304,5 +289,20 @@ public class MainMenu extends Application {
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
         dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
+    }
+
+    public void updateColourMap(){
+        if (pollutantSelected == null || yearSelected == null) {
+            return;
+        }
+        selectedDataSet = dataAggregator.getDataSet(yearSelected, pollutantSelected);
+        for (DataPoint dataPoint : selectedDataSet.getData()) {
+            if (dataPoint.value() > 0) {
+                map.processDataPoint(dataPoint, selectedDataSet.getMin(), selectedDataSet.getMax());
+            }
+        }
+        Image mapImage = map.getCombined();
+        mapView.setImage(mapImage);
+
     }
 }
