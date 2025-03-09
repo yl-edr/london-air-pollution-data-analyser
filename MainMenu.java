@@ -7,8 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class MainMenu extends Application {
@@ -44,6 +42,8 @@ public class MainMenu extends Application {
 
     private int mouseX;
     private int mouseY;
+
+    private double mapImageAspectRatio;
 
     @Override
     public void start(Stage stage) {
@@ -118,6 +118,7 @@ public class MainMenu extends Application {
         mapView.setPreserveRatio(true);
         mapView.setSmooth(true);
         mapView.setFitWidth(500);
+        mapImageAspectRatio = mapImage.getWidth() / mapImage.getHeight();
 
         anchorPane = new AnchorPane();
         anchorPane.getChildren().add(mapView);
@@ -178,6 +179,7 @@ public class MainMenu extends Application {
             yValue.setText("Y: " + (int) event.getY());
             mouseX = (int) event.getX();
             mouseY = (int) event.getY();
+            System.out.println("Height: " + map.getHeight() + " Width: " + map.getWidth());
             updateStats();
         });
 
@@ -239,14 +241,27 @@ public class MainMenu extends Application {
         mapViewTab.setContent(borderPane);
     }
 
+    public int[] convertMapViewDimensionsToImageDimensions(int x, int y) {
+        double providedAspectRatio = (double) x / y;
+        int[] dimensions = new int[2];
+        if (providedAspectRatio > mapImageAspectRatio) {
+            dimensions[0] = (int) (y * mapImageAspectRatio);
+            dimensions[1] = y;
+        } else {
+            dimensions[0] = x;
+            dimensions[1] = (int) (x / mapImageAspectRatio);
+        }
+        return dimensions;
+    }
+
     private void trackMouseLocation() {
         mapView.setOnMouseClicked(event -> {
             if (selectedDataSet != null) {
-                int imageWidth = (int) mapView.getFitWidth();
-                int imageHeight = (int) mapView.getFitHeight();
+                int[] imageDimensions = convertMapViewDimensionsToImageDimensions((int) mapView.getFitWidth(), (int) mapView.getFitHeight());
+                int imageWidth = imageDimensions[0];
+                int imageHeight = imageDimensions[1];
                 int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
-                int y = (int) ((mouseY / (double) imageHeight) * (MAX_Y - MIN_Y) + MIN_Y);
-
+                int y = (int) (MIN_Y - ((mouseY / (double) imageHeight) * (MIN_Y - MAX_Y)));
                 DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
                 showDataPointInfo(nearestDataPoint);
             }
@@ -268,26 +283,22 @@ public class MainMenu extends Application {
         selectedDataSet = dataAggregator.getDataSet(yearSelected, pollutantSelected);
         for (DataPoint dataPoint : selectedDataSet.getData()) {
             if (dataPoint.value() > 0) {
-//                System.out.println("Value: " + dataPoint.value() + "Min: " + selectedDataSet.getMin() + "Max: " + selectedDataSet.getMax());
                 map.processDataPoint(dataPoint, selectedDataSet.getMin(), selectedDataSet.getMax());
             }
         }
         Image mapImage = map.getCombined();
         mapView.setImage(mapImage);
-
     }
 
     public void updateStats(){
-//        if (pollutantSelected == null || yearSelected == null) {
-//            return;
-//        }
         if (selectedDataSet == null) {
             return;
         }
-        int imageWidth = (int) mapView.getFitWidth();
-        int imageHeight = (int) mapView.getFitHeight();
+        int[] imageDimensions = convertMapViewDimensionsToImageDimensions((int) mapView.getFitWidth(), (int) mapView.getFitHeight());
+        int imageWidth = imageDimensions[0];
+        int imageHeight = imageDimensions[1];
         int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
-        int y = (int) ((mouseY / (double) imageHeight) * (MAX_Y - MIN_Y) + MIN_Y);
+        int y = (int) (MIN_Y - ((mouseY / (double) imageHeight) * (MIN_Y - MAX_Y)));
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
         dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
