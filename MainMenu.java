@@ -128,7 +128,6 @@ public class MainMenu extends Application {
         borderPane.setCenter(anchorPane);
 
         HBox bottomBar = new HBox(10);
-        bottomBar.getChildren().add(new Label("Test"));
         bottomBar.setPrefHeight(50);
         bottomBar.setMinHeight(30);
         bottomBar.setMaxHeight(80);
