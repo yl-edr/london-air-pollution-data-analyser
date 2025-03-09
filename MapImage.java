@@ -14,7 +14,7 @@ import javafx.scene.image.WritableImage;
 public class MapImage {
     private Image baseImage;
     private WritableImage colourImage;
-    private double blendAplha = 0.45;
+    private double blendAplha = 0.5;
 
     private static final int MIN_X = 510394;
     private static final int MAX_X = 553297;
@@ -46,14 +46,6 @@ public class MapImage {
 
     public Image getImage() {
         return baseImage;
-    }
-
-    public int getHeight() {
-        return (int) baseImage.getHeight();
-    }
-
-    public int getWidth() {
-        return (int) baseImage.getWidth();
     }
 
     public void processDataPoint(DataPoint dataPoint, double min, double max) {
@@ -97,11 +89,9 @@ public class MapImage {
         // set right range of pixels to the colour needed.
         for (int y = startY; y < startY + height; y++) {
             for (int x = startX; x < startX + width; x++) {
-                try {
-                    writer.setArgb(x, y, argb);
-                } catch (IndexOutOfBoundsException e) {
-                    // Ignore pixels that are outside the image - this happens when the data point is near the edge of the image
-                }
+                int clampedX = Math.min((int) colourImage.getWidth() - 1, Math.max(0, x));
+                int clampedY = Math.min((int) colourImage.getHeight() - 1, Math.max(0, y));
+                writer.setArgb(clampedX, clampedY, argb);
             }
         }
     }
