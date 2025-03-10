@@ -8,8 +8,10 @@ public class Chart {
     public Chart() {
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
+
         xAxis.setLabel("Year");
         yAxis.setLabel("Pollution Level");
+        
         xAxis.setAutoRanging(false);
         xAxis.setLowerBound(18);
         xAxis.setUpperBound(23);
