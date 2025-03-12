@@ -190,6 +190,5 @@ public class PollutionStatistics {
             dataRange.put(Integer.toString(i), dataAggregator.getDataSet(Integer.toString(i), pollutantSelected));
         }
         return dataRange;
-
     }
 }
