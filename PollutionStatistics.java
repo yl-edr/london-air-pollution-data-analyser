@@ -1,13 +1,15 @@
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 public class PollutionStatistics {
 
@@ -22,7 +24,7 @@ public class PollutionStatistics {
 
     private AnchorPane mapPane;
     private BorderPane borderPane;
-    private AnchorPane chartPane;
+    private VBox chartPane;
     private Chart chart;
 
     private String pollutantSelected;
@@ -42,7 +44,6 @@ public class PollutionStatistics {
     public PollutionStatistics() {
         borderPane = new BorderPane();
 
-        // Initialize the map
         map = new MapImage("resources/London.png");
         mapImage = map.getImage();
         mapView = new ImageView(mapImage);
@@ -50,14 +51,36 @@ public class PollutionStatistics {
         mapView.setSmooth(true);
         mapView.setFitWidth(400);
 
-        // Create the anchor pane for the map
         mapPane = new AnchorPane();
         mapPane.getChildren().add(mapView);
         mapPane.setMinWidth(250);
         mapPane.setMinHeight(200);
+        //AnchorPane.setLeftAnchor(mapView, 7.0);
         mapView.fitWidthProperty().bind(mapPane.widthProperty());
         mapView.fitHeightProperty().bind(mapPane.heightProperty());
         borderPane.setCenter(mapPane);
+
+
+
+        VBox centerVBox = new VBox();
+        centerVBox.getChildren().add(mapPane);
+
+        chartPane = new VBox();
+        chart = new Chart();
+        chartPane.getChildren().add(chart.getChart());
+
+        chart.getChart().prefWidthProperty().bind(mapPane.widthProperty());
+
+        VBox.setVgrow(chart.getChart(), Priority.ALWAYS);
+
+        mapPane.setPrefHeight(400);
+        mapPane.setPrefWidth(700);
+        chartPane.setPrefHeight(150);
+
+        centerVBox.getChildren().add(chartPane);
+        VBox.setVgrow(chartPane, Priority.ALWAYS);
+
+        borderPane.setCenter(centerVBox);
 
         GridPane rightBar = new GridPane();
         rightBar.setPadding(new Insets(10));
@@ -148,18 +171,19 @@ public class PollutionStatistics {
 
         borderPane.setRight(rightBar);
 
-        chartPane = new AnchorPane();
-        chart = new Chart();
-        chartPane.getChildren().add(chart.getChart());
+        //chartPane = new AnchorPane();
+        //chart = new Chart();
+        //chartPane.getChildren().add(chart.getChart());
 
-        chart.getChart().prefWidthProperty().bind(mapPane.widthProperty().multiply(0.9));
-        chart.getChart().prefHeightProperty().bind(mapPane.heightProperty().multiply(0.2));
+        //chart.getChart().prefWidthProperty().bind(mapPane.widthProperty().multiply(0.9));
+        //chart.getChart().prefHeightProperty().bind(mapPane.heightProperty().multiply(0.2));
 
-        chartPane.setMinHeight(50);
-        chartPane.setMinWidth(300);
+        
+        //chartPane.setMinHeight(50);
+        //chartPane.setMinWidth(300);
 
-        BorderPane.setMargin(chartPane, new Insets(5, 20, 5, 2));
-        borderPane.setBottom(chartPane);
+        //BorderPane.setMargin(chartPane, new Insets(5, 20, 5, 2));
+        //borderPane.setBottom(chartPane);
     }
 
     private void validateYearSelection(String fromYear, String toYear) {
