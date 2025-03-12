@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class MainMenu extends Application {
@@ -44,6 +45,8 @@ public class MainMenu extends Application {
     private int mouseY;
 
     private PollutionStatistics pollutionStatistics;
+
+    private AqiBar aqiIndicator;
 
     @Override
     public void start(Stage stage) {
@@ -207,32 +210,10 @@ public class MainMenu extends Application {
 
         borderPane.setRight(rightBar);
 
-        HBox aqiBarContainer = new HBox(10);
-        aqiBarContainer.setAlignment(Pos.CENTER);
-        aqiBarContainer.setPrefHeight(50);
-        aqiBarContainer.setMinHeight(30);
-        aqiBarContainer.setMaxHeight(80);
-        aqiBarContainer.setPadding(new Insets(10));
-        BorderPane.setMargin(aqiBarContainer, new Insets(10));
-
-        Label lowLabel = new Label("GOOD");
-        Label highLabel = new Label("POOR");
-        lowLabel.setMinWidth(Region.USE_PREF_SIZE);
-        highLabel.setMinWidth(Region.USE_PREF_SIZE);
-
-        Region aqiBar = new Region();
-        aqiBar.setPrefHeight(20);
-        aqiBar.setMaxWidth(Double.MAX_VALUE);
-        aqiBar.getStyleClass().add("aqiBar");
-
-        StackPane aqiStack = new StackPane();
-        aqiStack.setAlignment(Pos.CENTER);
-        HBox.setHgrow(aqiStack, Priority.ALWAYS);
-        aqiBar.prefWidthProperty().bind(aqiStack.widthProperty());
-        aqiStack.getChildren().addAll(aqiBar);
-
-        aqiBarContainer.getChildren().addAll(lowLabel, aqiStack, highLabel);
-        borderPane.setBottom(aqiBarContainer);
+        aqiIndicator = new AqiBar();
+        HBox aqiContainer = aqiIndicator.getContainer();
+        BorderPane.setMargin(aqiContainer, new Insets(10));
+        borderPane.setBottom(aqiContainer);
 
         trackMouseLocation();
 
