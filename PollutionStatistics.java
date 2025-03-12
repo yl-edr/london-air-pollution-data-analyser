@@ -10,10 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
 import java.util.HashMap;
 
-import java.util.HashMap;
 
 public class PollutionStatistics {
 
@@ -43,6 +41,7 @@ public class PollutionStatistics {
 
     public PollutionStatistics(DataAggregator dataAggregator) {
         this.dataAggregator = dataAggregator;
+        System.out.println(dataAggregator);
         borderPane = new BorderPane();
 
         map = new MapImage("resources/London.png");
@@ -94,6 +93,7 @@ public class PollutionStatistics {
         pollutantComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     pollutantSelected = newValue;
+                    updateChart();
                 });
         pollutantComboBox.setPromptText("Pollutant");
         pollutantComboBox.getItems().addAll("pm2.5", "no2", "pm10");
@@ -112,12 +112,14 @@ public class PollutionStatistics {
                 (obs, oldVal, newVal) -> {
                     fromYearSelected = newVal;
                     validateYearSelection(fromYearSelected, toYearSelected);
+                    updateChart();
         });
 
         toYearComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldVal, newVal) -> {
                     toYearSelected = newVal;
                     validateYearSelection(fromYearSelected, toYearSelected);
+                    updateChart();
         });
 
         Label dataPointLabel = new Label("Value: ");
@@ -137,7 +139,6 @@ public class PollutionStatistics {
             yValue.setText("Y: " + (int) event.getY());
             mouseX = (int) event.getX();
             mouseY = (int) event.getY();
-            // updateStats();
         });
 
         rightBar.add(titleLabel, 0, 0);
@@ -197,6 +198,14 @@ public class PollutionStatistics {
             dataRange.put(Integer.toString(i), dataAggregator.getDataSet(Integer.toString(i), pollutantSelected));
         }
         return dataRange;
-
     }
+
+    private void updateChart() {
+        if (fromYearSelected != null && toYearSelected != null && pollutantSelected != null) {
+            HashMap<String, DataSet> data = dataSetRange();
+            chart.updateChart(data);
+        }
+    }
+    
+    
 }

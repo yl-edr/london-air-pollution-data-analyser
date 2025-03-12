@@ -51,6 +51,7 @@ public class MainMenu extends Application {
     @Override
     public void start(Stage stage) {
         root = new BorderPane();
+        dataAggregator = new DataAggregator();
         createTabPane();
         root.setCenter(tabPane);
 
@@ -68,10 +69,12 @@ public class MainMenu extends Application {
         startAlert.initOwner(stage);
         startAlert.show();
 
+        
+
         Task<Void> dataLoadingTask = new Task<>() {
             @Override
             protected Void call() {
-                dataAggregator = new DataAggregator();
+                
                 dataAggregator.processDirectory("UKAirPollutionData/NO2/");
                 dataAggregator.processDirectory("UKAirPollutionData/pm10/");
                 dataAggregator.processDirectory("UKAirPollutionData/pm2.5/");
