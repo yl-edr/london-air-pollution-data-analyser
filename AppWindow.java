@@ -14,6 +14,7 @@ public class AppWindow extends Application {
     private Tab mapViewTab;
     private Tab statsTab;
     private Tab gridDataTab;
+    private Tab realTimeDataTab;
 
     private DataAggregator dataAggregator;
 
@@ -83,10 +84,20 @@ public class AppWindow extends Application {
         gridContent.getChildren().addAll(gridPlaceholder);
         gridDataTab.setContent(gridContent);
 
-        tabPane.getTabs().addAll(homeTab, mapViewTab, statsTab, gridDataTab);
+        realTimeDataTab = new Tab("Real Time Data");
+        realTimeDataTab.setClosable(false);
+        VBox realTimeContent = new VBox(10);
+        Label realTimePlaceholder = new Label("Real time data will be displayed here.");
+        realTimeContent.getChildren().addAll(realTimePlaceholder);
+        realTimeDataTab.setContent(realTimeContent);
+
+        tabPane.getTabs().addAll(homeTab, mapViewTab, statsTab, gridDataTab, realTimeDataTab);
         
         MapViewTab mapViewTabAnchor = new MapViewTab(dataAggregator);
         mapViewTab.setContent(mapViewTabAnchor.getPane());
+
+        RealTimeDataTab realTimeDataTabAnchor = new RealTimeDataTab();
+        realTimeDataTab.setContent(realTimeDataTabAnchor.getPane());
     }
     
 }

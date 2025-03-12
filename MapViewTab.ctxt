@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=MapViewTab
+comment1.params=dataAggregator
+comment1.target=MapViewTab(DataAggregator)
+comment2.params=
+comment2.target=void\ create()
+comment3.params=
+comment3.target=void\ updateStats()
+comment4.params=
+comment4.target=javafx.scene.layout.BorderPane\ getPane()
+comment5.params=
+comment5.target=void\ updateColourMap()
+comment6.params=x\ y
+comment6.target=int[]\ convertMapViewDimensionsToImageDimensions(int,\ int)
+comment7.params=
+comment7.target=void\ trackMouseLocation()
+comment8.params=dataPoint
+comment8.target=void\ showDataPointInfo(DataPoint)
+numComments=9

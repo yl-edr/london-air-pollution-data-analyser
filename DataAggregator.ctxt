@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=DataAggregator
+comment0.text=\n\ This\ class\ is\ responsible\ for\ loading\ and\ storing\ all\ the\ available\ pollution\ data.\n
+comment1.params=
+comment1.target=DataAggregator()
+comment2.params=dataSet
+comment2.target=void\ addDataSet(DataSet)
+comment2.text=\n\ Adds\ a\ new\ data\ set\ to\ the\ data\ aggregator\ after\ filtering\ it\n\ @param\ dataSet\ the\ data\ set\ to\ add\n
+comment3.params=dataSet
+comment3.target=DataSet\ filterData(DataSet)
+comment4.params=directoryPath
+comment4.target=void\ processDirectory(java.lang.String)
+comment4.text=\n\ Processes\ all\ the\ csv\ files\ in\ a\ given\ directory.\ This\ structure\ allows\ for\ another\ pollutant\ to\ be\ added\ easily\ in\ the\ future.\n\ @param\ directoryPath\n
+comment5.params=year\ pollutant
+comment5.target=DataSet\ getDataSet(java.lang.String,\ java.lang.String)
+comment5.text=\n\ Returns\ a\ data\ set\ based\ on\ the\ year\ and\ pollutant\n\ @param\ year\ the\ year\ of\ the\ data\ set\n\ @param\ pollutant\ the\ pollutant\ of\ the\ data\ set\n\ @return\ the\ data\ set\n
+numComments=6
