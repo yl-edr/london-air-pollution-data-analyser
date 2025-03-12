@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 
 import java.util.HashMap;
 
+import java.util.HashMap;
+
 public class PollutionStatistics {
 
     private MapImage map;
