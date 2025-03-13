@@ -5,14 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
-public class MapViewTab{
-
-
-    // min and max Y are swapped because the top left of the image is actually the max Y
-    private static final int MIN_X = 510394;
-    private static final int MAX_X = 553297;
-    private static final int MIN_Y = 193305;
-    private static final int MAX_Y = 168504;
+public abstract class City {
 
     private DataAggregator dataAggregator;
     private DataSet selectedDataSet;
@@ -28,19 +21,22 @@ public class MapViewTab{
     private String pollutantSelected;
     private String yearSelected;
     private BorderPane borderPane;
-
+    private String name;
+    private int[] bounds;
 
     private int mouseX;
     private int mouseY;
 
-    public MapViewTab(DataAggregator dataAggregator) {
+    public City(String cityName, int[] bounds, DataAggregator dataAggregator) {
         this.dataAggregator = dataAggregator;
-        create();
+        this.name = cityName;
+        this.bounds = bounds;
+        create(name);
         trackMouseLocation();
     }
 
-    public void create() {
-        map = new MapImage("resources/London.png");
+    public void create(String name) {
+        map = new MapImage(name,"resources/"+name+".png");
         mapImage = map.getImage();
         mapView = new ImageView(mapImage);
         mapView.setPreserveRatio(true);
@@ -55,7 +51,6 @@ public class MapViewTab{
         mapView.fitWidthProperty().bind(anchorPane.widthProperty());
         mapView.fitHeightProperty().bind(anchorPane.heightProperty());
 
-        //MapViewTab mapViewTabAnchor = new MapViewTab();
         borderPane = new BorderPane();
         borderPane.setCenter(anchorPane);
 
@@ -166,15 +161,14 @@ public class MapViewTab{
         int[] imageDimensions = convertMapViewDimensionsToImageDimensions((int) mapView.getFitWidth(), (int) mapView.getFitHeight());
         int imageWidth = imageDimensions[0];
         int imageHeight = imageDimensions[1];
-        int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
-        int y = (int) (MIN_Y - ((mouseY / (double) imageHeight) * (MIN_Y - MAX_Y)));
+        int x = (int) ((mouseX / (double) imageWidth) * (bounds[1] - bounds[0]) + bounds[0]);
+        int y = (int) (bounds[3] - ((mouseY / (double) imageHeight) * (bounds[2] - bounds[3])));
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
         dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
     }
 
     public BorderPane getPane() {
-        
         return borderPane;
     }
 
@@ -182,10 +176,12 @@ public class MapViewTab{
         if (pollutantSelected == null || yearSelected == null) {
             return;
         }
-        selectedDataSet = dataAggregator.getDataSet(yearSelected, pollutantSelected);
+        selectedDataSet = dataAggregator.getCityDataSet(name,yearSelected, pollutantSelected);
+
+        map.resetOverlay();
         for (DataPoint dataPoint : selectedDataSet.getData()) {
             if (dataPoint.value() > 0) {
-                map.processDataPoint(dataPoint, selectedDataSet.getMin(), selectedDataSet.getMax());
+                map.processDataPoint(dataPoint, selectedDataSet.getMin(), selectedDataSet.getMax(),bounds[4]);
             }
         }
         map.applyBlur(60);
@@ -212,8 +208,8 @@ public class MapViewTab{
                 int[] imageDimensions = convertMapViewDimensionsToImageDimensions((int) mapView.getFitWidth(), (int) mapView.getFitHeight());
                 int imageWidth = imageDimensions[0];
                 int imageHeight = imageDimensions[1];
-                int x = (int) ((mouseX / (double) imageWidth) * (MAX_X - MIN_X) + MIN_X);
-                int y = (int) (MIN_Y - ((mouseY / (double) imageHeight) * (MIN_Y - MAX_Y)));
+                int x = (int) ((mouseX / (double) imageWidth) * (bounds[1] - bounds[0]) + bounds[0]);
+                int y = (int) (bounds[2] - ((mouseY / (double) imageHeight) * (bounds[2] - bounds[3])));
                 DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
                 showDataPointInfo(nearestDataPoint);
             }
@@ -227,5 +223,11 @@ public class MapViewTab{
         alert.setContentText("Grid Code: " + dataPoint.gridCode() + "\nX: " + dataPoint.x() + "\nY: " + dataPoint.y() + "\nValue: " + dataPoint.value());
         alert.showAndWait();
     }
+
+    public DataAggregator getDataAggregator() {
+        return dataAggregator;
+    }
+
     
+
 }
