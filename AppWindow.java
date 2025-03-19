@@ -67,7 +67,7 @@ public class AppWindow extends Application {
         homeContent.getChildren().addAll(homeLabel, homeInstructions);
         homeTab.setContent(homeContent);
 
-        londonTab = new Tab("Map View");
+        londonTab = new Tab("London Map");
         londonTab.setClosable(false);
 
         statsTab = new Tab("Pollution Statistics");
@@ -84,12 +84,12 @@ public class AppWindow extends Application {
         gridContent.getChildren().addAll(gridPlaceholder);
         gridDataTab.setContent(gridContent);
 
-        manchesterTab = new Tab("Manchester Map");
+        manchesterTab = new Tab("UK Cities");
         manchesterTab.setClosable(false);
 
         tabPane.getTabs().addAll(homeTab, londonTab, statsTab, gridDataTab, manchesterTab);
         
-        LondonTab londonTabAnchor = new LondonTab(dataAggregator);
+        City londonTabAnchor = new LondonTab(dataAggregator);
         londonTab.setContent(londonTabAnchor.getPane());
 
         City manchesterAnchor = new Manchester(dataAggregator);
