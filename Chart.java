@@ -52,7 +52,6 @@ public class Chart {
         }
     }
 
-
     public LineChart<Number, Number> getChart() {
         return lineChart;
     }

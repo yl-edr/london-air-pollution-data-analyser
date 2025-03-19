@@ -1,5 +1,4 @@
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -11,7 +10,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import java.util.HashMap;
-
 
 public class PollutionStatistics {
 
@@ -26,13 +24,7 @@ public class PollutionStatistics {
 
     private String pollutantSelected;
 
-    private Label dataPointValue;
-    private Label gridCodeValue;
-    private Label xValue;
-    private Label yValue;
-
-    private int mouseX;
-    private int mouseY;
+    private Label maxValue;
 
     private String fromYearSelected;
     private String toYearSelected;
@@ -108,6 +100,10 @@ public class PollutionStatistics {
         toYearComboBox.setPromptText("Select End Year");
         toYearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
 
+        Label maxLabel = new Label("Max Value:");
+        maxValue = new Label("0");
+        
+
         fromYearComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldVal, newVal) -> {
                     fromYearSelected = newVal;
@@ -122,25 +118,6 @@ public class PollutionStatistics {
                     updateChart();
         });
 
-        Label dataPointLabel = new Label("Value: ");
-        dataPointValue = new Label("select a data point");
-
-        Label gridCodeLabel = new Label("Grid Code: ");
-        gridCodeValue = new Label("select a data point");
-
-        Label xLabel = new Label("X: ");
-        xValue = new Label("select a data point");
-
-        Label yLabel = new Label("Y: ");
-        yValue = new Label("select a data point");
-
-        mapView.setOnMouseMoved(event -> {
-            xValue.setText("X: " + (int) event.getX());
-            yValue.setText("Y: " + (int) event.getY());
-            mouseX = (int) event.getX();
-            mouseY = (int) event.getY();
-        });
-
         rightBar.add(titleLabel, 0, 0);
         rightBar.add(pollutantLabel, 0, 1);
         rightBar.add(pollutantComboBox, 0, 2);
@@ -148,23 +125,11 @@ public class PollutionStatistics {
         rightBar.add(fromYearComboBox, 0, 4);
         rightBar.add(toYearLabel, 0, 5);
         rightBar.add(toYearComboBox, 0, 6);
-        rightBar.add(dataPointLabel, 0, 7);
-        rightBar.add(dataPointValue, 0, 8);
-        rightBar.add(gridCodeLabel, 0, 9);
-        rightBar.add(gridCodeValue, 0, 10);
-        rightBar.add(xLabel, 0, 11);
-        rightBar.add(xValue, 0, 12);
-        rightBar.add(yLabel, 0, 13);
-        rightBar.add(yValue, 0, 14);
+        rightBar.add(maxLabel, 0, 7);
+        rightBar.add(maxValue, 1, 7);
 
-        GridPane.setMargin(dataPointLabel, new Insets(10, 0, 0, 0));
-        GridPane.setMargin(dataPointValue, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(gridCodeLabel, new Insets(10, 0, 0, 0));
-        GridPane.setMargin(gridCodeValue, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(xLabel, new Insets(10, 0, 0, 0));
-        GridPane.setMargin(xValue, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(yLabel, new Insets(10, 0, 0, 0));
-        GridPane.setMargin(yValue, new Insets(0, 0, 10, 0));
+        GridPane.setMargin(maxLabel, new Insets(210, 0, 0, 0));
+        GridPane.setMargin(maxValue, new Insets(210, 0, 0, 0));
 
         borderPane.setRight(rightBar);
     }
@@ -206,6 +171,4 @@ public class PollutionStatistics {
             chart.updateChart(data);
         }
     }
-    
-    
 }
