@@ -1,7 +1,6 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;

@@ -14,7 +14,8 @@ public class AppWindow extends Application {
     private Tab londonTab;
     private Tab statsTab;
     private Tab gridDataTab;
-    private Tab manchesterTab;
+    private Tab UKTab;
+    private Tab tubeTab;
 
     private DataAggregator dataAggregator;
 
@@ -84,16 +85,22 @@ public class AppWindow extends Application {
         gridContent.getChildren().addAll(gridPlaceholder);
         gridDataTab.setContent(gridContent);
 
-        manchesterTab = new Tab("UK Cities");
-        manchesterTab.setClosable(false);
+        UKTab = new Tab("UK Cities");
+        UKTab.setClosable(false);
 
-        tabPane.getTabs().addAll(homeTab, londonTab, statsTab, gridDataTab, manchesterTab);
+        tabPane.getTabs().addAll(homeTab, londonTab, statsTab, gridDataTab, UKTab);
         
         City londonTabAnchor = new LondonTab(dataAggregator);
         londonTab.setContent(londonTabAnchor.getPane());
 
         City manchesterAnchor = new Manchester(dataAggregator);
-        manchesterTab.setContent(manchesterAnchor.getPane());
+        UKTab.setContent(manchesterAnchor.getPane());
+
+        tubeTab = new Tab("Tube Journey");
+        tubeTab.setClosable(false);
+
+
+        
 
         
     }

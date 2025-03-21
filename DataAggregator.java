@@ -17,15 +17,6 @@ public class DataAggregator {
         citiesDataSets = new HashMap<>();
     }
 
-    /**
-     * Adds a new data set to the data aggregator after filtering it
-     * @param dataSet the data set to add
-     *
-    public void addDataSet(DataSet dataSet) {
-        dataSet = filterData(dataSet);
-        dataSets.put(dataSet.getYear() + dataSet.getPollutant(), dataSet);
-    }*/
-
     public void addDataSet(DataSet dataSet) {
         HashMap<String, DataSet> filteredDataSets = DataFilter.filterCityData(dataSet);
 
