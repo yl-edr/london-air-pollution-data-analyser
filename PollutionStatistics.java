@@ -1,0 +1,174 @@
+import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import java.util.HashMap;
+
+public class PollutionStatistics {
+
+    private MapImage map;
+    private Image mapImage;
+    private ImageView mapView;
+
+    private AnchorPane mapPane;
+    private BorderPane borderPane;
+    private VBox chartPane;
+    private Chart chart;
+
+    private String pollutantSelected;
+
+    private Label maxValue;
+
+    private String fromYearSelected;
+    private String toYearSelected;
+
+    private DataAggregator dataAggregator;
+
+    public PollutionStatistics(DataAggregator dataAggregator) {
+        this.dataAggregator = dataAggregator;
+        System.out.println(dataAggregator);
+        borderPane = new BorderPane();
+
+        map = new MapImage("London","resources/London.png");
+        mapImage = map.getImage();
+        mapView = new ImageView(mapImage);
+        mapView.setPreserveRatio(true);
+        mapView.setSmooth(true);
+        mapView.setFitWidth(400);
+
+        mapPane = new AnchorPane();
+        mapPane.getChildren().add(mapView);
+        mapPane.setMinWidth(250);
+        mapPane.setMinHeight(200);
+        mapView.fitWidthProperty().bind(mapPane.widthProperty());
+        mapView.fitHeightProperty().bind(mapPane.heightProperty());
+        borderPane.setCenter(mapPane);
+
+        VBox centerVBox = new VBox();
+        centerVBox.getChildren().add(mapPane);
+
+        chartPane = new VBox();
+        chart = new Chart();
+        chartPane.getChildren().add(chart.getChart());
+
+        chart.getChart().prefWidthProperty().bind(mapPane.widthProperty());
+
+        VBox.setVgrow(chart.getChart(), Priority.ALWAYS);
+
+        mapPane.setPrefHeight(400);
+        mapPane.setPrefWidth(700);
+        chartPane.setPrefHeight(150);
+
+        centerVBox.getChildren().add(chartPane);
+        VBox.setVgrow(chartPane, Priority.ALWAYS);
+
+        borderPane.setCenter(centerVBox);
+
+        GridPane rightBar = new GridPane();
+        rightBar.setPadding(new Insets(10));
+        rightBar.setPrefWidth(250);
+        rightBar.setMinWidth(150);
+        rightBar.setMaxWidth(300);
+
+        Label titleLabel = new Label("Statistics");
+        titleLabel.getStyleClass().add("titleLabel");
+
+        Label pollutantLabel = new Label("Choose a pollutant:");
+        ComboBox<String> pollutantComboBox = new ComboBox<>();
+        pollutantComboBox.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    pollutantSelected = newValue;
+                    updateChart();
+                });
+        pollutantComboBox.setPromptText("Pollutant");
+        pollutantComboBox.getItems().addAll("pm2.5", "no2", "pm10");
+
+        Label fromYearLabel = new Label("From Year:");
+        ComboBox<String> fromYearComboBox = new ComboBox<>();
+        fromYearComboBox.setPromptText("Select Start Year");
+        fromYearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
+
+        Label toYearLabel = new Label("To Year:");
+        ComboBox<String> toYearComboBox = new ComboBox<>();
+        toYearComboBox.setPromptText("Select End Year");
+        toYearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
+
+        Label maxLabel = new Label("Max Value:");
+        maxValue = new Label("0");
+        
+
+        fromYearComboBox.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldVal, newVal) -> {
+                    fromYearSelected = newVal;
+                    validateYearSelection(fromYearSelected, toYearSelected);
+                    updateChart();
+        });
+
+        toYearComboBox.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldVal, newVal) -> {
+                    toYearSelected = newVal;
+                    validateYearSelection(fromYearSelected, toYearSelected);
+                    updateChart();
+        });
+
+        rightBar.add(titleLabel, 0, 0);
+        rightBar.add(pollutantLabel, 0, 1);
+        rightBar.add(pollutantComboBox, 0, 2);
+        rightBar.add(fromYearLabel, 0, 3);
+        rightBar.add(fromYearComboBox, 0, 4);
+        rightBar.add(toYearLabel, 0, 5);
+        rightBar.add(toYearComboBox, 0, 6);
+        rightBar.add(maxLabel, 0, 7);
+        rightBar.add(maxValue, 1, 7);
+
+        GridPane.setMargin(maxLabel, new Insets(210, 0, 0, 0));
+        GridPane.setMargin(maxValue, new Insets(210, 0, 0, 0));
+
+        borderPane.setRight(rightBar);
+    }
+
+    private void validateYearSelection(String fromYear, String toYear) {
+        if (fromYear != null && toYear != null) {
+            int from = Integer.parseInt(fromYear);
+            int to = Integer.parseInt(toYear);
+
+            if (to < from) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Year Selection");
+                alert.setHeaderText("Invalid Range");
+                alert.setContentText("The 'To Year' cannot be earlier than the 'From Year'!");
+                alert.showAndWait();
+            }
+        }
+    }
+
+    public BorderPane getBorderPane() {
+        return borderPane;
+    }
+
+    public HashMap<String, DataSet> dataSetRange(){
+        int startYear = Integer.parseInt(fromYearSelected);
+        int endYear = Integer.parseInt(toYearSelected);
+
+        HashMap<String, DataSet> dataRange = new HashMap<>();
+
+        for(int i = startYear; i <= endYear; i++){
+            dataRange.put(Integer.toString(i), dataAggregator.getCityDataSet("London",Integer.toString(i), pollutantSelected));
+        }
+        return dataRange;
+    }
+
+    private void updateChart() {
+        if (fromYearSelected != null && toYearSelected != null && pollutantSelected != null) {
+            HashMap<String, DataSet> data = dataSetRange();
+            chart.updateChart(data);
+        }
+    }
+}

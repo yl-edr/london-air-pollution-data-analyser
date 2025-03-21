@@ -70,5 +70,4 @@ public class DataAggregator {
         String key = generateKey(city, year, pollutant);
         return citiesDataSets.get(key);
     }
-
 }

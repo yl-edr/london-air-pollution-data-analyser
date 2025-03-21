@@ -73,10 +73,9 @@ public class AppWindow extends Application {
 
         statsTab = new Tab("Pollution Statistics");
         statsTab.setClosable(false);
-        VBox statsContent = new VBox(10);
-        Label statsPlaceholder = new Label("Pollution statistics will be displayed here.");
-        statsContent.getChildren().addAll(statsPlaceholder);
-        statsTab.setContent(statsContent);
+
+        PollutionStatistics statsContent = new PollutionStatistics(dataAggregator);
+        statsTab.setContent(statsContent.getBorderPane());
 
         gridDataTab = new Tab("Detailed Grid Data");
         gridDataTab.setClosable(false);
