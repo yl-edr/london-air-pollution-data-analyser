@@ -36,7 +36,7 @@ public class PollutionStatistics {
         System.out.println(dataAggregator);
         borderPane = new BorderPane();
 
-        map = new MapImage("resources/London.png");
+        map = new MapImage("London","resources/London.png");
         mapImage = map.getImage();
         mapView = new ImageView(mapImage);
         mapView.setPreserveRatio(true);
@@ -160,7 +160,7 @@ public class PollutionStatistics {
         HashMap<String, DataSet> dataRange = new HashMap<>();
 
         for(int i = startYear; i <= endYear; i++){
-            dataRange.put(Integer.toString(i), dataAggregator.getDataSet(Integer.toString(i), pollutantSelected));
+            dataRange.put(Integer.toString(i), dataAggregator.getCityDataSet("London",Integer.toString(i), pollutantSelected));
         }
         return dataRange;
     }
