@@ -1,4 +1,4 @@
-import javafx.geometry.Pos;
+/*import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -13,7 +13,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 /**
  * A class that represents an Air Quality Index (AQI) indicator bar with a movable arrow
  * that shows the current pollution level.
- */
+ *
 public class AqiBar {
     private HBox aqiBarContainer;
     private Region aqiBar;
@@ -26,7 +26,7 @@ public class AqiBar {
 
     /**
      * Creates a new AQI Indicator with an arrow and labels
-     */
+     *
     public AqiBar() {
         aqiBarContainer = new HBox(10);
         aqiBarContainer.setAlignment(Pos.CENTER);
@@ -97,7 +97,7 @@ public class AqiBar {
     /**
      * Updates the position of the arrow based on a pollution value
      * @param value Pollution value normalized between 0.0 (low) and 1.0 (high)
-     */
+     *
     public void updatePosition(double value) {
         double clampedValue = Math.min(1.0, Math.max(0.0, value));
         position.set(clampedValue);
@@ -106,7 +106,7 @@ public class AqiBar {
     /**
      * Updates the AQI value label and category based on position
      * @param position Position value between 0.0 and 1.0
-     */
+     *
     private void updateAQILabels(double position) {
         String category;
         if (position < 0.25) {
@@ -131,7 +131,7 @@ public class AqiBar {
     /**
      * Get the container that holds the AQI bar
      * @return The HBox container
-     */
+     *
     public HBox getContainer() {
         return aqiBarContainer;
     }
@@ -142,9 +142,9 @@ public class AqiBar {
      * @param min The minimum value in the dataset
      * @param max The maximum value in the dataset
      * @return A normalized position between 0.0 and 1.0
-     */
+     *
     public static double calculateNormalizedPosition(double value, double min, double max) {
         if (max == min) return 0.5; // Avoid division by zero
         return (value - min) / (max - min);
     }
-}
+}*/

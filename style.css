@@ -27,3 +27,15 @@
     -fx-font-size: 30px;
     -fx-font-weight: bold;
 }
+
+.pm25 {
+    -fx-stroke: red; /* Color for PM2.5 */
+}
+
+.pm10 {
+    -fx-stroke: blue; /* Color for PM10 */
+}
+
+.no2 {
+    -fx-stroke: green; /* Color for NO2 */
+}

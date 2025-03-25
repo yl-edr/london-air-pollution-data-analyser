@@ -2,18 +2,18 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 public class Chart {
     private LineChart<Number, Number> lineChart;
-    private XYChart.Series<Number, Number> series;
+    private Map<String, XYChart.Series<Number, Number>> seriesMap;
 
     public Chart() {
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
 
-        xAxis.setLabel("Year");
-        yAxis.setLabel("Pollution Level");
+        xAxis.setLabel("Time (in years)");
+        yAxis.setLabel("Pollution Level (in µg/m³)");
 
         xAxis.setAutoRanging(false);
         xAxis.setLowerBound(2018);
@@ -23,33 +23,43 @@ public class Chart {
         yAxis.setLowerBound(0);
         yAxis.setUpperBound(30);
 
+        xAxis.setTickLabelFormatter(new NumberAxis.DefaultFormatter(xAxis) {
+            @Override
+            public String toString(Number value) {
+                return String.valueOf(value.intValue()); // Convert to int to remove decimal
+            }
+        });
+
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setCreateSymbols(false);
         lineChart.setLegendVisible(false);
         lineChart.setAnimated(false);
 
-        series = new XYChart.Series<>();
-        lineChart.getData().add(series);
+        seriesMap = new HashMap<>();
     }
 
     public void updateChart(HashMap<String, DataSet> dataRange) {
-        series.getData().clear();
+        lineChart.getData().clear();
+        seriesMap.clear();
 
-        List<Integer> years = dataRange.keySet().stream()
-                .map(Integer::parseInt)
-                .sorted()
-                .toList();
+        for (Map.Entry<String, DataSet> entry : dataRange.entrySet()) {
+            String[] keyParts = entry.getKey().split("-");
+            int year = Integer.parseInt(keyParts[0]);
+            String pollutant = keyParts[1];
 
-        for (int year : years) {
-            DataSet dataSet = dataRange.get(String.valueOf(year));
-            
-            double avgValue = dataSet.getData().stream()
+            seriesMap.putIfAbsent(pollutant, new XYChart.Series<>());
+            XYChart.Series<Number, Number> series = seriesMap.get(pollutant);
+            series.setName(pollutant.toUpperCase());
+
+            double avgValue = entry.getValue().getData().stream()
                     .mapToDouble(DataPoint::value)
                     .average()
                     .orElse(0);
 
             series.getData().add(new XYChart.Data<>(year, avgValue));
         }
+
+        lineChart.getData().addAll(seriesMap.values());
     }
 
     public LineChart<Number, Number> getChart() {
