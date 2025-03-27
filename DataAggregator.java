@@ -10,6 +10,7 @@ public class DataAggregator {
     HashMap<String, DataSet> dataSets; // key is year + pollutant
     DataFilter dataFilter; // filters data to only include London data
     HashMap<String, DataSet> citiesDataSets;
+    TubeDataSet tubeDataSet;
 
     public DataAggregator() {
         dataSets = new HashMap<>();
@@ -25,6 +26,10 @@ public class DataAggregator {
             String key = generateKey(city, cityData.getYear(), cityData.getPollutant());
             citiesDataSets.put(key, cityData);
         }
+    }
+
+    public void addDataSet(TubeDataSet dataSet) {
+        tubeDataSet = dataSet;
     }
 
     /*private DataSet filterData(DataSet dataSet) {
@@ -49,8 +54,16 @@ public class DataAggregator {
                 String fileName = file.getName();
                 // only process csv files
                 if (fileName.endsWith(".csv")) {
-                    DataSet dataSet = new DataLoader().loadDataFile(directoryPath + fileName);
-                    addDataSet(dataSet);
+                    if(fileName.contains("Tube")) {
+                        System.out.println("Loading Tube Data...");
+                        TubeDataSet dataSet = new TubeDataLoader().loadDataFile(directoryPath + fileName);
+                        addDataSet(dataSet);
+                    }
+                    else{
+                        DataSet dataSet = new DataLoader().loadDataFile(directoryPath + fileName);
+                        addDataSet(dataSet);
+                    }
+                    
                 }
             }
         }
@@ -69,5 +82,9 @@ public class DataAggregator {
     public DataSet getCityDataSet(String city, String year, String pollutant) {
         String key = generateKey(city, year, pollutant);
         return citiesDataSets.get(key);
+    }
+
+    public TubeDataSet getTubeDataSet() {
+        return tubeDataSet;
     }
 }

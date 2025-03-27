@@ -55,6 +55,29 @@ public class MapImage {
         }
     }
 
+    public MapImage(String fileName) {
+        try {
+            FileInputStream input = new FileInputStream(fileName);
+            baseImage = new Image(input);
+
+            // make a duplicate blank image with same dimensions as base image
+            colourImage = new WritableImage(
+                    (int)baseImage.getWidth(),
+                    (int)baseImage.getHeight()
+            );
+
+            PixelWriter writer = colourImage.getPixelWriter();
+            int blankArgb = 0xFF << 24; // ARGB is a 32-bit integer, with 8 bits for each of the four components (alpha, r, g, b), so bitshift FF by 24 to set alpha to full and set the rest to 0
+            for (int y = 0; y < baseImage.getHeight(); y++) {
+                for (int x = 0; x < baseImage.getWidth(); x++) {
+                    writer.setArgb(x, y, blankArgb);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error loading image: " + e.getMessage());
+        }
+    }
+
     public Image getImage() {
         return baseImage;
     }

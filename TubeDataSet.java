@@ -74,39 +74,14 @@ public class  TubeDataSet
         return data;
     }
 
-    /*public double getMax() {
-        double max = Integer.MIN_VALUE;
-        for (TubeDataPoint dataPoint : data) {
-            if (dataPoint.value() > max){
-                max = dataPoint.value();
+    public TubeDataPoint findStationData(String station) {
+        for (TubeDataPoint dp : data) {
+            if (dp.station().equals(station)) {
+                return dp;
             }
         }
-        return max;
+        return null;
     }
-
-    public double getMin() {
-        double min = Integer.MAX_VALUE;
-        for (DataPoint dataPoint : data) {
-            if (dataPoint.value() < min){
-                min = dataPoint.value();
-            }
-        }
-        return min;
-    }*/
-
-    /*public DataPoint findNearestDataPoint(int x, int y) {
-        double minDistance = Double.MAX_VALUE;
-        DataPoint nearestDataPoint = null;
-
-        for (DataPoint dataPoint : data) {
-            double distance = Math.sqrt(Math.pow(dataPoint.x() - x, 2) + Math.pow(dataPoint.y() - y, 2));
-            if (distance < minDistance) {
-                minDistance = distance;
-                nearestDataPoint = dataPoint;
-            }
-        }
-        return nearestDataPoint;
-    }*/
     
     /**
      * Add a data point to this dataset. 
