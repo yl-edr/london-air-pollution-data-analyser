@@ -47,7 +47,7 @@ public class RealTimeDataTab {
         Task<Void> dataLoadingTask = new Task<>() {
             @Override
             protected Void call() {
-                allData = apiConnection.updateDataSet();
+//                allData = apiConnection.updateDataSet();
                 return null;
             }
 
@@ -63,22 +63,26 @@ public class RealTimeDataTab {
 
     public void create() {
 
-        map = new MapImage("resources/London.png");
+        map = new MapImage("resources/fullUK.png");
         mapImage = map.getImage();
         mapView = new ImageView(mapImage);
         mapView.setPreserveRatio(true);
         mapView.setSmooth(true);
-        mapView.setFitWidth(500);
+        // Remove fixed sizing so that the image displays at its natural resolution.
+         mapView.setFitWidth(1500); // Removed to allow scrolling at full resolution.
         mapImageAspectRatio = mapImage.getWidth() / mapImage.getHeight();
 
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(mapView);
+        scrollPane.setPannable(true);
+        scrollPane.setPrefViewportWidth(500);
+        scrollPane.setPrefViewportHeight(300);
+        scrollPane.setFitToWidth(false);
+        scrollPane.setFitToHeight(false);
+        scrollPane.setHvalue(0.5);
+        scrollPane.setVvalue(0.5);
 
-        anchorPane.getChildren().add(mapView);
-        anchorPane.setMinWidth(500);
-        anchorPane.setMinHeight(300);
-        mapView.fitWidthProperty().bind(anchorPane.widthProperty());
-        mapView.fitHeightProperty().bind(anchorPane.heightProperty());
-
-        borderPane.setCenter(anchorPane);
+        borderPane.setCenter(scrollPane);
 
         GridPane rightBar = new GridPane();
         rightBar.setPadding(new Insets(10));
@@ -111,49 +115,11 @@ public class RealTimeDataTab {
             }
         });
 
-        Label dataPointLabel = new Label("Value: ");
-        dataPointValue = new Label("select a data point");
-
-        Label gridCodeLabel = new Label("Grid Code: ");
-        gridCodeValue = new Label("select a data point");
-
-        Label xLabel = new Label("X: ");
-        xValue = new Label("select a data point");
-
-        Label yLabel = new Label("Y: ");
-        yValue = new Label("select a data point");
-
-        mapView.setOnMouseMoved(event -> {
-            xValue.setText("X: " + (int) event.getX());
-            yValue.setText("Y: " + (int) event.getY());
-            mouseX = (int) event.getX();
-            mouseY = (int) event.getY();
-            updateStats();
-        });
-
         rightBar.add(pollutantLabel, 0, 0);
         rightBar.add(pollutantComboBox, 0, 1);
-        rightBar.add(refreshButton, 0, 2);
-        rightBar.add(dataPointLabel, 0, 4);
-        rightBar.add(dataPointValue, 0, 5);
-        rightBar.add(gridCodeLabel, 0, 6);
-        rightBar.add(gridCodeValue, 0, 7);
-        rightBar.add(xLabel, 0, 8);
-        rightBar.add(xValue, 0, 9);
-        rightBar.add(yLabel, 0, 10);
-        rightBar.add(yValue, 0, 11);
 
         GridPane.setMargin(pollutantLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(pollutantComboBox, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(refreshButton, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(dataPointLabel, new Insets(10, 0, 0, 0));
-        GridPane.setMargin(dataPointValue, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(gridCodeLabel, new Insets(10, 0, 0, 0));
-        GridPane.setMargin(gridCodeValue, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(xLabel, new Insets(10, 0, 0, 0));
-        GridPane.setMargin(xValue, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(yLabel, new Insets(10, 0, 0, 0));
-        GridPane.setMargin(yValue, new Insets(0, 0, 10, 0));
 
         borderPane.setRight(rightBar);
 
@@ -184,6 +150,7 @@ public class RealTimeDataTab {
         aqiBarContainer.getChildren().addAll(lowLabel, aqiStack, highLabel);
         borderPane.setBottom(aqiBarContainer);
     }
+
 
     public void updateStats(){
         if (selectedDataSet == null) {
