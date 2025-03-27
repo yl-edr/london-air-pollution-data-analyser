@@ -11,10 +11,11 @@ public class AppWindow extends Application {
     private TabPane tabPane;
 
     private Tab homeTab;
-    private Tab mapViewTab;
+    private Tab londonTab;
     private Tab statsTab;
     private Tab gridDataTab;
     private Tab realTimeDataTab;
+    private Tab manchesterTab;
 
     private DataAggregator dataAggregator;
 
@@ -67,8 +68,8 @@ public class AppWindow extends Application {
         homeContent.getChildren().addAll(homeLabel, homeInstructions);
         homeTab.setContent(homeContent);
 
-        mapViewTab = new Tab("Map View");
-        mapViewTab.setClosable(false);
+        londonTab = new Tab("London Map");
+        londonTab.setClosable(false);
 
         statsTab = new Tab("Pollution Statistics");
         statsTab.setClosable(false);
@@ -92,7 +93,18 @@ public class AppWindow extends Application {
         realTimeDataTab.setContent(realTimeContent);
 
         tabPane.getTabs().addAll(homeTab, mapViewTab, statsTab, gridDataTab, realTimeDataTab);
-        
+        manchesterTab = new Tab("UK Cities");
+        manchesterTab.setClosable(false);
+
+        tabPane.getTabs().addAll(homeTab, londonTab, statsTab, gridDataTab, manchesterTab);
+
+        City londonTabAnchor = new LondonTab(dataAggregator);
+        londonTab.setContent(londonTabAnchor.getPane());
+
+        City manchesterAnchor = new Manchester(dataAggregator);
+        manchesterTab.setContent(manchesterAnchor.getPane());
+
+
         MapViewTab mapViewTabAnchor = new MapViewTab(dataAggregator);
         mapViewTab.setContent(mapViewTabAnchor.getPane());
 

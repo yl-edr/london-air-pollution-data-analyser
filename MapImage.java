@@ -1,5 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -15,13 +17,23 @@ public class MapImage {
     private Image baseImage;
     private WritableImage colourImage;
     private double blendAplha = 0.5;
+    private int[] bounds;
 
-    private static final int MIN_X = 510394;
-    private static final int MAX_X = 553297;
-    private static final int MIN_Y = 193305;
-    private static final int MAX_Y = 168504;
+    // private static final int MIN_X = 510394;
+    // private static final int MAX_X = 553297;
+    // private static final int MIN_Y = 193305;
+    // private static final int MAX_Y = 168504;
 
-    public MapImage(String fileName) {
+    private static final HashMap<String, int[]> CITY_BOUNDARIES = new HashMap<>();
+
+    static {
+        // Add boundaries for different cities (adjust values as needed)
+        CITY_BOUNDARIES.put("London", new int[]{510394, 554000, 168000, 194000});
+        CITY_BOUNDARIES.put("Manchester", new int[]{376000, 390901, 393400, 401667});
+    }
+
+    public MapImage(String city, String fileName) {
+        bounds = CITY_BOUNDARIES.get(city);
         try {
             FileInputStream input = new FileInputStream(fileName);
             baseImage = new Image(input);
@@ -48,15 +60,15 @@ public class MapImage {
         return baseImage;
     }
 
-    public void processDataPoint(DataPoint dataPoint, double min, double max) {
+    public void processDataPoint(DataPoint dataPoint, double min, double max, int ratio) {
         double dataPercentage = (dataPoint.value() - min) / (max - min);
         int x = dataPoint.x();
         int y = dataPoint.y();
 
-        int imageX = (int) Math.round((colourImage.getWidth() * (x - MIN_X) / (MAX_X - MIN_X)));
-        int imageY = (int) Math.round((colourImage.getHeight() * (y - MIN_Y) / (MAX_Y - MIN_Y)));
-        int width = 43;
-        int height = 45;
+        int imageX = (int) Math.round((colourImage.getWidth() * (x - bounds[0]) / (bounds[1] - bounds[0])));
+        int imageY = (int) Math.round((colourImage.getHeight() * (y - bounds[3]) / (bounds[2] - bounds[3])));
+        int width = 43*ratio;
+        int height = 45*ratio;
         imageX -= ((width - 1)/ 2);
         imageY -= ((height - 1) / 2);
         placeOverlayBlock(imageX, imageY, width, height, dataPercentage);
@@ -252,6 +264,17 @@ public class MapImage {
             }
         }
         return result;
+    }
+
+    public void resetOverlay() {
+        PixelWriter writer = colourImage.getPixelWriter();
+        int blankArgb = 0xFF << 24; // Fully transparent (ARGB)
+    
+        for (int y = 0; y < colourImage.getHeight(); y++) {
+            for (int x = 0; x < colourImage.getWidth(); x++) {
+                writer.setArgb(x, y, blankArgb);
+            }
+        }
     }
 }
 
