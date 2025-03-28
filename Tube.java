@@ -82,6 +82,8 @@ public class Tube {
 
         journeyLabel = new Label ();
         journeyLabel.setVisible(false);
+        journeyLabel.setWrapText(true);
+        journeyLabel.setPadding(new Insets(10));
 
         journeyDetailsLabel = new Label("Journey Details:");
         journeyDetailsText = new TextArea();
@@ -90,14 +92,14 @@ public class Tube {
         journeyDetailsText.setPrefHeight(300);
         journeyDetailsText.setPrefWidth(300);
 
-        journeyInfoContainer.getChildren().addAll(journeyLabel, journeyDetailsLabel, journeyDetailsText);
+        journeyInfoContainer.getChildren().addAll(journeyLabel);
 
         rightBar.add(startStnLabel, 0, 0);
         rightBar.add(startStnText, 0, 1);
         rightBar.add(endStnLabel, 0, 2);
         rightBar.add(endStnText, 0, 3);
         rightBar.add(button, 0, 4);
-        rightBar.add(journeyInfoContainer, 0, 6);
+        rightBar.add(journeyLabel, 0, 6);
 
         GridPane.setMargin(startStnLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(startStnText, new Insets(0, 0, 10, 0));
@@ -154,7 +156,9 @@ public class Tube {
         System.out.println("Total: " + totalBG);
         System.out.println("Average pollution below ground" + totalBG/journey.size());
         journeyLabel.setVisible(true);
-        //journeyInfoContainer.setVisible(true);
+        journeyDetailsLabel.setVisible(false);
+        journeyDetailsText.setVisible(false);
+        journeyInfoContainer.setVisible(true);
     }
 
     public BorderPane getPane() {
