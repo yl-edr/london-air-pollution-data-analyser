@@ -94,6 +94,12 @@ public class  DataSet
         return min;
     }
 
+    /**
+     * Returns the nearest data point from the given x and y coordinates.
+     * @param x coordinates in the map
+     * @param y coordinates in the map
+     * @return The nearest data point
+     */
     public DataPoint findNearestDataPoint(int x, int y) {
         double minDistance = Double.MAX_VALUE;
         DataPoint nearestDataPoint = null;
@@ -155,6 +161,21 @@ public class  DataSet
         catch (NumberFormatException exc) {
             return -1.0;
         }
+    }
+
+    /**
+     * Return a data point with the given x and y coordinates.
+     * @param x coordinates in the map
+     * @param y coordinates in the map
+     * @return Data point
+     */
+    public DataPoint getDataPoint(int x , int y){
+        for (DataPoint dp : data) {
+            if (dp.x() == x && dp.y() == y){
+                return dp;
+            }
+        }
+        return null;
     }
 
     /**

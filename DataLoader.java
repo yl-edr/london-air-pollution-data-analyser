@@ -73,5 +73,4 @@ public class DataLoader
         String[] values = line.split(COMMA_DELIMITER);
         return values[0];
     }
-
 }

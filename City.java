@@ -5,6 +5,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
+/**
+ * The City abstract class represents a city with an associated map and environmental data.
+ * It provides a graphical user interface to display the city map, allow pollutant and year
+ * selections, and present data statistics based on user interaction.
+ *
+ * The class handles creating the view, tracking mouse events, updating overlays, and displaying
+ * detailed information about selected data points.
+ *
+ * @author Nicolás Alcalá Olea, Anton Davidouski, Rom Steinberg, Yaal Edrey Gatignol
+ */
+
 public abstract class City {
 
     private DataAggregator dataAggregator;
@@ -23,9 +34,20 @@ public abstract class City {
     private BorderPane borderPane;
     private String name;
     private int[] bounds;
+    private Label lowLabel;
+    private Label highLabel;
 
     private int mouseX;
     private int mouseY;
+
+    /**
+     * Constructs a new City instance with the specified city name, bounds, and a
+     * data aggregator for retrieving a data set of the cities pollution.
+     *
+     * @param cityName       the name of the city
+     * @param bounds         an array representing the bounds of the city
+     * @param dataAggregator the data aggregator instance used to retrieve a data set of the cities pollution
+     */
 
     public City(String cityName, int[] bounds, DataAggregator dataAggregator) {
         this.dataAggregator = dataAggregator;
@@ -35,8 +57,16 @@ public abstract class City {
         trackMouseLocation();
     }
 
+    /**
+     * Initializes and creates the city tab view, including the map image, control panels,
+     * and UI components for pollutant and year selection.
+     *
+     * @param name the name of the city to be displayed
+     */
+
     public void create(String name) {
-        map = new MapImage(name,"resources/"+name+".png");
+
+        map = new MapImage(name,"resources/" + name + ".png");
         mapImage = map.getImage();
         mapView = new ImageView(mapImage);
         mapView.setPreserveRatio(true);
@@ -134,8 +164,8 @@ public abstract class City {
         aqiBarContainer.setPadding(new Insets(10));
         BorderPane.setMargin(aqiBarContainer, new Insets(10));
 
-        Label lowLabel = new Label("GOOD");
-        Label highLabel = new Label("POOR");
+        lowLabel = new Label("GOOD");
+        highLabel = new Label("POOR");
         lowLabel.setMinWidth(Region.USE_PREF_SIZE);
         highLabel.setMinWidth(Region.USE_PREF_SIZE);
 
@@ -154,6 +184,12 @@ public abstract class City {
         borderPane.setBottom(aqiBarContainer);
     }
 
+    /**
+     * Updates the displayed statistics based on the current mouse position on the map.
+     * It calculates the corresponding coordinates in the dataset using the current map view
+     * dimensions and updates the UI labels with the nearest data point's value and grid code.
+     */
+
     public void updateStats(){
         if (selectedDataSet == null) {
             return;
@@ -168,15 +204,29 @@ public abstract class City {
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
     }
 
+    /**
+     * Returns the primary pane containing the city map and UI controls.
+     *
+     * @return the BorderPane representing the city's main view
+     */
+
     public BorderPane getPane() {
         return borderPane;
     }
+
+    /**
+     * Updates the color overlay on the city map based on the selected pollutant and year.
+     * It retrieves the corresponding dataset from the data aggregator, processes each data point
+     * to apply a color mapping, and then updates the map view with a blurred overlay.
+     */
 
     public void updateColourMap(){
         if (pollutantSelected == null || yearSelected == null) {
             return;
         }
         selectedDataSet = dataAggregator.getCityDataSet(name,yearSelected, pollutantSelected);
+        lowLabel.setText(Double.toString(selectedDataSet.getMin()));
+        highLabel.setText(Double.toString(selectedDataSet.getMax()));
 
         map.resetOverlay();
         for (DataPoint dataPoint : selectedDataSet.getData()) {
@@ -188,6 +238,14 @@ public abstract class City {
         Image mapImage = map.getCombined();
         mapView.setImage(mapImage);
     }
+
+    /**
+     * Converts the given dimensions of the map view to the corresponding dimensions of the underlying map image.
+     *
+     * @param x the width of the map view
+     * @param y the height of the map view
+     * @return an array of two integers where index 0 is the calculated image width and index 1 is the image height
+     */
 
     public int[] convertMapViewDimensionsToImageDimensions(int x, int y) {
         double providedAspectRatio = (double) x / y;
@@ -201,6 +259,12 @@ public abstract class City {
         }
         return dimensions;
     }
+
+    /**
+     * Sets up mouse tracking on the map view. When a mouse click is detected,
+     * it calculates the corresponding coordinates in the dataset and displays detailed
+     * information about the nearest data point.
+     */
 
     private void trackMouseLocation() {
         mapView.setOnMouseClicked(event -> {
@@ -216,6 +280,12 @@ public abstract class City {
         });
     }
 
+    /**
+     * Displays an informational alert dialog with details about the specified data point.
+     *
+     * @param dataPoint the data point whose information is to be displayed
+     */
+
     private void showDataPointInfo(DataPoint dataPoint) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Data Point Information");
@@ -223,6 +293,12 @@ public abstract class City {
         alert.setContentText("Grid Code: " + dataPoint.gridCode() + "\nX: " + dataPoint.x() + "\nY: " + dataPoint.y() + "\nValue: " + dataPoint.value());
         alert.showAndWait();
     }
+
+    /**
+     * Retrieves the data aggregator associated with this city.
+     *
+     * @return the data aggregator used for accessing environmental data
+     */
 
     public DataAggregator getDataAggregator() {
         return dataAggregator;

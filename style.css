@@ -18,12 +18,53 @@
     -fx-font-size: 16px;
     -fx-text-fill: #333;
 }
+
 .aqiBar {
-    -fx-background-color: linear-gradient(to right, #00FF00 0%, #FFFF00 25%, #FFA500 75%, #FF0000 100%);
+    -fx-background-color: linear-gradient(to right, #00FF00 0%, #FFFF00 50%, #FF4500 100%);
     -fx-background-radius: 40;
 }
 
 .titleLabel {
     -fx-font-size: 30px;
     -fx-font-weight: bold;
+}
+
+.welcomePanel {
+    -fx-background-color: #7fc4d6;
+}
+
+.welcomeLabel {
+    -fx-font-size: 80px;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #000000;
+
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 5, 0, 0, 2);
+}
+
+.informationLabel {
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+    -fx-padding: 0,0,50,0;
+}
+
+.continueButton {
+    -fx-background-color: linear-gradient(to bottom, #7bcbdd, #197a8c);
+
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+
+    -fx-text-fill: black;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 10 20 10 20;
+}
+
+.continueButton:hover {
+    -fx-background-color: linear-gradient(to bottom, #29c8df, #065b67);
+}
+
+.continueButton:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
 }
