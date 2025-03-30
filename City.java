@@ -13,6 +13,7 @@ public abstract class City {
     private Image mapImage;
     private ImageView mapView;
     private AnchorPane anchorPane;
+    private GridPane rightBar;
     private double mapImageAspectRatio;
     private Label dataPointValue;
     private Label gridCodeValue;
@@ -54,7 +55,7 @@ public abstract class City {
         borderPane = new BorderPane();
         borderPane.setCenter(anchorPane);
 
-        GridPane rightBar = new GridPane();
+        rightBar = new GridPane();
         rightBar.setPadding(new Insets(10));
         rightBar.setPrefWidth(250);
         rightBar.setMinWidth(150);
@@ -100,18 +101,18 @@ public abstract class City {
             updateStats();
         });
 
-        rightBar.add(pollutantLabel, 0, 0);
-        rightBar.add(pollutantComboBox, 0, 1);
-        rightBar.add(yearLabel, 0, 2);
-        rightBar.add(yearComboBox, 0, 3);
-        rightBar.add(dataPointLabel, 0, 4);
-        rightBar.add(dataPointValue, 0, 5);
-        rightBar.add(gridCodeLabel, 0, 6);
-        rightBar.add(gridCodeValue, 0, 7);
-        rightBar.add(xLabel, 0, 8);
-        rightBar.add(xValue, 0, 9);
-        rightBar.add(yLabel, 0, 10);
-        rightBar.add(yValue, 0, 11);
+        rightBar.add(pollutantLabel, 0, 1);
+        rightBar.add(pollutantComboBox, 0, 2);
+        rightBar.add(yearLabel, 0, 3);
+        rightBar.add(yearComboBox, 0, 4);
+        rightBar.add(dataPointLabel, 0, 5);
+        rightBar.add(dataPointValue, 0, 6);
+        rightBar.add(gridCodeLabel, 0, 7);
+        rightBar.add(gridCodeValue, 0, 8);
+        rightBar.add(xLabel, 0, 9);
+        rightBar.add(xValue, 0, 10);
+        rightBar.add(yLabel, 0, 11);
+        rightBar.add(yValue, 0, 12);
 
         GridPane.setMargin(yearLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(yearComboBox, new Insets(0, 0, 10, 0));
@@ -154,6 +155,10 @@ public abstract class City {
         borderPane.setBottom(aqiBarContainer);
     }
 
+    public GridPane getRightBar() {
+        return rightBar;
+    }
+
     public void updateStats(){
         if (selectedDataSet == null) {
             return;
@@ -162,7 +167,7 @@ public abstract class City {
         int imageWidth = imageDimensions[0];
         int imageHeight = imageDimensions[1];
         int x = (int) ((mouseX / (double) imageWidth) * (bounds[1] - bounds[0]) + bounds[0]);
-        int y = (int) (bounds[2] - ((mouseY / (double) imageHeight) * (bounds[2] - bounds[3])));
+        int y = (int) (bounds[3] - ((mouseY / (double) imageHeight) * (bounds[3] - bounds[2])));
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
         dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
@@ -222,6 +227,9 @@ public abstract class City {
         alert.setHeaderText(null);
         alert.setContentText("Grid Code: " + dataPoint.gridCode() + "\nX: " + dataPoint.x() + "\nY: " + dataPoint.y() + "\nValue: " + dataPoint.value());
         alert.showAndWait();
+    }
+    public void setBounds(int[] bounds) {
+        this.bounds = bounds;
     }
 
     public DataAggregator getDataAggregator() {

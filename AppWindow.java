@@ -100,8 +100,8 @@ public class AppWindow extends Application {
         PollutionStatistics statsContent = new PollutionStatistics(dataAggregator);
         statsTab.setContent(statsContent.getBorderPane());
 
-        City manchesterAnchor = new Manchester(dataAggregator);
-        UKTab.setContent(manchesterAnchor.getPane());
+        City UKAnchor = new UKCities("Edinburgh",dataAggregator);
+        UKTab.setContent(UKAnchor.getPane());
 
         Tube tube = new Tube(tubeDataAggregator, message -> 
         new Alert(Alert.AlertType.ERROR, message).showAndWait());

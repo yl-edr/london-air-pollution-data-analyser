@@ -13,6 +13,7 @@ public class DataFilter {
         // Add boundaries for different cities (adjust values as needed)
         CITY_BOUNDARIES.put("London", new int[]{510394, 554000, 168000, 194000});
         CITY_BOUNDARIES.put("Manchester", new int[]{376000, 390901, 393400, 401667});
+        CITY_BOUNDARIES.put("Edinburgh", new int[]{317339, 331640, 668176, 676443});
     }
 
 
