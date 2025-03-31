@@ -30,6 +30,7 @@ public class MapImage {
         // Add boundaries for different cities (adjust values as needed)
         CITY_BOUNDARIES.put("London", new int[]{510394, 554000, 168000, 194000});
         CITY_BOUNDARIES.put("Manchester", new int[]{376000, 390901, 393400, 401667});
+        CITY_BOUNDARIES.put("fullUK", new int[]{0, 700000, 0, 400000});
     }
 
     public MapImage(String city, String fileName) {

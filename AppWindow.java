@@ -92,21 +92,21 @@ public class AppWindow extends Application {
         realTimeContent.getChildren().addAll(realTimePlaceholder);
         realTimeDataTab.setContent(realTimeContent);
 
-        tabPane.getTabs().addAll(homeTab, mapViewTab, statsTab, gridDataTab, realTimeDataTab);
-        manchesterTab = new Tab("UK Cities");
-        manchesterTab.setClosable(false);
+//        tabPane.getTabs().addAll(homeTab, mapViewTab, statsTab, gridDataTab, realTimeDataTab);
+//        manchesterTab = new Tab("UK Cities");
+//        manchesterTab.setClosable(false);
 
-        tabPane.getTabs().addAll(homeTab, londonTab, statsTab, gridDataTab, manchesterTab);
+        tabPane.getTabs().addAll(homeTab, londonTab, statsTab, gridDataTab, realTimeDataTab);
 
         City londonTabAnchor = new LondonTab(dataAggregator);
         londonTab.setContent(londonTabAnchor.getPane());
+//
+//        City manchesterAnchor = new Manchester(dataAggregator);
+//        manchesterTab.setContent(manchesterAnchor.getPane());
 
-        City manchesterAnchor = new Manchester(dataAggregator);
-        manchesterTab.setContent(manchesterAnchor.getPane());
 
-
-        MapViewTab mapViewTabAnchor = new MapViewTab(dataAggregator);
-        mapViewTab.setContent(mapViewTabAnchor.getPane());
+//        MapViewTab mapViewTabAnchor = new MapViewTab(dataAggregator);
+//        mapViewTab.setContent(mapViewTabAnchor.getPane());
 
         RealTimeDataTab realTimeDataTabAnchor = new RealTimeDataTab();
         realTimeDataTab.setContent(realTimeDataTabAnchor.getPane());
