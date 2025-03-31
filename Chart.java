@@ -1,6 +1,7 @@
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,8 @@ public class Chart {
         });
 
         lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setCreateSymbols(false);
+        lineChart.setPrefSize(500, 1000);
+        lineChart.setCreateSymbols(true);
         lineChart.setLegendVisible(false);
         lineChart.setAnimated(false);
 

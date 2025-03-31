@@ -1,4 +1,3 @@
-
 /**
  * This class is a short demo showing how to use the DataLoader to load the pollution data 
  * csv files from disk and access the data.
