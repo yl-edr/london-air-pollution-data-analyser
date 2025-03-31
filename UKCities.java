@@ -8,23 +8,23 @@ import javafx.scene.layout.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UKCities extends City {
+public class UKCities {
     
     private ComboBox<String> cityComboBox;
     private DataAggregator dataAggregator;
     
     public UKCities(String cityName, DataAggregator dataAggregator) {
-        super(cityName,new int[]{317339, 331640, 668176 ,676443, 3}, dataAggregator);
-        //this.dataAggregator = dataAggregator;
-        createCitySelector();
+        //super(cityName,new int[]{317339, 331640, 668176 ,676443, 3}, dataAggregator);
+        this.dataAggregator = dataAggregator;
+        //createCitySelector();
     }
     public UKCities(String cityName, int[] bounds, DataAggregator dataAggregator) {
-        super(cityName,bounds, dataAggregator);
+        //super(cityName,bounds, dataAggregator);
         this.dataAggregator = dataAggregator;
-        createCitySelector();
+        //createCitySelector();
     }
     
-    private void createCitySelector() {
+    /*public void createCitySelector() {
         Label cityLabel = new Label("Choose a city:");
         cityComboBox = new ComboBox<>();
         cityComboBox.setPromptText("City");
@@ -44,28 +44,29 @@ public class UKCities extends City {
         //getPane().setTop(cityComboBox);
     }
     
-    private void updateCity(String cityName) {
+    /*private void updateCity(String cityName) {
         int[] manchesterBounds = {376000, 390901, 401667, 393400, 3};
         int[] edinburghBounds = {317339, 331640, 668176 ,676443, 3};
         //System.out.println("City selected: " + cityName);
         switch (cityName) {
             case "Manchester":
-                City ma = new UKCities(cityName, manchesterBounds, dataAggregator); 
+                setBounds(manchesterBounds);
+                this.name = "Manchester";  // Update city name
                 System.out.println("City selected: " + cityName);    
                 break;
             case "Edinburgh":
-                City ed = new UKCities(cityName, edinburghBounds, dataAggregator);    
+                setBounds(edinburghBounds);
+                this.name = "Edinburgh";
                 break;
         
             default:
                 break;
         }
+        new UKCities(name, dataAggregator);
+        create(name);
+        updateColourMap();
         
+        AppWindow.setUKCities(this);
         
-        //super.setBounds(newBounds); 
-        //super.create(cityName);
-        //super.mapView.setImage(super.map.getImage());
-        
-        //updateColourMap();
-    }
+    }*/
 }

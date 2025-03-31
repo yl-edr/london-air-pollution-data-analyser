@@ -20,10 +20,12 @@ public abstract class City {
     private Label xValue;
     private Label yValue;
     private String pollutantSelected;
+    private ComboBox<String> cityComboBox;
     private String yearSelected;
     private BorderPane borderPane;
-    private String name;
+    protected String name;
     private int[] bounds;
+    private UKCities ukCities;
 
     private int mouseX;
     private int mouseY;
@@ -34,6 +36,7 @@ public abstract class City {
         this.bounds = bounds;
         create(name);
         trackMouseLocation();
+         
     }
 
     public void create(String name) {
@@ -60,6 +63,10 @@ public abstract class City {
         rightBar.setPrefWidth(250);
         rightBar.setMinWidth(150);
         rightBar.setMaxWidth(300);
+        
+        if(!name.equals("London")){
+            createCitySelector();
+        }
 
         Label pollutantLabel = new Label("Choose a pollutant:");
         ComboBox<String> pollutantComboBox = new ComboBox<>();
@@ -80,6 +87,7 @@ public abstract class City {
                 });
         yearComboBox.setPromptText("Year");
         yearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
+
 
         Label dataPointLabel = new Label("Value: ");
         dataPointValue = new Label("select a data point");
@@ -105,14 +113,14 @@ public abstract class City {
         rightBar.add(pollutantComboBox, 0, 2);
         rightBar.add(yearLabel, 0, 3);
         rightBar.add(yearComboBox, 0, 4);
-        rightBar.add(dataPointLabel, 0, 5);
-        rightBar.add(dataPointValue, 0, 6);
-        rightBar.add(gridCodeLabel, 0, 7);
-        rightBar.add(gridCodeValue, 0, 8);
-        rightBar.add(xLabel, 0, 9);
-        rightBar.add(xValue, 0, 10);
-        rightBar.add(yLabel, 0, 11);
-        rightBar.add(yValue, 0, 12);
+        rightBar.add(dataPointLabel, 0, 6);
+        rightBar.add(dataPointValue, 0, 7);
+        rightBar.add(gridCodeLabel, 0, 8);
+        rightBar.add(gridCodeValue, 0, 9);
+        rightBar.add(xLabel, 0, 10);
+        rightBar.add(xValue, 0, 11);
+        rightBar.add(yLabel, 0, 12);
+        rightBar.add(yValue, 0, 13);
 
         GridPane.setMargin(yearLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(yearComboBox, new Insets(0, 0, 10, 0));
@@ -177,11 +185,16 @@ public abstract class City {
         return borderPane;
     }
 
+    public void setPane(BorderPane pane) {
+        borderPane = pane;
+    }
+
     public void updateColourMap(){
         if (pollutantSelected == null || yearSelected == null) {
             return;
         }
         selectedDataSet = dataAggregator.getCityDataSet(name,yearSelected, pollutantSelected);
+        System.out.println(name + " " + yearSelected + " " + pollutantSelected);
 
         map.resetOverlay();
         for (DataPoint dataPoint : selectedDataSet.getData()) {
@@ -219,6 +232,52 @@ public abstract class City {
                 showDataPointInfo(nearestDataPoint);
             }
         });
+    }
+
+    public void createCitySelector() {
+        Label cityLabel = new Label("Choose a city:");
+        cityComboBox = new ComboBox<>();
+        cityComboBox.setPromptText("City");
+        cityComboBox.getItems().addAll("Manchester", "Edinburgh");
+        GridPane.setMargin(cityComboBox, new Insets(0, 0, 10, 0));
+        //getRightBar().add(cityLabel, 0, 0);
+        getRightBar().add(cityComboBox, 0, 0);
+
+        cityComboBox.getSelectionModel().selectedItemProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    updateCity(newValue);
+                }
+            }
+        );
+        
+        //getPane().setTop(cityComboBox);
+    }
+
+    private void updateCity(String cityName) {
+        int[] manchesterBounds = {376000, 390901, 401667, 393400, 3};
+        int[] edinburghBounds = {317339, 331640, 668176 ,676443, 3};
+        //System.out.println("City selected: " + cityName);
+        switch (cityName) {
+            case "Manchester":
+                setBounds(manchesterBounds);
+                this.name = "Manchester";  // Update city name
+                System.out.println("City selected: " + cityName);    
+                break;
+            case "Edinburgh":
+                setBounds(edinburghBounds);
+                this.name = "Edinburgh";
+                break;
+        
+            default:
+                break;
+        }
+        new UKCities(name, dataAggregator);
+        create(name);
+        updateColourMap();
+        
+        AppWindow.setUKCities(this);
+        
     }
 
     private void showDataPointInfo(DataPoint dataPoint) {
