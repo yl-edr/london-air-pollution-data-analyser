@@ -52,7 +52,7 @@ public class RealTimeDataTab {
         searchBorderPane = new BorderPane();
 
         TextField searchField = new TextField();
-        searchField.setPromptText("Enter location...");
+        searchField.setPromptText("Enter a city name...");
         searchField.setPrefWidth(300);
 
         searchField.setStyle("-fx-background-color: white; -fx-border-color: lightgray; -fx-border-radius: 5px; -fx-border-width: 2px; -fx-font-size: 14px");
@@ -250,11 +250,11 @@ public class RealTimeDataTab {
     }
 
     private void displayChart() {
-        if (numberOfCitiesCompared < 3) {
+        if (numberOfCitiesCompared < 2) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText("Not enough data");
-            alert.setContentText("Please add at least three cities to compare.");
+            alert.setContentText("Please add at least two cities to compare.");
             alert.show();
             return;
         }
