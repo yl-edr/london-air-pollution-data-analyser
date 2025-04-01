@@ -23,14 +23,7 @@ public class MapImage {
     // private static final int MIN_Y = 193305;
     // private static final int MAX_Y = 168504;
 
-    private static final HashMap<String, int[]> CITY_BOUNDARIES = new HashMap<>();
-
-    static {
-        // Add boundaries for different cities (adjust values as needed)
-        CITY_BOUNDARIES.put("London", new int[]{510394, 554000, 168000, 194000});
-        CITY_BOUNDARIES.put("Manchester", new int[]{376000, 390901, 393400, 401667});
-        CITY_BOUNDARIES.put("Edinburgh", new int[]{317339, 331640, 668176, 676443});
-    }
+    private static final HashMap<String, int[]> CITY_BOUNDARIES = City.getCitiesBoundaries();
 
     public MapImage(String city, String fileName) {
         bounds = CITY_BOUNDARIES.get(city);
