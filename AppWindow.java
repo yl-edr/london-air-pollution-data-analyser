@@ -42,7 +42,7 @@ public class AppWindow extends Application {
         tubeTab.setClosable(false);
 
         realTimeDataTab = new Tab("Real Time Data");
-        realTimeDataTab = new Tab("Real Time Data");
+        realTimeDataTab.setClosable(false);
 
         tabPane.getTabs().addAll(londonTab, statsTab, UKTab, tubeTab, realTimeDataTab);
 
