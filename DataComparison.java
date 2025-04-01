@@ -7,7 +7,7 @@ public class DataComparison {
 
     private HashMap<String, CityData> cityData = new HashMap<>();
     private ArrayList<ArrayList<Double>> pollutantValues = new ArrayList<>();
-    private double[] healthyValue = {2.5, 4400, 40, 60, 20, 10, 20, 40};
+    private double[] healthyValue = {2, 4400, 40, 60, 20, 10, 20, 40};
 
     public DataComparison() {
         pollutantValues.add(new ArrayList<>());
