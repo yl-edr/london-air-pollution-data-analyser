@@ -1,17 +1,17 @@
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
-
 
 public class ApiConnection {
 
     private static final String apiKey = "42912c00d47c0fb3ae19bcb050db29c5";
 
-    public ApiConnection() {
-    }
+    public ApiConnection() {}
 
     public HashMap<String, double[]> getTopLocationsForSearch(String location) {
         String locationJson = makeApiCallToGeolocatorAPI(location);
@@ -22,7 +22,7 @@ public class ApiConnection {
         return extractTopMatches(locationJson);
     }
 
-    public double[] getDataForLatLon(double lat, double lon){
+    public double[] getDataForLatLon(double lat, double lon) {
         String airPollutionJson = makeApiCallToLocation(lat, lon);
         if (airPollutionJson == null) {
             System.out.println("Failed to retrieve air pollution data.");
@@ -33,27 +33,16 @@ public class ApiConnection {
 
     private String makeApiCallToLocation(double lat, double lon) {
         String urlString = "https://api.openweathermap.org/data/2.5/air_pollution?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
-        try {
-            URL url = new URL(urlString);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            int responseCode = conn.getResponseCode();
-            if (responseCode == 200) {
-                return new BufferedReader(new InputStreamReader(conn.getInputStream())).readLine();
-            } else {
-                System.out.println("API request failed. Response Code: " + responseCode);
-                return null;
-            }
-        } catch (Exception e) {
-            System.out.println("API call failed for lat=" + lat + ", lon=" + lon);
-            return null;
-        }
+        return makeHttpRequest(urlString);
     }
 
     private String makeApiCallToGeolocatorAPI(String location) {
-        location = location.replace(" ", "%20"); // deal with location names with spaces e.g. los angeles
+        location = location.replace(" ", "%20");
         String urlString = "http://api.openweathermap.org/geo/1.0/direct?q=" + location + "&limit=8&appid=" + apiKey;
+        return makeHttpRequest(urlString);
+    }
+
+    private String makeHttpRequest(String urlString) {
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -61,69 +50,65 @@ public class ApiConnection {
 
             int responseCode = conn.getResponseCode();
             if (responseCode == 200) {
-                return new BufferedReader(new InputStreamReader(conn.getInputStream())).readLine();
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder content = new StringBuilder();
+                String line;
+                while ((line = in.readLine()) != null) {
+                    content.append(line);
+                }
+                in.close();
+                return content.toString();
             } else {
                 System.out.println("API request failed. Response Code: " + responseCode);
                 return null;
             }
         } catch (Exception e) {
-            System.out.println("API call failed for location=" + location);
+            System.out.println("API call failed: " + e.getMessage());
             return null;
         }
     }
 
     private double[] processDataJsonString(String jsonString) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(jsonString);
+            JSONObject root = new JSONObject(jsonString);
+            JSONObject listItem = root.getJSONArray("list").getJSONObject(0);
+            JSONObject main = listItem.getJSONObject("main");
+            JSONObject components = listItem.getJSONObject("components");
 
-            JsonNode listNode = rootNode.path("list").get(0);
-            JsonNode mainNode = listNode.path("main");
-            JsonNode componentsNode = listNode.path("components");
+            double aqi = main.getDouble("aqi");
+            double co = components.getDouble("co");
+            double no2 = components.getDouble("no2");
+            double o3 = components.getDouble("o3");
+            double so2 = components.getDouble("so2");
+            double pm2_5 = components.getDouble("pm2_5");
+            double pm10 = components.getDouble("pm10");
+            double nh3 = components.getDouble("nh3");
 
-            double aqi = mainNode.path("aqi").asDouble();
-            double co = componentsNode.path("co").asDouble();
-            double no = componentsNode.path("no").asDouble();
-            double no2 = componentsNode.path("no2").asDouble();
-            double o3 = componentsNode.path("o3").asDouble();
-            double so2 = componentsNode.path("so2").asDouble();
-            double pm2_5 = componentsNode.path("pm2_5").asDouble();
-            double pm10 = componentsNode.path("pm10").asDouble();
-            double nh3 = componentsNode.path("nh3").asDouble();
-
-            return new double[]{aqi, co, no2, o3, so2, pm2_5, pm10, nh3}; // NO is excluded here because some issue with the API seems to always return NO as 0
-        } catch (IOException e) {
-            System.out.println("Error processing JSON: " + e.getMessage());
+            return new double[]{aqi, co, no2, o3, so2, pm2_5, pm10, nh3};
+        } catch (Exception e) {
+            System.out.println("Error parsing air pollution JSON: " + e.getMessage());
+            return null;
         }
-        return null;
     }
 
     private HashMap<String, double[]> extractTopMatches(String jsonString) {
         HashMap<String, double[]> matches = new HashMap<>();
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(jsonString);
-            if (rootNode.isArray() && rootNode.size() > 0) {
-                for (int i = 0; i < rootNode.size(); i++) {
-                    JsonNode locationNode = rootNode.get(i);
-                    String name = locationNode.path("name").asText();
-                    String country = locationNode.path("country").asText();
-                    String state = locationNode.has("state") ? locationNode.path("state").asText() : "";
-                    String matchName = name + (state.isEmpty() ? "" : ", " + state) + ", " + country;
-                    double lat = locationNode.path("lat").asDouble();
-                    double lon = locationNode.path("lon").asDouble();
-                    matches.put(matchName, new double[]{lat, lon});
-                }
-                return matches;
-            } else {
-                System.out.println("No location data found in JSON.");
+            JSONArray locations = new JSONArray(jsonString);
+            for (int i = 0; i < locations.length(); i++) {
+                JSONObject loc = locations.getJSONObject(i);
+                String name = loc.getString("name");
+                String country = loc.getString("country");
+                String state = loc.optString("state", "");
+                String matchName = name + (state.isEmpty() ? "" : ", " + state) + ", " + country;
+                double lat = loc.getDouble("lat");
+                double lon = loc.getDouble("lon");
+                matches.put(matchName, new double[]{lat, lon});
             }
-        } catch (IOException e) {
-            System.out.println("Error processing JSON: " + e.getMessage());
+            return matches;
+        } catch (Exception e) {
+            System.out.println("Error parsing geolocation JSON: " + e.getMessage());
+            return null;
         }
-        return null;
     }
-
 }
-
-
