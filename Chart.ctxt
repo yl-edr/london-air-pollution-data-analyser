@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Chart
+comment1.params=
+comment1.target=Chart()
+comment2.params=value
+comment2.target=java.lang.String\ toString(java.lang.Number)
+comment3.params=dataRange
+comment3.target=void\ updateChart(java.util.HashMap)
+comment4.params=
+comment4.target=javafx.scene.chart.LineChart\ getChart()
+numComments=5

@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=WelcomePanel
+comment1.params=firstStage
+comment1.target=void\ createWelcomePanel(javafx.stage.Stage)
+numComments=2

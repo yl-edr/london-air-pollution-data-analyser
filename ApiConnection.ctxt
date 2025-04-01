@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=ApiConnection
+comment1.params=
+comment1.target=ApiConnection()
+comment2.params=location
+comment2.target=getTopLocationsForSearch(java.lang.String)
+comment3.params=lat\ lon
+comment3.target=double[]\ getDataForLatLon(double,\ double)
+comment4.params=lat\ lon
+comment4.target=java.lang.String\ makeApiCallToLocation(double,\ double)
+comment5.params=location
+comment5.target=java.lang.String\ makeApiCallToGeolocatorAPI(java.lang.String)
+comment6.params=jsonString
+comment6.target=double[]\ processDataJsonString(java.lang.String)
+comment7.params=jsonString
+comment7.target=extractTopMatches(java.lang.String)
+numComments=8

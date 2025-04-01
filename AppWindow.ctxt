@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=AppWindow
+comment1.params=stage
+comment1.target=void\ start(javafx.stage.Stage)
+comment2.params=
+comment2.target=void\ createTabPane()
+comment3.params=stage
+comment3.target=void\ createWelcomePanel(javafx.stage.Stage)
+comment4.params=stage
+comment4.target=void\ createInitialPanel(javafx.stage.Stage)
+comment5.params=
+comment5.target=java.lang.Void\ call()
+comment6.params=
+comment6.target=void\ succeeded()
+comment7.params=ukCities
+comment7.target=void\ setUKCities(City)
+numComments=8

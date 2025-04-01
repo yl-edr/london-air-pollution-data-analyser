@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=TubeLine
+comment1.params=name
+comment1.target=TubeLine(java.lang.String)
+comment2.params=station
+comment2.target=void\ addStation(java.lang.String)
+comment3.params=stations
+comment3.target=void\ addStations(java.lang.String[])
+comment4.params=
+comment4.target=java.lang.String\ getName()
+comment5.params=station
+comment5.target=boolean\ isStationOnLine(java.lang.String)
+comment6.params=
+comment6.target=java.util.ArrayList\ getStations()
+comment7.params=
+comment7.target=java.lang.String\ toString()
+numComments=8

@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=DataFilter
 comment1.params=dataSet
-comment1.target=DataSet\ filterLondonData(DataSet)
+comment1.target=java.util.HashMap\ filterCityData(DataSet)
 comment2.params=dp
 comment2.target=java.lang.String[]\ dataPointArray(DataPoint)
 numComments=3

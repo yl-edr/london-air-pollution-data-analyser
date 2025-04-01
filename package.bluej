@@ -196,3 +196,4 @@ target9.type=ClassTarget
 target9.width=120
 target9.x=440
 target9.y=610
+userlib=jackson-annotations-2.16.0.jar:jackson-core-2.16.0.jar:jackson-databind-2.16.0.jar

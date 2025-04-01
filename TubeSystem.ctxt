@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=TubeSystem
+comment1.params=
+comment1.target=TubeSystem()
+comment2.params=start\ finish
+comment2.target=java.util.List\ calculateJourney(java.lang.String,\ java.lang.String)
+comment3.params=station1\ station2
+comment3.target=java.util.List\ bothStationsOnLine(java.lang.String,\ java.lang.String)
+comment4.params=start\ end
+comment4.target=java.util.List\ changeLines(java.lang.String,\ java.lang.String)
+comment5.params=line1\ line2
+comment5.target=java.lang.String\ findHub(TubeLine,\ TubeLine)
+comment6.params=map
+comment6.target=int\ getMinKey(java.util.HashMap)
+numComments=7

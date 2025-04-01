@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=RealTimeDataTab
+comment1.params=
+comment1.target=RealTimeDataTab()
+comment10.params=
+comment10.target=void\ displayChart()
+comment11.params=
+comment11.target=void\ hideChart()
+comment12.params=value\ pollutant
+comment12.target=javafx.scene.paint.Color\ getColor(double,\ java.lang.String)
+comment2.params=
+comment2.target=void\ create()
+comment3.params=
+comment3.target=call()
+comment4.params=spinner
+comment4.target=void\ displayData(javafx.scene.control.ProgressIndicator)
+comment5.params=
+comment5.target=java.lang.Void\ call()
+comment6.params=
+comment6.target=javafx.scene.layout.BorderPane\ getPane()
+comment7.params=data\ dataGrid
+comment7.target=void\ renderData(double[],\ javafx.scene.layout.GridPane)
+comment8.params=
+comment8.target=void\ addCityToCompare()
+comment9.params=
+comment9.target=void\ removeCityFromCompare()
+numComments=13

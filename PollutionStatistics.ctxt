@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=PollutionStatistics
+comment1.params=dataAggregator
+comment1.target=PollutionStatistics(DataAggregator)
+comment2.params=fromYear\ toYear
+comment2.target=void\ validateYearSelection(java.lang.String,\ java.lang.String)
+comment3.params=
+comment3.target=javafx.scene.layout.BorderPane\ getBorderPane()
+comment4.params=
+comment4.target=void\ updateChart()
+comment5.params=
+comment5.target=void\ toggleView()
+comment6.params=pollutant\ button
+comment6.target=void\ togglePollutant(java.lang.String,\ javafx.scene.control.ToggleButton)
+comment7.params=pollutant\ startYear\ endYear
+comment7.target=java.util.HashMap\ dataSetRange(java.lang.String,\ int,\ int)
+numComments=8
