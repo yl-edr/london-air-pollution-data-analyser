@@ -25,8 +25,9 @@ public class City {
     private Label yValue;
     private String pollutantSelected;
     private ComboBox<String> cityComboBox;
+    private ComboBox<String> yearComboBox;
+    private ComboBox<String> pollutantComboBox;
     private String yearSelected;
-    //private String citySelected;
     private BorderPane borderPane;
     protected String name;
     private static final HashMap<String, int[]> CITY_BOUNDARIES = new HashMap<>();
@@ -80,7 +81,7 @@ public class City {
         }
 
         Label pollutantLabel = new Label("Choose a pollutant:");
-        ComboBox<String> pollutantComboBox = new ComboBox<>();
+        pollutantComboBox = new ComboBox<>();
         pollutantComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     pollutantSelected = newValue;
@@ -91,7 +92,7 @@ public class City {
         pollutantComboBox.getItems().addAll("pm2.5", "no2", "pm10");
 
         Label yearLabel = new Label("Choose a year:");
-        ComboBox<String> yearComboBox = new ComboBox<>();
+        yearComboBox = new ComboBox<>();
         yearComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     yearSelected = newValue;
@@ -262,6 +263,11 @@ public class City {
         cityComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     updateCity(newValue);
+                    updateColourMap();
+                    if(yearSelected != null)
+                        yearComboBox.setPromptText(yearSelected);
+                    if(pollutantSelected != null)
+                        pollutantComboBox.setPromptText(pollutantSelected);
                 });
         GridPane.setMargin(cityComboBox, new Insets(0, 0, 10, 0));
         getRightBar().add(cityLabel, 0, 0);
@@ -269,9 +275,10 @@ public class City {
     }
 
     private void updateCity(String cityName) {
+        // Update city name
         switch (cityName) {
             case "Manchester":
-                this.name = "Manchester";  // Update city name
+                this.name = "Manchester";  
                 break;
             case "Edinburgh":
                 this.name = "Edinburgh";
