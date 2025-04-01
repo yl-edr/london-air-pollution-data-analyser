@@ -41,7 +41,10 @@ public class AppWindow extends Application {
         tubeTab = new Tab("Tube Journey");
         tubeTab.setClosable(false);
 
-        tabPane.getTabs().addAll(londonTab, statsTab, UKTab, tubeTab);
+        realTimeDataTab = new Tab("Real Time Data");
+        realTimeDataTab = new Tab("Real Time Data");
+
+        tabPane.getTabs().addAll(londonTab, statsTab, UKTab, tubeTab, realTimeDataTab);
 
         City londonTabAnchor = new City("London", dataAggregator);
         londonTab.setContent(londonTabAnchor.getPane());
@@ -56,7 +59,6 @@ public class AppWindow extends Application {
                 new Alert(Alert.AlertType.ERROR, message).showAndWait());
         tubeTab.setContent(tube.getPane());
 
-        realTimeDataTab = new Tab("Real Time Data");
         RealTimeDataTab realTimeDataTabAnchor = new RealTimeDataTab();
         realTimeDataTab.setContent(realTimeDataTabAnchor.getPane());
 
