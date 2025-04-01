@@ -71,7 +71,7 @@ public class AppWindow extends Application {
         manchesterTab.setClosable(false);
 
         tabPane.getTabs().addAll(londonTab, statsTab, manchesterTab);
-        
+
         City londonTabAnchor = new LondonTab(dataAggregator);
         londonTab.setContent(londonTabAnchor.getPane());
 

@@ -180,3 +180,15 @@
 .highLabel {
     -fx-font-family: "AppleGothic", sans-serif;
 }
+
+.pm25 {
+    -fx-stroke: red; /* Color for PM2.5 */
+}
+
+.pm10 {
+    -fx-stroke: blue; /* Color for PM10 */
+}
+
+.no2 {
+    -fx-stroke: green; /* Color for NO2 */
+}
