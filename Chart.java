@@ -14,7 +14,7 @@ public class Chart {
         NumberAxis yAxis = new NumberAxis();
 
         xAxis.setLabel("Time (in years)");
-        yAxis.setLabel("Pollution Level (in µg/m³)");
+        yAxis.setLabel("Average Pollution Level (in µg/m³)");
 
         xAxis.setAutoRanging(false);
         xAxis.setLowerBound(2018);
