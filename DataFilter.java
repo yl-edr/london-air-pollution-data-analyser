@@ -37,7 +37,7 @@ int i=0;
                 }
             }
         }
-        System.out.println("Processed " + i + " data points from filtering ");
+        //System.out.println("Processed " + i + " data points from filtering ");
 
         return cityDataSets;
     }

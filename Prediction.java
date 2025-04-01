@@ -1,10 +1,7 @@
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ProgressIndicator;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -21,13 +18,15 @@ public class Prediction {
     private static final int MAX_Y = 194000;
 
     private DataAggregator dataAggregator;
+    private String yearSelected;
 
-    public Prediction(DataAggregator dataAggregator) {
+    public Prediction(DataAggregator dataAggregator, String yearSelected) {
         this.dataAggregator = dataAggregator;
+        this.yearSelected = yearSelected;
         showLoadingPopup();
     }
 
-    private void showLoadingPopup() {
+    protected void showLoadingPopup() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Loading");
         alert.setHeaderText(null);
@@ -56,15 +55,14 @@ public class Prediction {
         };
 
         new Thread(task).start();
-        alert.showAndWait();
+        alert.show();
     }
 
     public void dataPointList() {
 
         String[] pollutantsList = new String[]{"pm2.5", "pm10", "no2"};
         for (String pollutant : pollutantsList) {
-            DataSet newDataSet = new DataSet(pollutant, "2024", "annual mean", "ug m-3");
-            List<DataPoint> tempDataPoints = new ArrayList<>();
+            DataSet newDataSet = new DataSet(pollutant, yearSelected, "annual mean", "ug m-3");
             for (int x = MIN_X; x <= MAX_X; x += 1010) {
                 for (int y = MIN_Y; y <= MAX_Y; y += 1010) {
                     DataPoint dp = null;
@@ -80,9 +78,7 @@ public class Prediction {
                             }
                         }
                     }
-
                     if (dp != null) {
-
                         String gridCode = String.valueOf(dp.gridCode());
                         String X = String.valueOf(dp.x());
                         String Y = String.valueOf(dp.y());
@@ -116,6 +112,6 @@ public class Prediction {
         double slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
         double intercept = (sumY - slope * sumX) / n;
 
-        return slope * 2024 + intercept; // Predict for 2024
+        return slope * Integer.parseInt(yearSelected) + intercept; // Predict for the selected year
     }
 }

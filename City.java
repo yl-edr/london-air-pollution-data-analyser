@@ -1,9 +1,12 @@
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * The City abstract class represents a city with an associated map and environmental data.
@@ -122,10 +125,66 @@ public abstract class City {
 
         Button predictionButton = new Button("Predict");
         predictionButton.setOnAction(event -> {
-            if (!yearComboBox.getItems().contains("2024")) {
-                yearComboBox.getItems().add("2024");
-                new Prediction(dataAggregator);
-            }
+            // Create a new modal stage for the pop-up
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+
+            // Create UI elements for the pop-up
+            Label instructionLabel = new Label("Please enter a year (2024 - 2030):");
+            TextField yearInputField = new TextField();
+            yearInputField.setPromptText("Year");
+            instructionLabel.getStyleClass().add("instructionLabel");
+            yearInputField.getStyleClass().add("inputField");
+
+            Button okButton = new Button("OK");
+            Button cancelButton = new Button("Cancel");
+            okButton.getStyleClass().add("okButton");
+            cancelButton.getStyleClass().add("cancelButton");
+
+            // Layout for buttons
+            HBox buttons = new HBox(10, okButton, cancelButton);
+            buttons.setAlignment(Pos.CENTER);
+            buttons.getStyleClass().add("buttons");
+
+            // Main layout for the pop-up
+            VBox vbox = new VBox(10, instructionLabel, yearInputField, buttons);
+            vbox.setAlignment(Pos.CENTER);
+            vbox.setPadding(new Insets(10));
+            vbox.getStyleClass().add("vbox");
+
+            Scene dialogScene = new Scene(vbox, 300, 150);
+            dialogStage.setScene(dialogScene);
+            dialogStage.getScene().getStylesheets().add("style.css");
+
+            // Action for OK button
+            okButton.setOnAction(e -> {
+                String inputYear = yearInputField.getText().trim();
+                try {
+                    int year = Integer.parseInt(inputYear);
+                    if (year < 2024 || year > 2030) {
+                        // Year is out of the valid range; show error message
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Year must be between 2024 and 2030.");
+                        alert.showAndWait();
+                    } else {
+                        // Valid year entered, store in yearSelected
+                        if (!yearComboBox.getItems().contains(inputYear)) {
+                            yearComboBox.getItems().add(inputYear);
+                        }
+                        dialogStage.close();
+                        new Prediction(dataAggregator, inputYear);
+                    }
+                } catch (NumberFormatException ex) {
+                    // Non-numeric input; show error message
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input. Please enter a valid year.");
+                    alert.showAndWait();
+                }
+            });
+
+            // Action for Cancel button
+            cancelButton.setOnAction(e -> dialogStage.close());
+
+            // Show the dialog and wait until it is closed before returning to the caller
+            dialogStage.showAndWait();
         });
         predictionButton.getStyleClass().add("predictButton");
 
@@ -256,9 +315,6 @@ public abstract class City {
             return;
         }
         selectedDataSet = dataAggregator.getCityDataSet(name,yearSelected, pollutantSelected);
-        System.out.println(name);
-        System.out.println(yearSelected);
-        System.out.println(pollutantSelected);
         lowLabel.setText(String.format("%.1f", selectedDataSet.getMin())+" MIN");
         highLabel.setText(String.format("%.1f", selectedDataSet.getMax())+" MAX");
 

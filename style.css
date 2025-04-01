@@ -4,9 +4,24 @@
 }
 
 .tab-pane {
-    -fx-tab-min-width: 120px;
-    -fx-tab-min-height: 30px;
-    -fx-background-color: #ffffff;
+    -fx-background-color: #DECCCC;
+    -fx-tab-min-width: 120;
+    -fx-tab-max-width: 200;
+    -fx-tab-min-height: 30;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-color: #DECCCC;
+    -fx-border-color: #000000;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-style: solid;
+    -fx-padding: 6 10;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-color: #DECCCC;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab > .tab-label {
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
 }
 
 .tab {
@@ -191,4 +206,58 @@
 
 .no2 {
     -fx-stroke: green; /* Color for NO2 */
+}
+
+.instructionLabel {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.okButton {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+}
+.okButton:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.okButton:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+.cancelButton {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+}
+.cancelButton:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.cancelButton:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
+.buttons {
+    -fx-background-color: #DECCCC;
+}
+.vbox {
+    -fx-background-color: #DECCCC;
+}
+.inputField {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.londonTab {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.statsTab {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.citiesTab {
+    -fx-font-family: "AppleGothic", sans-serif;
 }
