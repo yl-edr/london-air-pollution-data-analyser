@@ -1,20 +1,8 @@
 import java.util.HashMap;
 
 public class DataFilter {
-    // London Map Boundaries
-    private static final int MIN_X = 510394;
-    private static final int MAX_X = 554000;
-    private static final int MIN_Y = 168000;
-    private static final int MAX_Y = 194000;
 
-    private static final HashMap<String, int[]> CITY_BOUNDARIES = new HashMap<>();
-
-    static {
-        // Add boundaries for different cities (adjust values as needed)
-        CITY_BOUNDARIES.put("London", new int[]{510394, 554000, 168000, 194000});
-        CITY_BOUNDARIES.put("Manchester", new int[]{376000, 390901, 393400, 401667});
-    }
-
+    private static final HashMap<String, int[]> CITY_BOUNDARIES = City.getCitiesBoundaries();
 
     public static HashMap<String, DataSet> filterCityData(DataSet dataSet) {
         HashMap<String, DataSet> cityDataSets = new HashMap<>();

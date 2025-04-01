@@ -14,7 +14,7 @@ public class AppWindow extends Application {
     private Tab londonTab;
     private Tab statsTab;
     private Tab gridDataTab;
-    private Tab UKTab;
+    private static Tab UKTab;
     private Tab tubeTab;
 
     private DataAggregator dataAggregator;
@@ -94,19 +94,23 @@ public class AppWindow extends Application {
 
         tabPane.getTabs().addAll(homeTab, londonTab, statsTab, gridDataTab, UKTab, tubeTab);
         
-        City londonTabAnchor = new LondonTab(dataAggregator);
+        City londonTabAnchor = new City("London", dataAggregator);
         londonTab.setContent(londonTabAnchor.getPane());
 
         PollutionStatistics statsContent = new PollutionStatistics(dataAggregator);
         statsTab.setContent(statsContent.getBorderPane());
 
-        City manchesterAnchor = new Manchester(dataAggregator);
-        UKTab.setContent(manchesterAnchor.getPane());
+        City UKcities = new City("Manchester", dataAggregator);
+        UKTab.setContent(UKcities.getPane());
 
         Tube tube = new Tube(tubeDataAggregator, message -> 
         new Alert(Alert.AlertType.ERROR, message).showAndWait());
         tubeTab.setContent(tube.getPane());
 
+    }
+    public static void setUKCities(City ukCities) {
+        UKTab.setContent(ukCities.getPane());
+        
     }
     
 }
