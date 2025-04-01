@@ -54,15 +54,11 @@ public class DataAggregator {
                 String fileName = file.getName();
                 // only process csv files
                 if (fileName.endsWith(".csv")) {
-                    if(fileName.contains("Tube")) {
-                        System.out.println("Loading Tube Data...");
-                        TubeDataSet dataSet = new TubeDataLoader().loadDataFile(directoryPath + fileName);
-                        addDataSet(dataSet);
-                    }
-                    else{
                         DataSet dataSet = new DataLoader().loadDataFile(directoryPath + fileName);
-                        addDataSet(dataSet);
-                    }
+                        if(fileName.contains("Tube"))
+                            addDataSet((TubeDataSet) dataSet);
+                        else
+                            addDataSet(dataSet);
                     
                 }
             }

@@ -37,8 +37,11 @@ public class DataLoader
             // the column labels for the data points.
             br.readLine();
             br.readLine();
-
-            DataSet dataSet = new DataSet(pollutant, year, metric, units);
+            DataSet dataSet;
+            if(fileName.contains("Tube"))
+                dataSet = new TubeDataSet(pollutant, year, metric, units);
+            else
+                dataSet = new DataSet(pollutant, year, metric, units);
             
             // read all the data lines
             String line;

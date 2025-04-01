@@ -12,7 +12,7 @@ import java.util.*;
  * @author Michael Kölling
  * @version 1.0
  */
-public class  TubeDataSet
+public class  TubeDataSet extends DataSet
 {
     private String pollutant;
     private String year;
@@ -26,53 +26,11 @@ public class  TubeDataSet
      */
     public TubeDataSet(String pollutant, String year, String metric, String units)
     {
-        this.pollutant = pollutant;
-        this.year = year;
-        this.metric = metric;
-        this.units = units;
+        super(pollutant, year, metric, units);
         
         data = new ArrayList<TubeDataPoint>();
     }
-
-    /**
-     * Return the pollutant information for this dataset.
-     */
-    public String getPollutant()
-    {
-        return pollutant;
-    }
     
-    /**
-     * Return the year information for this dataset.
-     */
-    public String getYear()
-    {
-        return year;
-    }
-    
-    /**
-     * Return the metric information for this dataset.
-     */
-    public String getMetric()
-    {
-        return metric;
-    }
-    
-    /**
-     * Return the units information for this dataset.
-     */
-    public String getUnits()
-    {
-        return units;
-    }
-    
-    /**
-     * Return the data points of this dataset.
-     */
-    public List<TubeDataPoint> getData()
-    {
-        return data;
-    }
 
     public TubeDataPoint findStationData(String station) {
         for (TubeDataPoint dp : data) {
@@ -104,42 +62,5 @@ public class  TubeDataSet
                                toDouble(values[5]))); 
     }
     
-    /**
-     * Convert a string to int. 
-     * @param intString  The String holding the int value
-     * @return  The int value, or -1 if the string is not a readable number
-     */
-    private int toInt(String intString)
-    {
-        try {
-            return Integer.parseInt(intString);
-        }
-        catch (NumberFormatException exc) {
-            return -1;
-        }
-    }
 
-    /**
-     * Convert a string to double. 
-     * @param doubleString  The String holding the double value
-     * @return  The double value, or -1.0 if the string is not a readable number
-     */
-    private double toDouble(String doubleString)
-    {
-        try {
-            return Double.parseDouble(doubleString);
-        }
-        catch (NumberFormatException exc) {
-            return -1.0;
-        }
-    }
-
-    /**
-     * Return a string representation of this dataset info.
-     */
-    public String toString()
-    {
-        return String.format("Dataset: Pollutant: %s, Year: %s, Metric: %s, Units: %s (%d data points)",
-                             pollutant, year, metric, units, data.size());
-    }
 }

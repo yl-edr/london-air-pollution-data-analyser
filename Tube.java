@@ -1,11 +1,13 @@
 import java.util.List;
 
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
 public class Tube {
     private DataAggregator dataAggregator;
@@ -21,8 +23,8 @@ public class Tube {
     private ErrorHandler errorHandler;
     private VBox journeyInfoContainer;
     private Label journeyLabel;
-    private Label journeyDetailsLabel;
     private TextArea journeyDetailsText;
+    private Button viewDetailsButton;
     
 
     public Tube(DataAggregator dataAggregator, ErrorHandler errorHandler) {
@@ -59,9 +61,11 @@ public class Tube {
 
         Label startStnLabel = new Label("Enter Starting Station:");
         TextField startStnText = new TextField();
+        startStnText.setMaxWidth(150);
         startStnText.setPromptText("Type Station Name");
         Label endStnLabel = new Label("Enter End Station:");
         TextField endStnText = new TextField();
+        endStnText.setMaxWidth(150);
         endStnText.setPromptText("Type Station Name");
 
         Button button = new Button("Check Journey");
@@ -75,6 +79,10 @@ public class Tube {
             submitAction(startStnText, endStnText);
         });
         
+        viewDetailsButton = new Button("View Journey Details");
+        viewDetailsButton.setVisible(false); // Hidden initially
+        viewDetailsButton.setOnAction(e -> showJourneyDetailsPopup());
+
 
         journeyInfoContainer = new VBox(10);
         journeyInfoContainer.setPadding(new Insets(10));
@@ -85,7 +93,6 @@ public class Tube {
         journeyLabel.setWrapText(true);
         journeyLabel.setPadding(new Insets(10));
 
-        journeyDetailsLabel = new Label("Journey Details:");
         journeyDetailsText = new TextArea();
         journeyDetailsText.setEditable(false);
         journeyDetailsText.setWrapText(true);
@@ -100,7 +107,9 @@ public class Tube {
         rightBar.add(endStnText, 0, 3);
         rightBar.add(button, 0, 4);
         rightBar.add(journeyLabel, 0, 6);
-
+        rightBar.add(viewDetailsButton, 0, 7);
+        
+        GridPane.setMargin(viewDetailsButton, new Insets(10, 0, 0, 0));
         GridPane.setMargin(startStnLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(startStnText, new Insets(0, 0, 10, 0));
         GridPane.setMargin(endStnLabel, new Insets(10, 0, 0, 0));
@@ -121,12 +130,8 @@ public class Tube {
         }
         startStn = startStn.replaceAll("and", "&").replace("'", "");
         endStn = endStn.replaceAll("and", "&").replace("'", "");
-        System.out.println("User typed: " + startStn+" to "+endStn);
-        System.out.println("You started at "+getTubeDataSet().findStationData(startStn.trim()));
-        System.out.println("You finished at "+getTubeDataSet().findStationData(endStn.trim()));
-        System.out.println(tubeSystem.calculateJourney(startStn, endStn));
-        System.out.println("--------------------");
         convertToDataPoints();
+        viewDetailsButton.setVisible(true);
     }
 
     public void printData() {
@@ -136,28 +141,50 @@ public class Tube {
         return dataAggregator.getTubeDataSet();
     }
 
+    private void showJourneyDetailsPopup() {
+        Stage popupStage = new Stage();
+        popupStage.setTitle("Journey Details");
+
+        VBox popupLayout = new VBox(10);
+        popupLayout.setPadding(new Insets(10));
+
+        TextArea journeyTextArea = new TextArea(journeyDetailsText.getText());
+        journeyTextArea.setEditable(false);
+        journeyTextArea.setWrapText(true);
+        //journeyTextArea.setPrefHeight()
+        journeyTextArea.setPrefSize(400, 300);
+
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> popupStage.close());
+
+        popupLayout.getChildren().addAll(journeyTextArea, closeButton);
+
+        Scene popupScene = new Scene(popupLayout, 420, 350);
+        popupStage.setScene(popupScene);
+        popupStage.show();
+    }
+
     private void convertToDataPoints(){
         List<String> journey = tubeSystem.calculateJourney(startStn, endStn);
         double totalBG = 0;
         double totalOG = 0;
-        String journeyDetails = "";
+        String journeyDetails = "Your journey goes through*: \n";
+        journeyDetails +="------------------------------\n";
         for (String station : journey) {
             TubeDataPoint tdp = getTubeDataSet().findStationData(station);
             totalBG += tdp.tubeData();
             totalOG += tdp.streetData();
-            journeyDetails += station + " - " + tdp.tubeData() + "\n";
-            System.out.println(station + " " + tdp.tubeData());
+            journeyDetails += station + " (" + tdp.tubeData() +"ug m^3 PM2.5)" + "\n";
         }
+        journeyDetails +="------------------------------\n";
         journeyDetails += "Average pollution below ground: " + ((int)(totalBG * 100)/100)/journey.size() + "\n";
         journeyDetails += "Average pollution on street level: " + (Math.round(totalOG * 100)/100)/journey.size();
+        journeyDetails += "\n\n**Note: The data is an estimate taken from a research made in 2020 for PM2.5 pollution leveles in selected stations around London.";
+        journeyDetails += "\nThe research can be found in this link: https://content.tfl.gov.uk/dust-monitoring-lu-stations.pdf";
         journeyLabel.setText("By taking the Tube you will be exposed to " +Math.round(totalBG/(Math.round(totalOG * 100)/100)) + " times more PM2.5 compared to street level." + "\n");
 
         journeyDetailsText.setText(journeyDetails);
-        System.out.println("Total: " + totalBG);
-        System.out.println("Average pollution below ground" + totalBG/journey.size());
         journeyLabel.setVisible(true);
-        journeyDetailsLabel.setVisible(false);
-        journeyDetailsText.setVisible(false);
         journeyInfoContainer.setVisible(true);
     }
 
