@@ -13,9 +13,11 @@ public class AppWindow extends Application {
 
     private Tab londonTab;
     private Tab statsTab;
-    private Tab manchesterTab;
+    private static Tab UKTab;
+    private Tab tubeTab;
 
     private DataAggregator dataAggregator;
+    private DataAggregator tubeDataAggregator;
 
     @Override
     public void start(Stage stage) {
@@ -24,31 +26,36 @@ public class AppWindow extends Application {
 
     private void createTabPane() {
         tabPane = new TabPane();
-        tabPane.getStyleClass().add("tabPane");
 
         londonTab = new Tab("London Map");
         londonTab.setClosable(false);
-        londonTab.getStyleClass().add("londonTab");
 
         statsTab = new Tab("Pollution Statistics");
         statsTab.setClosable(false);
-        statsTab.getStyleClass().add("statsTab");
+
+        UKTab = new Tab("UK Cities");
+        UKTab.setClosable(false);
+
+
+        tubeTab = new Tab("Tube Journey");
+        tubeTab.setClosable(false);
+
+        tabPane.getTabs().addAll(londonTab, statsTab, UKTab, tubeTab);
+
+        City londonTabAnchor = new City("London", dataAggregator);
+        londonTab.setContent(londonTabAnchor.getPane());
 
         PollutionStatistics statsContent = new PollutionStatistics(dataAggregator);
         statsTab.setContent(statsContent.getBorderPane());
 
-        manchesterTab = new Tab("UK Cities");
-        manchesterTab.setClosable(false);
-        manchesterTab.getStyleClass().add("citiesTab");
+        City UKcities = new City("Manchester", dataAggregator);
+        UKTab.setContent(UKcities.getPane());
 
-        tabPane.getTabs().addAll(londonTab, statsTab, manchesterTab);
-
-        City londonTabAnchor = new LondonTab(dataAggregator);
-        londonTab.setContent(londonTabAnchor.getPane());
-
-        City manchesterAnchor = new Manchester(dataAggregator);
-        manchesterTab.setContent(manchesterAnchor.getPane());
+        Tube tube = new Tube(tubeDataAggregator, message ->
+                new Alert(Alert.AlertType.ERROR, message).showAndWait());
+        tubeTab.setContent(tube.getPane());
     }
+
     public void createWelcomePanel(Stage stage) {
         welcomePanel = new WelcomePanel();
         welcomePanel.createWelcomePanel(new Stage());
@@ -59,6 +66,7 @@ public class AppWindow extends Application {
         root = new BorderPane();
         root.getStyleClass().add("initialPanel");
         dataAggregator = new DataAggregator();
+        tubeDataAggregator = new DataAggregator();
         createTabPane();
         root.setCenter(tabPane);
 
@@ -82,6 +90,7 @@ public class AppWindow extends Application {
                 dataAggregator.processDirectory("UKAirPollutionData/NO2/");
                 dataAggregator.processDirectory("UKAirPollutionData/pm10/");
                 dataAggregator.processDirectory("UKAirPollutionData/pm2.5/");
+                tubeDataAggregator.processDirectory("UKAirPollutionData/Tube/");
                 return null;
             }
 
@@ -91,5 +100,9 @@ public class AppWindow extends Application {
         };
 
         new Thread(dataLoadingTask).start();
+    }
+    public static void setUKCities(City ukCities) {
+        UKTab.setContent(ukCities.getPane());
+
     }
 }

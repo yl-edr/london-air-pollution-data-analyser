@@ -1,7 +1,6 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -27,13 +26,7 @@ public class MapImage {
     // private static final int MIN_Y = 193305;
     // private static final int MAX_Y = 168504;
 
-    private static final HashMap<String, int[]> CITY_BOUNDARIES = new HashMap<>();
-
-    static {
-        // Add boundaries for different cities (adjust values as needed)
-        CITY_BOUNDARIES.put("London", new int[]{510394, 554000, 168000, 194000});
-        CITY_BOUNDARIES.put("Manchester", new int[]{376000, 390901, 393400, 401667});
-    }
+    private static final HashMap<String, int[]> CITY_BOUNDARIES = City.getCitiesBoundaries();
 
     /**
      * Constructs a new MapImage for the specified city and image file.
@@ -47,6 +40,29 @@ public class MapImage {
 
     public MapImage(String city, String fileName) {
         bounds = CITY_BOUNDARIES.get(city);
+        try {
+            FileInputStream input = new FileInputStream(fileName);
+            baseImage = new Image(input);
+
+            // make a duplicate blank image with same dimensions as base image
+            colourImage = new WritableImage(
+                    (int)baseImage.getWidth(),
+                    (int)baseImage.getHeight()
+            );
+
+            PixelWriter writer = colourImage.getPixelWriter();
+            int blankArgb = 0xFF << 24; // ARGB is a 32-bit integer, with 8 bits for each of the four components (alpha, r, g, b), so bitshift FF by 24 to set alpha to full and set the rest to 0
+            for (int y = 0; y < baseImage.getHeight(); y++) {
+                for (int x = 0; x < baseImage.getWidth(); x++) {
+                    writer.setArgb(x, y, blankArgb);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error loading image: " + e.getMessage());
+        }
+    }
+
+    public MapImage(String fileName) {
         try {
             FileInputStream input = new FileInputStream(fileName);
             baseImage = new Image(input);

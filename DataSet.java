@@ -138,7 +138,7 @@ public class  DataSet
      * @param intString  The String holding the int value
      * @return  The int value, or -1 if the string is not a readable number
      */
-    private int toInt(String intString)
+    protected int toInt(String intString)
     {
         try {
             return Integer.parseInt(intString);
@@ -153,7 +153,7 @@ public class  DataSet
      * @param doubleString  The String holding the double value
      * @return  The double value, or -1.0 if the string is not a readable number
      */
-    private double toDouble(String doubleString)
+    protected double toDouble(String doubleString)
     {
         try {
             return Double.parseDouble(doubleString);

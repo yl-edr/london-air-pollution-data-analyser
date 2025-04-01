@@ -1,3 +1,7 @@
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,18 +12,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/**
- * The City abstract class represents a city with an associated map and environmental data.
- * It provides a graphical user interface to display the city map, allow pollutant and year
- * selections, and present data statistics based on user interaction.
- *
- * The class handles creating the view, tracking mouse events, updating overlays, and displaying
- * detailed information about selected data points.
- *
- * @author Nicolás Alcalá Olea, Anton Davidouski, Rom Steinberg, Yaal Edrey Gatignol
- */
-
-public abstract class City {
+public class City {
 
     private DataAggregator dataAggregator;
     private DataSet selectedDataSet;
@@ -27,18 +20,31 @@ public abstract class City {
     private Image mapImage;
     private ImageView mapView;
     private AnchorPane anchorPane;
+    private GridPane rightBar;
     private double mapImageAspectRatio;
     private Label dataPointValue;
     private Label gridCodeValue;
     private Label xValue;
     private Label yValue;
     private String pollutantSelected;
+    private ComboBox<String> cityComboBox;
+    private ComboBox<String> yearComboBox;
+    private ComboBox<String> pollutantComboBox;
     private String yearSelected;
     private BorderPane borderPane;
-    private String name;
-    private int[] bounds;
+    protected String name;
     private Label lowLabel;
     private Label highLabel;
+    private static final HashMap<String, int[]> CITY_BOUNDARIES = new HashMap<>();
+
+    static {
+        // Add boundaries for different cities (adjust values as needed)
+        CITY_BOUNDARIES.put("London", new int[]{510394, 554000, 168000, 194000, 1});
+        CITY_BOUNDARIES.put("Manchester", new int[]{376000, 390901, 393400, 401667, 3});
+        CITY_BOUNDARIES.put("Edinburgh", new int[]{317339, 331640, 668176, 676443, 3});
+        CITY_BOUNDARIES.put("Birmingham", new int[]{401000, 415930, 282200, 290530, 3});
+        CITY_BOUNDARIES.put("Leeds", new int[]{421070, 436570, 430350, 438580, 3});
+    }
 
     private int mouseX;
     private int mouseY;
@@ -48,14 +54,12 @@ public abstract class City {
      * data aggregator for retrieving a data set of the cities pollution.
      *
      * @param cityName       the name of the city
-     * @param bounds         an array representing the bounds of the city
      * @param dataAggregator the data aggregator instance used to retrieve a data set of the cities pollution
      */
 
-    public City(String cityName, int[] bounds, DataAggregator dataAggregator) {
+    public City(String cityName, DataAggregator dataAggregator) {
         this.dataAggregator = dataAggregator;
         this.name = cityName;
-        this.bounds = bounds;
         create(name);
         trackMouseLocation();
     }
@@ -92,19 +96,25 @@ public abstract class City {
         BorderPane.setMargin(anchorPane, new Insets(5,0,5,5));
         borderPane.getStyleClass().add("borderPane");
 
-        GridPane rightBar = new GridPane();
+        rightBar = new GridPane();
         rightBar.setPadding(new Insets(10));
-        rightBar.setPrefWidth(264);
+        rightBar.setPrefWidth(250);
         rightBar.setMinWidth(150);
         rightBar.setMaxWidth(300);
         rightBar.getStyleClass().add("rightBar");
 
+        if(!name.equals("London")){
+            createCitySelector();
+        }
+
         Label pollutantLabel = new Label("Choose a pollutant:");
         pollutantLabel.getStyleClass().add("pollutantLabel");
-        ComboBox<String> pollutantComboBox = new ComboBox<>();
+        pollutantComboBox = new ComboBox<>();
+        pollutantComboBox = new ComboBox<>();
         pollutantComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     pollutantSelected = newValue;
+                    pollutantComboBox.setPromptText(pollutantSelected);
                     updateColourMap();
                 });
         pollutantComboBox.setPromptText("Pollutant");
@@ -113,10 +123,11 @@ public abstract class City {
 
         Label yearLabel = new Label("Choose a year:");
         yearLabel.getStyleClass().add("yearLabel");
-        ComboBox<String> yearComboBox = new ComboBox<>();
+        yearComboBox = new ComboBox<>();
         yearComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     yearSelected = newValue;
+                    yearComboBox.setPromptText(yearSelected);
                     updateColourMap();
                 });
         yearComboBox.setPromptText("Year");
@@ -125,11 +136,9 @@ public abstract class City {
 
         Button predictionButton = new Button("Predict");
         predictionButton.setOnAction(event -> {
-            // Create a new modal stage for the pop-up
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
 
-            // Create UI elements for the pop-up
             Label instructionLabel = new Label("Please enter a year (2024 - 2030):");
             TextField yearInputField = new TextField();
             yearInputField.setPromptText("Year");
@@ -141,12 +150,10 @@ public abstract class City {
             okButton.getStyleClass().add("okButton");
             cancelButton.getStyleClass().add("cancelButton");
 
-            // Layout for buttons
             HBox buttons = new HBox(10, okButton, cancelButton);
             buttons.setAlignment(Pos.CENTER);
             buttons.getStyleClass().add("buttons");
 
-            // Main layout for the pop-up
             VBox vbox = new VBox(10, instructionLabel, yearInputField, buttons);
             vbox.setAlignment(Pos.CENTER);
             vbox.setPadding(new Insets(10));
@@ -156,17 +163,14 @@ public abstract class City {
             dialogStage.setScene(dialogScene);
             dialogStage.getScene().getStylesheets().add("style.css");
 
-            // Action for OK button
             okButton.setOnAction(e -> {
                 String inputYear = yearInputField.getText().trim();
                 try {
                     int year = Integer.parseInt(inputYear);
                     if (year < 2024 || year > 2030) {
-                        // Year is out of the valid range; show error message
                         Alert alert = new Alert(Alert.AlertType.ERROR, "Year must be between 2024 and 2030.");
                         alert.showAndWait();
                     } else {
-                        // Valid year entered, store in yearSelected
                         if (!yearComboBox.getItems().contains(inputYear)) {
                             yearComboBox.getItems().add(inputYear);
                         }
@@ -174,19 +178,17 @@ public abstract class City {
                         new Prediction(dataAggregator, inputYear);
                     }
                 } catch (NumberFormatException ex) {
-                    // Non-numeric input; show error message
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input. Please enter a valid year.");
                     alert.showAndWait();
                 }
             });
 
-            // Action for Cancel button
             cancelButton.setOnAction(e -> dialogStage.close());
 
-            // Show the dialog and wait until it is closed before returning to the caller
             dialogStage.showAndWait();
         });
         predictionButton.getStyleClass().add("predictButton");
+
 
         Label dataPointLabel = new Label("Value: ");
         dataPointValue = new Label("Select a year and pollutant");
@@ -217,17 +219,17 @@ public abstract class City {
             updateStats();
         });
 
-        rightBar.add(pollutantLabel, 0, 0);
-        rightBar.add(pollutantComboBox, 0, 1);
-        rightBar.add(yearLabel, 0, 2);
-        rightBar.add(yearComboBox, 0, 3);
-        rightBar.add(predictionButton, 0, 4);
-        rightBar.add(dataPointLabel, 0, 5);
-        rightBar.add(dataPointValue, 0, 6);
-        rightBar.add(gridCodeLabel, 0, 7);
-        rightBar.add(gridCodeValue, 0, 8);
-        rightBar.add(xValue, 0, 9);
-        rightBar.add(yValue, 0, 10);
+        rightBar.add(pollutantLabel, 0, 2);
+        rightBar.add(pollutantComboBox, 0, 3);
+        rightBar.add(yearLabel, 0, 4);
+        rightBar.add(yearComboBox, 0, 5);
+        rightBar.add(predictionButton, 0, 6);
+        rightBar.add(dataPointLabel, 0, 8);
+        rightBar.add(dataPointValue, 0, 9);
+        rightBar.add(gridCodeLabel, 0, 10);
+        rightBar.add(gridCodeValue, 0, 11);
+        rightBar.add(xValue, 0, 12);
+        rightBar.add(yValue, 0, 13);
 
         GridPane.setMargin(yearLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(yearComboBox, new Insets(0, 0, 10, 0));
@@ -246,8 +248,6 @@ public abstract class City {
         aqiBarContainer.setPrefHeight(50);
         aqiBarContainer.setMinHeight(30);
         aqiBarContainer.setMaxHeight(80);
-        //aqiBarContainer.setPadding(new Insets(10));
-        //BorderPane.setMargin(aqiBarContainer, new Insets(10));
         aqiBarContainer.getStyleClass().add("aqiBarContainer");
 
         lowLabel = new Label("GOOD");
@@ -273,24 +273,29 @@ public abstract class City {
         aqiBarContainer.getChildren().addAll(lowLabel, aqiStack, highLabel);
         borderPane.setBottom(aqiBarContainer);
     }
-
+    public GridPane getRightBar() {
+        return rightBar;
+    }
     /**
      * Updates the displayed statistics based on the current mouse position on the map.
      * It calculates the corresponding coordinates in the dataset using the current map view
      * dimensions and updates the UI labels with the nearest data point's value and grid code.
      */
 
+
+
     public void updateStats(){
         if (selectedDataSet == null) {
             return;
         }
+        int[] bounds = CITY_BOUNDARIES.get(name);
         int[] imageDimensions = convertMapViewDimensionsToImageDimensions((int) mapView.getFitWidth(), (int) mapView.getFitHeight());
         int imageWidth = imageDimensions[0];
         int imageHeight = imageDimensions[1];
         int x = (int) ((mouseX / (double) imageWidth) * (bounds[1] - bounds[0]) + bounds[0]);
-        int y = (int) (bounds[3] - ((mouseY / (double) imageHeight) * (bounds[3] - bounds[2])));
+        int y = (int) (bounds[2] - ((mouseY / (double) imageHeight) * (bounds[2] - bounds[3])));
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
-        dataPointValue.setText(nearestDataPoint.value() + " µg/m³");
+        dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
     }
 
@@ -321,14 +326,16 @@ public abstract class City {
         map.resetOverlay();
         for (DataPoint dataPoint : selectedDataSet.getData()) {
             if (dataPoint.value() > 0) {
-                map.processDataPoint(dataPoint, selectedDataSet.getMin(), selectedDataSet.getMax(),bounds[4]);
+                map.processDataPoint(dataPoint, selectedDataSet.getMin(), selectedDataSet.getMax(),CITY_BOUNDARIES.get(name)[4]);
             }
         }
         map.applyBlur(60);
         Image mapImage = map.getCombined();
         mapView.setImage(mapImage);
     }
-
+    public static HashMap<String, int[]> getCitiesBoundaries() {
+        return CITY_BOUNDARIES;
+    }
     /**
      * Converts the given dimensions of the map view to the corresponding dimensions of the underlying map image.
      *
@@ -336,6 +343,8 @@ public abstract class City {
      * @param y the height of the map view
      * @return an array of two integers where index 0 is the calculated image width and index 1 is the image height
      */
+
+
 
     public int[] convertMapViewDimensionsToImageDimensions(int x, int y) {
         double providedAspectRatio = (double) x / y;
@@ -359,6 +368,7 @@ public abstract class City {
     private void trackMouseLocation() {
         mapView.setOnMouseClicked(event -> {
             if (selectedDataSet != null) {
+                int[] bounds = CITY_BOUNDARIES.get(name);
                 int[] imageDimensions = convertMapViewDimensionsToImageDimensions((int) mapView.getFitWidth(), (int) mapView.getFitHeight());
                 int imageWidth = imageDimensions[0];
                 int imageHeight = imageDimensions[1];
@@ -370,11 +380,60 @@ public abstract class City {
         });
     }
 
+    public void createCitySelector() {
+        Label cityLabel = new Label("Choose a city:");
+        cityComboBox = new ComboBox<>();
+        cityComboBox.setPromptText(name);
+
+        Set<String> cities = new HashSet<>(CITY_BOUNDARIES.keySet());
+        cities.remove("London"); // Remove London from the list
+        cities.remove(name); // Remove the current city from the list
+        cityComboBox.getItems().addAll(cities);
+        cityComboBox.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    updateCity(newValue);
+                    updateColourMap();
+                    if(yearSelected != null)
+                        yearComboBox.setPromptText(yearSelected);
+                    if(pollutantSelected != null)
+                        pollutantComboBox.setPromptText(pollutantSelected);
+                });
+        GridPane.setMargin(cityComboBox, new Insets(0, 0, 10, 0));
+        getRightBar().add(cityLabel, 0, 0);
+        getRightBar().add(cityComboBox, 0, 1);
+    }
+
+    private void updateCity(String cityName) {
+        // Update city name
+        switch (cityName) {
+            case "Manchester":
+                this.name = "Manchester";
+                break;
+            case "Edinburgh":
+                this.name = "Edinburgh";
+                break;
+            case "Birmingham":
+                this.name = "Birmingham";
+                break;
+            case "Leeds":
+                this.name = "Leeds";
+                break;
+
+            default:
+                break;
+        }
+        create(name);
+        trackMouseLocation();
+        AppWindow.setUKCities(this);
+
+    }
     /**
      * Displays an informational alert dialog with details about the specified data point.
      *
      * @param dataPoint the data point whose information is to be displayed
      */
+
+
 
     private void showDataPointInfo(DataPoint dataPoint) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -393,4 +452,7 @@ public abstract class City {
     public DataAggregator getDataAggregator() {
         return dataAggregator;
     }
+
+    
+
 }
