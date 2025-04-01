@@ -73,6 +73,8 @@ public abstract class City {
         mapView.setSmooth(true);
         mapView.setFitWidth(500);
         mapImageAspectRatio = mapImage.getWidth() / mapImage.getHeight();
+        mapView.getStyleClass().add("mapImage");
+
 
         anchorPane = new AnchorPane();
         anchorPane.getChildren().add(mapView);
@@ -80,17 +82,22 @@ public abstract class City {
         anchorPane.setMinHeight(300);
         mapView.fitWidthProperty().bind(anchorPane.widthProperty());
         mapView.fitHeightProperty().bind(anchorPane.heightProperty());
+        anchorPane.getStyleClass().add("anchorPane");
 
         borderPane = new BorderPane();
         borderPane.setCenter(anchorPane);
+        BorderPane.setMargin(anchorPane, new Insets(5,0,5,5));
+        borderPane.getStyleClass().add("borderPane");
 
         GridPane rightBar = new GridPane();
         rightBar.setPadding(new Insets(10));
-        rightBar.setPrefWidth(250);
+        rightBar.setPrefWidth(264);
         rightBar.setMinWidth(150);
         rightBar.setMaxWidth(300);
+        rightBar.getStyleClass().add("rightBar");
 
         Label pollutantLabel = new Label("Choose a pollutant:");
+        pollutantLabel.getStyleClass().add("pollutantLabel");
         ComboBox<String> pollutantComboBox = new ComboBox<>();
         pollutantComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -99,8 +106,10 @@ public abstract class City {
                 });
         pollutantComboBox.setPromptText("Pollutant");
         pollutantComboBox.getItems().addAll("pm2.5", "no2", "pm10");
+        pollutantComboBox.getStyleClass().add("pollutantComboBox");
 
         Label yearLabel = new Label("Choose a year:");
+        yearLabel.getStyleClass().add("yearLabel");
         ComboBox<String> yearComboBox = new ComboBox<>();
         yearComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -109,20 +118,39 @@ public abstract class City {
                 });
         yearComboBox.setPromptText("Year");
         yearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
+        yearComboBox.getStyleClass().add("yearComboBox");
+
+        Button predictionButton = new Button("Predict");
+        predictionButton.setOnAction(event -> {
+            if (!yearComboBox.getItems().contains("2024")) {
+                yearComboBox.getItems().add("2024");
+                new Prediction(dataAggregator);
+            }
+        });
+        predictionButton.getStyleClass().add("predictButton");
 
         Label dataPointLabel = new Label("Value: ");
-        dataPointValue = new Label("select a data point");
+        dataPointValue = new Label("Select a year and pollutant");
+        dataPointLabel.getStyleClass().add("dataPointLabel");
+        dataPointValue.getStyleClass().add("dataPointValue");
 
         Label gridCodeLabel = new Label("Grid Code: ");
-        gridCodeValue = new Label("select a data point");
+        gridCodeValue = new Label("Select a year and pollutant");
+        gridCodeLabel.getStyleClass().add("gridCodeLabel");
+        gridCodeValue.getStyleClass().add("gridCodeValue");
 
-        Label xLabel = new Label("X: ");
-        xValue = new Label("select a data point");
+        xValue = new Label();
+        xValue.getStyleClass().add("xValue");
 
-        Label yLabel = new Label("Y: ");
-        yValue = new Label("select a data point");
+        yValue = new Label();
+        yValue.getStyleClass().add("yValue");
+
+        xValue.setVisible(false);
+        yValue.setVisible(false);
 
         mapView.setOnMouseMoved(event -> {
+            xValue.setVisible(true);
+            yValue.setVisible(true);
             xValue.setText("X: " + (int) event.getX());
             yValue.setText("Y: " + (int) event.getY());
             mouseX = (int) event.getX();
@@ -134,25 +162,23 @@ public abstract class City {
         rightBar.add(pollutantComboBox, 0, 1);
         rightBar.add(yearLabel, 0, 2);
         rightBar.add(yearComboBox, 0, 3);
-        rightBar.add(dataPointLabel, 0, 4);
-        rightBar.add(dataPointValue, 0, 5);
-        rightBar.add(gridCodeLabel, 0, 6);
-        rightBar.add(gridCodeValue, 0, 7);
-        rightBar.add(xLabel, 0, 8);
+        rightBar.add(predictionButton, 0, 4);
+        rightBar.add(dataPointLabel, 0, 5);
+        rightBar.add(dataPointValue, 0, 6);
+        rightBar.add(gridCodeLabel, 0, 7);
+        rightBar.add(gridCodeValue, 0, 8);
         rightBar.add(xValue, 0, 9);
-        rightBar.add(yLabel, 0, 10);
-        rightBar.add(yValue, 0, 11);
+        rightBar.add(yValue, 0, 10);
 
         GridPane.setMargin(yearLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(yearComboBox, new Insets(0, 0, 10, 0));
+        GridPane.setMargin(predictionButton, new Insets(10, 0, 10, 0));
         GridPane.setMargin(dataPointLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(dataPointValue, new Insets(0, 0, 10, 0));
         GridPane.setMargin(gridCodeLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(gridCodeValue, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(xLabel, new Insets(10, 0, 0, 0));
-        GridPane.setMargin(xValue, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(yLabel, new Insets(10, 0, 0, 0));
-        GridPane.setMargin(yValue, new Insets(0, 0, 10, 0));
+        GridPane.setMargin(xValue, new Insets(20, 0, 10, 0));
+        GridPane.setMargin(yValue, new Insets(5, 0, 10, 0));
 
         borderPane.setRight(rightBar);
 
@@ -161,11 +187,16 @@ public abstract class City {
         aqiBarContainer.setPrefHeight(50);
         aqiBarContainer.setMinHeight(30);
         aqiBarContainer.setMaxHeight(80);
-        aqiBarContainer.setPadding(new Insets(10));
-        BorderPane.setMargin(aqiBarContainer, new Insets(10));
+        //aqiBarContainer.setPadding(new Insets(10));
+        //BorderPane.setMargin(aqiBarContainer, new Insets(10));
+        aqiBarContainer.getStyleClass().add("aqiBarContainer");
 
         lowLabel = new Label("GOOD");
+        lowLabel.getStyleClass().add("lowLabel");
+
         highLabel = new Label("POOR");
+        highLabel.getStyleClass().add("highLabel");
+
         lowLabel.setMinWidth(Region.USE_PREF_SIZE);
         highLabel.setMinWidth(Region.USE_PREF_SIZE);
 
@@ -198,7 +229,7 @@ public abstract class City {
         int imageWidth = imageDimensions[0];
         int imageHeight = imageDimensions[1];
         int x = (int) ((mouseX / (double) imageWidth) * (bounds[1] - bounds[0]) + bounds[0]);
-        int y = (int) (bounds[3] - ((mouseY / (double) imageHeight) * (bounds[2] - bounds[3])));
+        int y = (int) (bounds[3] - ((mouseY / (double) imageHeight) * (bounds[3] - bounds[2])));
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
         dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
@@ -225,8 +256,11 @@ public abstract class City {
             return;
         }
         selectedDataSet = dataAggregator.getCityDataSet(name,yearSelected, pollutantSelected);
-        lowLabel.setText(Double.toString(selectedDataSet.getMin()));
-        highLabel.setText(Double.toString(selectedDataSet.getMax()));
+        System.out.println(name);
+        System.out.println(yearSelected);
+        System.out.println(pollutantSelected);
+        lowLabel.setText(String.format("%.1f", selectedDataSet.getMin())+" MIN");
+        highLabel.setText(String.format("%.1f", selectedDataSet.getMax())+" MAX");
 
         map.resetOverlay();
         for (DataPoint dataPoint : selectedDataSet.getData()) {

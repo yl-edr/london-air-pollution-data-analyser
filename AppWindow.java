@@ -14,8 +14,8 @@ public class AppWindow extends Application {
     private Stage welcomeStage;
     private Tab londonTab;
     private Tab statsTab;
-    private Tab gridDataTab;
     private Tab manchesterTab;
+    private Tab predictionTab;
 
     private DataAggregator dataAggregator;
 
@@ -86,11 +86,12 @@ public class AppWindow extends Application {
 
     public void createInitialPanel(Stage stage) {
         root = new BorderPane();
+        root.getStyleClass().add("initialPanel");
         dataAggregator = new DataAggregator();
         createTabPane();
         root.setCenter(tabPane);
 
-        Scene scene = new Scene(root, 1150, 650);
+        Scene scene = new Scene(root, 1250, 700);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         stage.setTitle("London Air Pollution Data Viewer");

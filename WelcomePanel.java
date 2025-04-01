@@ -10,6 +10,7 @@ public class WelcomePanel {
 
     private BorderPane root;
 
+
     public void createWelcomePanel(Stage firstStage) {
         root = new BorderPane();
         root.getStyleClass().add("welcomePanel");
@@ -20,6 +21,8 @@ public class WelcomePanel {
         firstStage.setScene(scene);
         firstStage.setResizable(false);
         firstStage.show();
+
+        
 
         Label welcomeLabel = new Label("Welcome!");
         GridPane topBar = new GridPane();

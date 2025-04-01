@@ -20,7 +20,7 @@
 }
 
 .aqiBar {
-    -fx-background-color: linear-gradient(to right, #00FF00 0%, #FFFF00 50%, #FF4500 100%);
+    -fx-background-color: linear-gradient(to right, #00ff00 0%, #ffff00 50%, #ff4500 100%);
     -fx-background-radius: 40;
 }
 
@@ -30,41 +30,153 @@
 }
 
 .welcomePanel {
-    -fx-background-color: #7fc4d6;
+    -fx-background-color: #1098F7;
+    -fx-background-image: url("resources/welcomeImage.png"); /* adjust the path accordingly */
+    -fx-background-size: cover; /* or specify "contain", or specific dimensions */
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
 }
 
 .welcomeLabel {
     -fx-font-size: 80px;
     -fx-font-weight: bold;
-
     -fx-text-fill: #000000;
-
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 5, 0, 0, 2);
 }
 
 .informationLabel {
+    -fx-font-family: "AppleGothic", sans-serif;
     -fx-font-size: 20px;
-    -fx-font-weight: 600;
     -fx-padding: 0,0,50,0;
 }
 
 .continueButton {
-    -fx-background-color: linear-gradient(to bottom, #7bcbdd, #197a8c);
-
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #b1b1b1);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-
+    -fx-font-family: "AppleGothic", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 20px;
     -fx-font-weight: bold;
-
     -fx-padding: 10 20 10 20;
 }
 
 .continueButton:hover {
-    -fx-background-color: linear-gradient(to bottom, #29c8df, #065b67);
+    -fx-background-color: linear-gradient(to bottom, #d5d5d5, #959595);
 }
 
 .continueButton:pressed {
     -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
+.initialPanel {
+
+}
+
+.rightBar {
+    -fx-background-color: #DECCCC;
+}
+
+.aqiBarContainer {
+    -fx-background-color: #DECCCC;
+    -fx-padding: 10,0,10,0;
+}
+
+.anchorPane {
+    -fx-background-color: #DECCCC;
+    -fx-padding: 0 0 2 0;
+}
+
+.yearComboBox {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 17px;
+    -fx-font-weight: 600;
+    -fx-padding: 2 6 2 6;
+}
+.yearComboBox:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.yearComboBox:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
+.pollutantComboBox {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 17px;
+    -fx-font-weight: 600;
+    -fx-padding: 2 6 2 6;
+}
+.pollutantComboBox:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.pollutantComboBox:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
+.borderPane {
+    -fx-background-color: #DECCCC;
+}
+
+.pollutantLabel {
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-size: 16px;
+}
+
+.yearLabel {
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-size: 16px;
+}
+
+.predictButton {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-padding: 5 10 5 10;
+}
+.predictButton:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.predictButton:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
+.dataPointValue {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.dataPointLabel {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.gridCodeValue {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.gridCodeLabel {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.xValue {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.yValue {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.lowLabel {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.highLabel {
+    -fx-font-family: "AppleGothic", sans-serif;
 }

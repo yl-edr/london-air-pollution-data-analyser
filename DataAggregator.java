@@ -32,6 +32,7 @@ public class DataAggregator {
         for (String city : filteredDataSets.keySet()) {
             DataSet cityData = filteredDataSets.get(city);
             String key = generateKey(city, cityData.getYear(), cityData.getPollutant());
+            //System.out.println(key);
             citiesDataSets.put(key, cityData);
         }
     }
