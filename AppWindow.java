@@ -15,6 +15,7 @@ public class AppWindow extends Application {
     private Tab statsTab;
     private static Tab UKTab;
     private Tab tubeTab;
+    private Tab realTimeDataTab;
 
     private DataAggregator dataAggregator;
     private DataAggregator tubeDataAggregator;
@@ -54,6 +55,11 @@ public class AppWindow extends Application {
         Tube tube = new Tube(tubeDataAggregator, message ->
                 new Alert(Alert.AlertType.ERROR, message).showAndWait());
         tubeTab.setContent(tube.getPane());
+
+        realTimeDataTab = new Tab("Real Time Data");
+        RealTimeDataTab realTimeDataTabAnchor = new RealTimeDataTab();
+        realTimeDataTab.setContent(realTimeDataTabAnchor.getPane());
+
     }
 
     public void createWelcomePanel(Stage stage) {

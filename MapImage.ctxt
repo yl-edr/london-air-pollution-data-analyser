@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=MapImage
+comment0.text=\n\ Holds\ the\ map\ image\ and\ has\ methods\ to\ add\ coloured\ data\ points\ to\ it\n\ @author\ Anton\ Davidouski\n\ @version\ 1.0\n
+comment1.params=fileName
+comment1.target=MapImage(java.lang.String)
+comment2.params=
+comment2.target=javafx.scene.image.Image\ getImage()
+comment3.params=dataPoint\ min\ max
+comment3.target=void\ processDataPoint(DataPoint,\ double,\ double)
+comment4.params=startX\ startY\ width\ height\ dataPercentage
+comment4.target=void\ placeOverlayBlock(int,\ int,\ int,\ int,\ double)
+comment4.text=\n\ Place\ a\ colour\ block\ on\ the\ overlay\ colour\ image\ at\ full\ opacity.\n\ @param\ startX\ The\ x-coordinate\ of\ the\ top-left\ corner\ of\ the\ block\n\ @param\ startY\ The\ y-coordinate\ of\ the\ top-left\ corner\ of\ the\ block\n\ @param\ width\ The\ width\ of\ the\ block\n\ @param\ height\ The\ height\ of\ the\ block\n\ @param\ dataPercentage\ The\ data\ points\ location\ in\ the\ colour\ spectrum\ as\ a\ percentage\ relative\ to\ min\ and\ max\ values.\ Used\ tio\ determine\ the\ colour\ of\ the\ block.\n
+comment5.params=
+comment5.target=javafx.scene.image.Image\ getCombined()
+comment5.text=\n\ Combine\ the\ base\ image\ with\ the\ overlay\ image,\ creating\ the\ map\ with\ pollution\ data\ added\ to\ it.\n\ @return\ The\ combined\ image\ which\ can\ be\ added\ to\ the\ IMageView\n
+comment6.params=radius
+comment6.target=void\ applyBlur(int)
+comment7.params=radius
+comment7.target=javafx.scene.image.WritableImage\ applyHorizontalBlur(int)
+comment8.params=source\ radius
+comment8.target=javafx.scene.image.WritableImage\ applyVerticalBlur(javafx.scene.image.WritableImage,\ int)
+numComments=9

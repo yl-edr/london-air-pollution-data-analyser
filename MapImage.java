@@ -1,16 +1,14 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
 /**
- * The MapImage class manages a base map image and an overlay image that is used to add
- * colored data points representing pollution data. It provides functionality to process data points,
- * blend the overlay with the base image, apply blur effects to the overlay, and reset the overlay.
- *
+ * Holds the map image and has methods to add coloured data points to it
  * @author Anton Davidouski
  * @version 1.0
  */
@@ -27,16 +25,6 @@ public class MapImage {
     // private static final int MAX_Y = 168504;
 
     private static final HashMap<String, int[]> CITY_BOUNDARIES = City.getCitiesBoundaries();
-
-    /**
-     * Constructs a new MapImage for the specified city and image file.
-     *
-     * It initializes the base image from the file and creates a duplicate blank overlay image with the
-     * same dimensions as the base image. The overlay image is filled with an ARGB value.
-     *
-     * @param city     the name of the city (used to look up boundaries)
-     * @param fileName the path to the image file for the base map
-     */
 
     public MapImage(String city, String fileName) {
         bounds = CITY_BOUNDARIES.get(city);
@@ -94,17 +82,6 @@ public class MapImage {
     public Image getImage() {
         return baseImage;
     }
-
-    /**
-     * Processes a data point by converting its geographic coordinates to image coordinates and placing
-     * a colored overlay block on the overlay image. The color is determined based on the data value's
-     * relative position between the provided minimum and maximum values.
-     *
-     * @param dataPoint the data point to process
-     * @param min       the minimum data value
-     * @param max       the maximum data value
-     * @param ratio     a scaling factor used to adjust the size of the overlay block
-     */
 
     public void processDataPoint(DataPoint dataPoint, double min, double max, int ratio) {
         double dataPercentage = (dataPoint.value() - min) / (max - min);
@@ -203,27 +180,11 @@ public class MapImage {
         return newImage;
     }
 
-    /**
-     * Applies a blur effect to the overlay image.
-     *
-     * First, a horizontal blur is applied; then a vertical blur is applied to the result.
-     * The blur radius determines the extent of the blur effect.
-     *
-     * @param radius the radius of the blur effect to be applied
-     */
-
     public void applyBlur(int radius) {
         WritableImage horizontalBlur = applyHorizontalBlur(radius);
         WritableImage verticalBlur = applyVerticalBlur(horizontalBlur, radius);
         colourImage = verticalBlur;
     }
-
-    /**
-     * Applies a horizontal blur to the overlay image.
-     *
-     * @param radius the radius of the blur effect horizontally
-     * @return a new WritableImage containing the horizontally blurred image
-     */
 
     private WritableImage applyHorizontalBlur(int radius) {
         int width = (int) colourImage.getWidth();
@@ -278,14 +239,6 @@ public class MapImage {
         return result;
     }
 
-    /**
-     * Applies a vertical blur to the provided image.
-     *
-     * @param source the source WritableImage to which the vertical blur will be applied
-     * @param radius the radius of the blur effect vertically
-     * @return a new WritableImage containing the vertically blurred image
-     */
-
     private WritableImage applyVerticalBlur(WritableImage source, int radius) {
         int width = (int) source.getWidth();
         int height = (int) source.getHeight();
@@ -336,12 +289,6 @@ public class MapImage {
         }
         return result;
     }
-
-    /**
-     * Resets the overlay image by filling it with a blank ARGB value.
-     *
-     * This effectively clears any previously added color overlays, restoring the overlay to its initial state.
-     */
 
     public void resetOverlay() {
         PixelWriter writer = colourImage.getPixelWriter();
