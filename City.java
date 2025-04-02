@@ -44,6 +44,7 @@ public class City {
         CITY_BOUNDARIES.put("Edinburgh", new int[]{317339, 331640, 668176, 676443, 3});
         CITY_BOUNDARIES.put("Birmingham", new int[]{401000, 415930, 282200, 290530, 3});
         CITY_BOUNDARIES.put("Leeds", new int[]{421070, 436570, 430350, 438580, 3});
+        CITY_BOUNDARIES.put("Bristol", new int[]{354400, 369550, 169150, 177650, 3});
     }
 
     private int mouseX;
@@ -425,6 +426,9 @@ public class City {
                 break;
             case "Leeds":
                 this.name = "Leeds";
+                break;
+            case "Bristol":
+                this.name = "Bristol";
                 break;
 
             default:
