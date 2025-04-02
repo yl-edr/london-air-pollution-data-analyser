@@ -270,6 +270,10 @@ public class Chart {
         }
     }
 
+    public ChartType getCurrentChartType() {
+        return currentChartType;
+    }
+
     public Pane getChartBox() {
         return chartContainer;
     }
