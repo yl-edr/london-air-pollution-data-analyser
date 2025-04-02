@@ -60,12 +60,18 @@ public class Tube {
         TextField startStnText = new TextField();
         startStnText.setMaxWidth(150);
         startStnText.setPromptText("Type Station Name");
+        startStnLabel.getStyleClass().add("startStnLabel");
+        startStnText.getStyleClass().add("startStnText");
+
         Label endStnLabel = new Label("Enter End Station:");
         TextField endStnText = new TextField();
         endStnText.setMaxWidth(150);
         endStnText.setPromptText("Type Station Name");
+        endStnLabel.getStyleClass().add("endStnLabel");
+        endStnText.getStyleClass().add("endStnText");
 
         Button button = new Button("Check Journey");
+        button.getStyleClass().add("checkButton");
 
         borderPane.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
