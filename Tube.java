@@ -1,5 +1,4 @@
 import java.util.List;
-
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,7 +14,6 @@ public class Tube {
     private Image mapImage;
     private ImageView mapView;
     private AnchorPane anchorPane;
-    private double mapImageAspectRatio;
     private BorderPane borderPane;
     private String endStn;
     private String startStn;
@@ -41,7 +39,6 @@ public class Tube {
         mapView.setPreserveRatio(true);
         mapView.setSmooth(true);
         mapView.setFitWidth(500);
-        mapImageAspectRatio = mapImage.getWidth() / mapImage.getHeight();
 
         anchorPane = new AnchorPane();
         anchorPane.getChildren().add(mapView);
@@ -108,7 +105,6 @@ public class Tube {
         rightBar.add(button, 0, 4);
         rightBar.add(journeyLabel, 0, 6);
         rightBar.add(viewDetailsButton, 0, 7);
-        
         GridPane.setMargin(viewDetailsButton, new Insets(10, 0, 0, 0));
         GridPane.setMargin(startStnLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(startStnText, new Insets(0, 0, 10, 0));
@@ -118,7 +114,6 @@ public class Tube {
         GridPane.setMargin(journeyInfoContainer, new Insets(10, 0, 0, 0));
 
         borderPane.setRight(rightBar);
-
     }
 
     public void submitAction(TextField startStnText, TextField endStnText) {

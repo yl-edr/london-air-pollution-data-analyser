@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class TubeSystem {
@@ -74,7 +72,6 @@ public class TubeSystem {
         tubeLines.add(victoria);
         tubeLines.add(waterlooAndCity);
         tubeLines.add(elizabethLine);
-        
     }
 
     public List<String> calculateJourney(String start, String finish){
