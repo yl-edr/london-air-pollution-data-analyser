@@ -20,6 +20,9 @@ public class TubeSystem {
     private ArrayList <TubeLine> tubeLines = new ArrayList<>();
     private HashMap<String, List <TubeLine>> hubStations = new HashMap<>();
 
+    /**
+     * Constructor for TubeSystem class. Initializes the tube lines and their stations.
+     */
     public TubeSystem(){
         String[] bakerlooStations = {"elephant & castle", "lambeth north", "waterloo", "embankment", "charing cross", "piccadilly circus", "oxford circus", "regents park", "baker street", "marleybone", "edgware road", "paddington"};
         bakerloo.addStations(bakerlooStations);
@@ -74,6 +77,13 @@ public class TubeSystem {
         tubeLines.add(elizabethLine);
     }
 
+    /**
+     * Calculates the shortest journey between two stations.
+     * 
+     * @param start The name of the starting station.
+     * @param finish The name of the destination station.
+     * @return A list of station names representing the shortest journey (with the least changes)
+     */
     public List<String> calculateJourney(String start, String finish){
         List<String> journey = bothStationsOnLine(start,finish);
         if(journey!=null){
@@ -82,15 +92,24 @@ public class TubeSystem {
         return changeLines(start, finish);
     }
 
-
+    /**
+     * Finds the shortest journey between two stations when both are on the same line.
+     * 
+     * @param station1 The name of the starting station.
+     * @param station2 The name of the destination station.
+     * @return A list of station names representing the shortest journey
+     */
     private List<String> bothStationsOnLine(String station1, String station2) {
+        // Finds the tube line that contains both stations
         for (TubeLine line : tubeLines){
             if (line.isStationOnLine(station1) && line.isStationOnLine(station2)){
+                // Makes sure the stations are in the right order
                 if(line.getStations().indexOf(station1)< line.getStations().indexOf(station2)+1){
                     return line.getStations().subList(line.getStations().indexOf(station1), line.getStations().indexOf(station2)+1);
                 }
                 List<String> journey = line.getStations().subList(line.getStations().indexOf(station2), line.getStations().indexOf(station1)+1);
                 List<String> reversedJourney = new ArrayList<>();
+                // Might reverse the order of the stations if the start station is after the end station
                 for (int i = journey.size() - 1; i >= 0; i--) {
                     reversedJourney.add(journey.get(i));
                 }
@@ -100,63 +119,96 @@ public class TubeSystem {
         return null;  
     }
 
-    private List<String> changeLines(String start, String end){
+    /**
+     * Finds the shortest journey between two stations when changing Tube lines is necessary.
+     * The shortest journey is returned based on the number of stations traveled.
+     * 
+     * @param start The name of the starting station.
+     * @param end The name of the destination station.
+     * @return A list of station names representing the shortest journey
+     */
+    private List<String> changeLines(String start, String end) {
         ArrayList<TubeLine> startLines = new ArrayList<>();
         ArrayList<TubeLine> endLines = new ArrayList<>();
         HashMap<Integer, List<String>> journeyLength = new HashMap<>();
-        for(TubeLine line : tubeLines){
-            if(line.isStationOnLine(start)){
+        
+        // Identify which lines the start and end stations belong to
+        for (TubeLine line : tubeLines) {
+            if (line.isStationOnLine(start)) {
                 startLines.add(line);
             }
-            if(line.isStationOnLine(end)){
+            if (line.isStationOnLine(end)) {
                 endLines.add(line);
             }
         }
+        
         String changeStation;
-        for(TubeLine line1 : startLines){
-            for(TubeLine line2 : endLines){
-                changeStation = findHub(line1, line2);
-                if(changeStation!=null){
-                    // System.out.println(line1);
-                    // System.out.println(line2);
+        
+        // Iterate through possible start and end lines to find a valid transfer station
+        for (TubeLine line1 : startLines) {
+            for (TubeLine line2 : endLines) {
+                changeStation = findHub(line1, line2); 
+                
+                if (changeStation != null) {
+                    // Retrieve station lists for each segment of the journey
                     List<String> journey1 = bothStationsOnLine(start, changeStation);
                     List<String> journey2 = bothStationsOnLine(changeStation, end);
-                    // System.out.println("first line "+journey1);
-                    // System.out.println("second line "+journey2);
-                    List<String> fullJourney= new ArrayList<>();
-                    fullJourney.addAll(List.copyOf(journey1));
-                    fullJourney.addAll(List.copyOf(journey2));
-                    fullJourney.remove(changeStation);
-                    // System.out.println(fullJourney.size());
-                    // System.out.println("overall "+fullJourney);
+                    
+                    // Combine the two parts of the journey into a full journey
+                    List<String> fullJourney = new ArrayList<>();
+                    fullJourney.addAll(List.copyOf(journey1)); 
+                    fullJourney.addAll(List.copyOf(journey2)); 
+                    fullJourney.remove(changeStation); // Remove duplicate transfer station
+                    
                     journeyLength.put(fullJourney.size(), List.copyOf(fullJourney));
                 }
             }
         }
+        
+        // Return the shortest journey found (smallest key in journeyLength map)
         return journeyLength.get(getMinKey(journeyLength));
     }
 
-    private String findHub(TubeLine line1, TubeLine line2){
-        for(String station : line1.getStations()){
-            if(line2.isStationOnLine(station)){
-                return station;
+
+    /**
+     * Finds a common station (hub) between two Tube lines.
+     * 
+     * @param line1 The first Tube line.
+     * @param line2 The second Tube line.
+     * @return The name of the common station if found, otherwise returns null.
+     */
+    private String findHub(TubeLine line1, TubeLine line2) {
+        // Iterate through each station in line1
+        for (String station : line1.getStations()) {
+            // Check if the station also exists in line2
+            if (line2.isStationOnLine(station)) {
+                return station; 
             }
         }
-        return null;
-
+        return null; 
     }
 
+    /**
+     * Finds and returns the smallest key in a given HashMap.
+     * 
+     * @param map The HashMap to search for the minimum key.
+     * @return The smallest key found, or 0 if the map is empty.
+     */
     private int getMinKey(HashMap<Integer, List<String>> map) {
         if (map.isEmpty()) {
-            return 0;
+            return 0; 
         }
+        
         int minKey = Integer.MAX_VALUE; 
+        
+        // Find min algorithm
         for (int key : map.keySet()) {
-            if (key < minKey) {
+            if (key < minKey) { 
                 minKey = key;
             }
         }
         return minKey;
     }
+
     
 }

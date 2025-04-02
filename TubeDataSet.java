@@ -9,16 +9,11 @@ import java.util.*;
  * The data consists of a few bits of information about the nature of the data, and a list
  * of data points.
  * 
- * @author Michael Kölling
- * @version 1.0
+ * @author Michael Kölling & Rom Steinberg
+ * @version 3.14159
  */
 public class  TubeDataSet extends DataSet
-{
-    private String pollutant;
-    private String year;
-    private String metric;
-    private String units;
-    
+{   
     private List<TubeDataPoint> data;
 
     /**
