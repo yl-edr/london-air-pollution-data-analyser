@@ -41,7 +41,7 @@ public class Tube {
         create();
     }
 
-    public void create() { 
+    private void create() { 
         // Load the map image and configure the ImageView
         map = new MapImage("resources/TubeMap.png");
         mapImage = map.getImage();
@@ -152,7 +152,7 @@ public class Tube {
      * @param startStnText TextField for the starting station input
      * @param endStnText TextField for the destination station input
      */
-    public void submitAction(TextField startStnText, TextField endStnText) {
+    private void submitAction(TextField startStnText, TextField endStnText) {
         startStn = startStnText.getText().toLowerCase(); 
         endStn = endStnText.getText().toLowerCase();
         
@@ -171,7 +171,7 @@ public class Tube {
     /**
     * @return The tube dataset
     */
-    public TubeDataSet getTubeDataSet() {
+    private TubeDataSet getTubeDataSet() {
         return dataAggregator.getTubeDataSet();
     }
 

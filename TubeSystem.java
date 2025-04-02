@@ -16,9 +16,7 @@ public class TubeSystem {
     private TubeLine victoria = new TubeLine("Victoria");
     private TubeLine waterlooAndCity = new TubeLine("Waterloo & City");
     private TubeLine elizabethLine = new TubeLine("Elizabeth Line");
-    private ArrayList <String> journey= new ArrayList<>();
     private ArrayList <TubeLine> tubeLines = new ArrayList<>();
-    private HashMap<String, List <TubeLine>> hubStations = new HashMap<>();
 
     /**
      * Constructor for TubeSystem class. Initializes the tube lines and their stations.

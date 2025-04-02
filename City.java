@@ -41,7 +41,6 @@ public class City {
         // Add boundaries for different cities (adjust values as needed)
         CITY_BOUNDARIES.put("London", new int[]{510394, 554000, 168000, 194000, 1});
         CITY_BOUNDARIES.put("Manchester", new int[]{376000, 390901, 393400, 401667, 3});
-        CITY_BOUNDARIES.put("Edinburgh", new int[]{317339, 331640, 668176, 676443, 3});
         CITY_BOUNDARIES.put("Birmingham", new int[]{401000, 415930, 282200, 290530, 3});
         CITY_BOUNDARIES.put("Leeds", new int[]{421070, 436570, 430350, 438580, 3});
         CITY_BOUNDARIES.put("Bristol", new int[]{354400, 369550, 169150, 177650, 3});
@@ -417,9 +416,6 @@ public class City {
         switch (cityName) {
             case "Manchester":
                 this.name = "Manchester";
-                break;
-            case "Edinburgh":
-                this.name = "Edinburgh";
                 break;
             case "Birmingham":
                 this.name = "Birmingham";
