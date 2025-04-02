@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=MapImage
+<<<<<<< HEAD
 comment0.text=\n\ Holds\ the\ map\ image\ and\ has\ methods\ to\ add\ coloured\ data\ points\ to\ it\n\ @author\ Anton\ Davidouski\n\ @version\ 1.0\n
 comment1.params=city\ fileName
 comment1.target=MapImage(java.lang.String,\ java.lang.String)
@@ -25,3 +26,27 @@ comment8.target=javafx.scene.image.WritableImage\ applyHorizontalBlur(int)
 comment9.params=source\ radius
 comment9.target=javafx.scene.image.WritableImage\ applyVerticalBlur(javafx.scene.image.WritableImage,\ int)
 numComments=11
+=======
+comment0.text=\r\n\ Holds\ the\ map\ image\ and\ has\ methods\ to\ add\ coloured\ data\ points\ to\ it\r\n\ @author\ Anton\ Davidouski\r\n\ @version\ 1.0\r\n
+comment1.params=city\ fileName
+comment1.target=MapImage(java.lang.String,\ java.lang.String)
+comment2.params=
+comment2.target=javafx.scene.image.Image\ getImage()
+comment3.params=dataPoint\ min\ max\ ratio
+comment3.target=void\ processDataPoint(DataPoint,\ double,\ double,\ int)
+comment4.params=startX\ startY\ width\ height\ dataPercentage
+comment4.target=void\ placeOverlayBlock(int,\ int,\ int,\ int,\ double)
+comment4.text=\r\n\ Place\ a\ colour\ block\ on\ the\ overlay\ colour\ image\ at\ full\ opacity.\r\n\ @param\ startX\ The\ x-coordinate\ of\ the\ top-left\ corner\ of\ the\ block\r\n\ @param\ startY\ The\ y-coordinate\ of\ the\ top-left\ corner\ of\ the\ block\r\n\ @param\ width\ The\ width\ of\ the\ block\r\n\ @param\ height\ The\ height\ of\ the\ block\r\n\ @param\ dataPercentage\ The\ data\ points\ location\ in\ the\ colour\ spectrum\ as\ a\ percentage\ relative\ to\ min\ and\ max\ values.\ Used\ tio\ determine\ the\ colour\ of\ the\ block.\r\n
+comment5.params=
+comment5.target=javafx.scene.image.Image\ getCombined()
+comment5.text=\r\n\ Combine\ the\ base\ image\ with\ the\ overlay\ image,\ creating\ the\ map\ with\ pollution\ data\ added\ to\ it.\r\n\ @return\ The\ combined\ image\ which\ can\ be\ added\ to\ the\ IMageView\r\n
+comment6.params=radius
+comment6.target=void\ applyBlur(int)
+comment7.params=radius
+comment7.target=javafx.scene.image.WritableImage\ applyHorizontalBlur(int)
+comment8.params=source\ radius
+comment8.target=javafx.scene.image.WritableImage\ applyVerticalBlur(javafx.scene.image.WritableImage,\ int)
+comment9.params=
+comment9.target=void\ resetOverlay()
+numComments=10
+>>>>>>> ChartDetails
