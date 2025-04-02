@@ -29,13 +29,9 @@ public class PollutionStatistics {
     private ComboBox<String> toYearComboBox;
     private HBox toggleButtons;
     private Label maxLabel;
-    private Label maxPolValue;
     private Label maxGridCode;
-    private Label maxLocValue;
     private Label minLabel;
-    private Label minPolValue;
     private Label minGridCode;
-    private Label minLocValue;
     
     // Chart type selection
     private Label chartTypeLabel;
@@ -92,15 +88,11 @@ public class PollutionStatistics {
         chartTypeComboBox.getItems().addAll("Line Chart", "Bar Chart", "Area Chart", "Pie Chart");
         chartTypeComboBox.getSelectionModel().select("Line Chart"); // Default selection
 
-        maxLabel = new Label("Highest pollution level:");
-        maxPolValue = new Label(" 0.0");
-        maxGridCode = new Label("Gridcode: ");
-        maxLocValue = new Label(" N/A");
+        maxLabel = new Label("Highest pollution level: 0.0 µg/m³");
+        maxGridCode = new Label("Gridcode: N/A");
 
-        minLabel = new Label("Lowest pollution level:");
-        minPolValue = new Label(" 0.0");
-        minGridCode = new Label("Gridcode: ");
-        minLocValue = new Label(" N/A");
+        minLabel = new Label("Lowest pollution level: 0.0 µg/m³");
+        minGridCode = new Label("Gridcode: N/A");
 
         fromYearComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldVal, newVal) -> {
@@ -143,14 +135,10 @@ public class PollutionStatistics {
         rightBar.add(new Label(" "), 0, 13);
         rightBar.add(new Label(" "), 0, 14); 
         rightBar.add(maxLabel, 0, 15);
-        rightBar.add(maxPolValue, 1, 15);
         rightBar.add(maxGridCode, 0, 16);
-        rightBar.add(maxLocValue, 1, 16);
         rightBar.add(new Label(" "), 0, 17);
         rightBar.add(minLabel, 0, 18);
-        rightBar.add(minPolValue, 1, 18);
         rightBar.add(minGridCode, 0, 19);
-        rightBar.add(minLocValue, 1, 19);
     }
     
     private void updateChartType(String chartTypeName) {
@@ -229,10 +217,10 @@ public class PollutionStatistics {
         }
         
         chart.updateChart(data);
-        maxPolValue.setText("       " + maxPolTempValue + " µg/m³");
-        minPolValue.setText("       " + minPolTempValue + " µg/m³");
-        maxLocValue.setText("       " + maxLocTempValue);
-        minLocValue.setText("       " + minLocTempValue);
+        maxLabel.setText("Highest pollution level: " + maxPolTempValue + " µg/m³");
+        minLabel.setText("Lowest pollution level: " + minPolTempValue + " µg/m³");
+        maxGridCode.setText("Grid Code: " + maxLocTempValue);
+        minGridCode.setText("Grid Code: " + minLocTempValue);
     }
 
     private void togglePollutant(String pollutant, ToggleButton button) {

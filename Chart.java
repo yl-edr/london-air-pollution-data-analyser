@@ -29,16 +29,16 @@ public class Chart {
         seriesMap = new HashMap<>();
         
         // Initialize all chart types
-        initLineChart();
-        initBarChart();
-        initAreaChart();
-        initPieChart();
+        lineChart();
+        barChart();
+        areaChart();
+        pieChart();
         
         // Set default chart type
         setChartType(ChartType.LINE);
     }
     
-    private void initLineChart() {
+    private void lineChart() {
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
 
@@ -71,7 +71,7 @@ public class Chart {
         lineChart.setTitle("Pollution Levels Over Time");
     }
     
-    private void initBarChart() {
+    private void barChart() {
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
         
@@ -92,7 +92,7 @@ public class Chart {
         barChart.setTitle("Pollution Levels by Year");
     }
     
-    private void initAreaChart() {
+    private void areaChart() {
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
         
@@ -125,7 +125,7 @@ public class Chart {
         areaChart.setTitle("Pollution Levels Trend");
     }
     
-    private void initPieChart() {
+    private void pieChart() {
         pieChart = new PieChart();
         pieChart.setPrefSize(750, 575);
         // Allow the chart to resize with the window
@@ -185,26 +185,40 @@ public class Chart {
     }
     
     private void updateLineAndAreaChart(HashMap<String, DataSet> dataRange) {
+        // Clear existing data from the chart
+        lineChart.getData().clear();
+        areaChart.getData().clear();
+        seriesMap.clear();
+
         // This works for both Line and Area charts since they use the same data structure
-        XYChart<Number, Number> chart = (currentChartType == ChartType.LINE) ? lineChart : areaChart;
+        XYChart<Number, Number> chart;
+        if (currentChartType == ChartType.LINE) {
+            chart = lineChart;
+        } else {
+            chart = areaChart;
+        }
         
         for (Map.Entry<String, DataSet> entry : dataRange.entrySet()) {
             String[] keyParts = entry.getKey().split("-");
             int year = Integer.parseInt(keyParts[0]);
             String pollutant = keyParts[1];
-
+    
+            // Create a new series for each pollutant if it doesn't exist
             seriesMap.putIfAbsent(pollutant, new XYChart.Series<>());
             XYChart.Series<Number, Number> series = seriesMap.get(pollutant);
             series.setName(pollutant.toUpperCase());
-
+    
+            // Calculate the average value for the pollutant
             double avgValue = entry.getValue().getData().stream()
                     .mapToDouble(DataPoint::value)
                     .average()
                     .orElse(0);
-
+    
+            // Add the data point to the series
             series.getData().add(new XYChart.Data<>(year, avgValue));
         }
-
+    
+        // Add all series to the chart
         chart.getData().addAll(seriesMap.values());
     }
     

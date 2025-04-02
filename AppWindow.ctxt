@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=AppWindow
+comment1.params=stage
+comment1.target=void\ start(javafx.stage.Stage)
+comment2.params=
+comment2.target=java.lang.Void\ call()
+comment3.params=
+comment3.target=void\ succeeded()
+comment4.params=
+comment4.target=void\ createTabPane()
+numComments=5
