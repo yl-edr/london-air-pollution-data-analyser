@@ -61,8 +61,9 @@ public class RealTimeDataTab {
         TextField searchField = new TextField();
         searchField.setPromptText("Enter a city name...");
         searchField.setPrefWidth(300);
+        searchField.getStyleClass().add("search-field");
 
-        searchField.setStyle("-fx-background-color: white; -fx-border-color: lightgray; -fx-border-radius: 5px; -fx-border-width: 2px; -fx-font-size: 14px");
+        //searchField.setStyle("-fx-background-color: white; -fx-border-color: lightgray; -fx-border-radius: 5px; -fx-border-width: 2px; -fx-font-size: 14px");
 
         HBox searchBox = new HBox(10);
 
@@ -82,23 +83,27 @@ public class RealTimeDataTab {
         dataGrid.setAlignment(Pos.CENTER); // gridpane to hold the pollution blocks
 
         numberOfCitiesComparedLabel = new Label("Cities in comparison: " + numberOfCitiesCompared);
-        numberOfCitiesComparedLabel.setStyle("-fx-font-size: 14px");
+        //numberOfCitiesComparedLabel.setStyle("-fx-font-size: 14px");
         numberOfCitiesComparedLabel.setVisible(false);
+        numberOfCitiesComparedLabel.getStyleClass().add("cities-compared-label");
 
         Button compareAddButton = new Button("Add to comparison");
-        compareAddButton.setStyle("-fx-background-color: white; -fx-border-color: lightgray; -fx-border-radius: 5px; -fx-border-width: 2px; -fx-font-size: 14px");
+        //compareAddButton.setStyle("-fx-background-color: white; -fx-border-color: lightgray; -fx-border-radius: 5px; -fx-border-width: 2px; -fx-font-size: 14px");
         compareAddButton.setVisible(false);
         compareAddButton.setOnMousePressed(event -> addCityToCompare());
+        compareAddButton.getStyleClass().add("compare-add-button");
 
         Button compareRemoveButton = new Button("Remove from comparison");
-        compareRemoveButton.setStyle("-fx-background-color: white; -fx-border-color: lightgray; -fx-border-radius: 5px; -fx-border-width: 2px; -fx-font-size: 14px");
+        //compareRemoveButton.setStyle("-fx-background-color: white; -fx-border-color: lightgray; -fx-border-radius: 5px; -fx-border-width: 2px; -fx-font-size: 14px");
         compareRemoveButton.setVisible(false);
         compareRemoveButton.setOnMousePressed(event -> removeCityFromCompare());
+        compareRemoveButton.getStyleClass().add("compare-remove-button");
 
         Button chartButton = new Button("Chart");
-        chartButton.setStyle("-fx-background-color: white; -fx-border-color: lightgray; -fx-border-radius: 5px; -fx-border-width: 2px; -fx-font-size: 14px");
+        //chartButton.setStyle("-fx-background-color: white; -fx-border-color: lightgray; -fx-border-radius: 5px; -fx-border-width: 2px; -fx-font-size: 14px");
         chartButton.setVisible(false);
         chartButton.setOnMousePressed(event -> displayChart());
+        chartButton.getStyleClass().add("chart-button");
 
         container.getChildren().addAll(dataGrid, numberOfCitiesComparedLabel, compareAddButton, compareRemoveButton, chartButton);
 

@@ -12,6 +12,13 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * The City class encapsulates the user interface and data handling for displaying
+ * city maps with pollution data overlays. It provides UI components for selecting pollutants,
+ * years, and switching between cities. The class manages mouse event tracking
+ * and updates the map overlay based on environmental data retrieved from a data aggregator.
+ */
+
 public class City {
     private DataAggregator dataAggregator;
     private DataSet selectedDataSet;
@@ -38,7 +45,7 @@ public class City {
     private static final HashMap<String, int[]> CITY_BOUNDARIES = new HashMap<>();
 
     static {
-        // Add boundaries for different cities (adjust values as needed)
+        // The boundaries for different cities
         CITY_BOUNDARIES.put("London", new int[]{510394, 554000, 168000, 194000, 1});
         CITY_BOUNDARIES.put("Manchester", new int[]{376000, 390901, 393400, 401667, 3});
         CITY_BOUNDARIES.put("Birmingham", new int[]{401000, 415930, 282200, 290530, 3});
@@ -56,7 +63,6 @@ public class City {
      * @param cityName       the name of the city
      * @param dataAggregator the data aggregator instance used to retrieve a data set of the cities pollution
      */
-
     public City(String cityName, DataAggregator dataAggregator) {
         this.dataAggregator = dataAggregator;
         this.name = cityName;
@@ -70,7 +76,6 @@ public class City {
      *
      * @param name the name of the city to be displayed
      */
-
     public void create(String name) {
 
         map = new MapImage(name,"resources/" + name + ".png");
@@ -103,6 +108,7 @@ public class City {
         rightBar.setMaxWidth(300);
         rightBar.getStyleClass().add("rightBar");
 
+        // Create the city selector if the current city is not London.
         if(!name.equals("London")){
             createCitySelector();
         }
@@ -134,6 +140,7 @@ public class City {
         yearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
         yearComboBox.getStyleClass().add("yearComboBox");
 
+        // Prediction button for generating pollution predictions for future years.
         predictionButton = new Button("Predict");
         predictionButton.setOnAction(event -> {
             Stage dialogStage = new Stage();
@@ -279,15 +286,17 @@ public class City {
         borderPane.setBottom(aqiBarContainer);
     }
 
+    /**
+     * @return the GridPane representing the right control panel
+     */
     public GridPane getRightBar() {
         return rightBar;
     }
 
     /**
      * Updates the displayed statistics based on the current mouse position on the map.
-     * It calculates the corresponding coordinates in the dataset using the current map view
-     * dimensions and updates the UI labels with the nearest data point's value and grid code.
      */
+
     private void updateStats(){
         if (selectedDataSet == null) {
             return;
@@ -304,8 +313,6 @@ public class City {
     }
 
     /**
-     * Returns the primary pane containing the city map and UI controls.
-     *
      * @return the BorderPane representing the city's main view
      */
 
@@ -319,7 +326,7 @@ public class City {
      * to apply a color mapping, and then updates the map view with a blurred overlay.
      */
 
-    private void updateColourMap(){
+    public void updateColourMap(){
         if (pollutantSelected == null || yearSelected == null) {
             return;
         }
@@ -341,6 +348,7 @@ public class City {
     public static HashMap<String, int[]> getCitiesBoundaries() {
         return CITY_BOUNDARIES;
     }
+
     /**
      * Converts the given dimensions of the map view to the corresponding dimensions of the underlying map image.
      *
@@ -348,10 +356,7 @@ public class City {
      * @param y the height of the map view
      * @return an array of two integers where index 0 is the calculated image width and index 1 is the image height
      */
-
-
-
-    private int[] convertMapViewDimensionsToImageDimensions(int x, int y) {
+    public int[] convertMapViewDimensionsToImageDimensions(int x, int y) {
         double providedAspectRatio = (double) x / y;
         int[] dimensions = new int[2];
         if (providedAspectRatio > mapImageAspectRatio) {
@@ -369,7 +374,6 @@ public class City {
      * it calculates the corresponding coordinates in the dataset and displays detailed
      * information about the nearest data point.
      */
-
     private void trackMouseLocation() {
         mapView.setOnMouseClicked(event -> {
             if (selectedDataSet != null) {
@@ -385,7 +389,11 @@ public class City {
         });
     }
 
-    private void createCitySelector() {
+    /**
+     * Creates and configures the city selection UI component.
+     * When a new city is selected, the view is updated accordingly.
+     */
+    public void createCitySelector() {
         Label cityLabel = new Label("Choose a city:");
         cityComboBox = new ComboBox<>();
         cityComboBox.setPromptText(name);
@@ -411,8 +419,13 @@ public class City {
         cityComboBox.getStyleClass().add("cityComboBox");
     }
 
+    /**
+     * Updates the current city to the specified city name and refreshes the UI accordingly.
+     *
+     * @param cityName the name of the city to switch to
+     */
     private void updateCity(String cityName) {
-        // Update city name
+        // Update city name based on provide value
         switch (cityName) {
             case "Manchester":
                 this.name = "Manchester";
@@ -423,9 +436,6 @@ public class City {
             case "Leeds":
                 this.name = "Leeds";
                 break;
-            case "Bristol":
-                this.name = "Bristol";
-                break;
 
             default:
                 break;
@@ -433,16 +443,13 @@ public class City {
         create(name);
         trackMouseLocation();
         AppWindow.setUKCities(this);
-
     }
+
     /**
      * Displays an informational alert dialog with details about the specified data point.
      *
      * @param dataPoint the data point whose information is to be displayed
      */
-
-
-
     private void showDataPointInfo(DataPoint dataPoint) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Data Point Information");
@@ -452,15 +459,9 @@ public class City {
     }
 
     /**
-     * Retrieves the data aggregator associated with this city.
-     *
      * @return the data aggregator used for accessing environmental data
      */
-
     public DataAggregator getDataAggregator() {
         return dataAggregator;
     }
-
-    
-
 }
