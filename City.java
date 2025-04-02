@@ -293,7 +293,7 @@ public class City {
         int imageWidth = imageDimensions[0];
         int imageHeight = imageDimensions[1];
         int x = (int) ((mouseX / (double) imageWidth) * (bounds[1] - bounds[0]) + bounds[0]);
-        int y = (int) (bounds[2] - ((mouseY / (double) imageHeight) * (bounds[2] - bounds[3])));
+        int y = (int) (bounds[3] - ((mouseY / (double) imageHeight) * (bounds[3] - bounds[2])));
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
         dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
@@ -373,7 +373,7 @@ public class City {
                 int imageWidth = imageDimensions[0];
                 int imageHeight = imageDimensions[1];
                 int x = (int) ((mouseX / (double) imageWidth) * (bounds[1] - bounds[0]) + bounds[0]);
-                int y = (int) (bounds[2] - ((mouseY / (double) imageHeight) * (bounds[2] - bounds[3])));
+                int y = (int) (bounds[3] - ((mouseY / (double) imageHeight) * (bounds[3] - bounds[2])));
                 DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
                 showDataPointInfo(nearestDataPoint);
             }
