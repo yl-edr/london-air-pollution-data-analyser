@@ -1,19 +1,6 @@
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.scene.image.Image;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,13 +8,8 @@ import java.util.Set;
 
 public class PollutionStatistics {
 
-    private MapImage map;
-    private ImageView mapView;
-
-    private AnchorPane anchorPane;
-    private Image mapImage;
     private BorderPane borderPane;
-    private VBox chartPane;
+    private VBox chartBox;
     private Chart chart;
 
     private String fromYearSelected;
@@ -36,14 +18,10 @@ public class PollutionStatistics {
     private DataAggregator dataAggregator;
 
     private GridPane rightBar;
-    private VBox centerVBox;
-    private Button toggleButton;
-    private boolean isMapVisible;
     private Set<String> selectedPollutants = new HashSet<>();
 
     private Label titleLabel;
 
-    // Chart fields    private GridPane rightBar;
     private Label pollutantLabel;
     private Label fromYearLabel;
     private Label toYearLabel;
@@ -51,64 +29,35 @@ public class PollutionStatistics {
     private ComboBox<String> toYearComboBox;
     private HBox toggleButtons;
     private Label maxLabel;
-    private Label maxValue;
     private Label maxGridCode;
-    private Label maxGridCodeValue;
     private Label minLabel;
-    private Label minValue;
     private Label minGridCode;
-    private Label minGridCodeValue;
-
-    // Map fields
-    private HBox radioButtons;
-    private ToggleGroup pollutantGroup;
-
-
+    
+    // Chart type selection
+    private Label chartTypeLabel;
+    private ComboBox<String> chartTypeComboBox;
 
     public PollutionStatistics(DataAggregator dataAggregator) {
         this.dataAggregator = dataAggregator;
         System.out.println(dataAggregator);
         borderPane = new BorderPane();
 
-        map = new MapImage("London", "resources/London.png");
-        mapImage = map.getImage();
-        mapView = new ImageView(mapImage);
-        mapView.setPreserveRatio(true);
-        mapView.setSmooth(true);
-        mapView.setFitWidth(900);
-
-        anchorPane = new AnchorPane();
-        anchorPane.getChildren().add(mapView);
-        anchorPane.setMinWidth(500);
-        anchorPane.setMinHeight(300);
-        mapView.fitWidthProperty().bind(anchorPane.widthProperty());
-        mapView.fitHeightProperty().bind(anchorPane.heightProperty());
-
-        chartPane = new VBox();
+        chartBox = new VBox();
         chart = new Chart();
-        chartPane.getChildren().add(chart.getChart());
-
-        // Toggle Button
-        toggleButton = new Button("Switch to Chart");
-        toggleButton.setOnAction(e -> toggleView());
-
-        // Center container
-        centerVBox = new VBox();
-        centerVBox.setFillWidth(true);
-        centerVBox.getChildren().addAll(toggleButton, anchorPane);
-        VBox.setVgrow(anchorPane, Priority.ALWAYS);
-        VBox.setVgrow(chartPane, Priority.ALWAYS);
-
-        borderPane.setCenter(centerVBox);
+        chartBox.getChildren().add(chart.getChartBox());
+        
+        VBox.setVgrow(chart.getChartBox(), Priority.ALWAYS);
+        chartBox.setFillWidth(true);
+        
+        borderPane.setCenter(chartBox);
 
         rightBar = new GridPane();
         rightBar.setPadding(new Insets(10));
         rightBar.setMinWidth(375);
 
-        titleLabel = new Label("Statistics Panel - Map View");
+        titleLabel = new Label("Statistics Panel");
         titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
         titleLabel.getStyleClass().add("titleLabel");
-        rightBar.add(titleLabel, 0, 0);
 
         pollutantLabel = new Label("Select Pollutant(s):");
 
@@ -131,16 +80,19 @@ public class PollutionStatistics {
         toYearComboBox = new ComboBox<>();
         toYearComboBox.setPromptText("Select End Year");
         toYearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
+        
+        // Chart Type Selection
+        chartTypeLabel = new Label("Chart Type:");
+        chartTypeComboBox = new ComboBox<>();
+        chartTypeComboBox.setPromptText("Select Chart Type");
+        chartTypeComboBox.getItems().addAll("Line Chart", "Bar Chart", "Area Chart", "Pie Chart");
+        chartTypeComboBox.getSelectionModel().select("Line Chart"); // Default selection
 
-        maxLabel = new Label("Highest pollution level:");
-        maxValue = new Label(" 0.0");
-        maxGridCode = new Label("Gridcode: ");
-        maxGridCodeValue = new Label(" N/A");
+        maxLabel = new Label("Highest pollution level: 0.0 µg/m³");
+        maxGridCode = new Label("Gridcode: N/A");
 
-        minLabel = new Label("Lowest pollution level:");
-        minValue = new Label(" 0.0");
-        minGridCode = new Label("Gridcode: ");
-        minGridCodeValue = new Label(" N/A");
+        minLabel = new Label("Lowest pollution level: 0.0 µg/m³");
+        minGridCode = new Label("Gridcode: N/A");
 
         fromYearComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldVal, newVal) -> {
@@ -155,27 +107,82 @@ public class PollutionStatistics {
                     validateYearSelection(fromYearSelected, toYearSelected);
                     updateChart();
         });
+        
+        chartTypeComboBox.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldVal, newVal) -> {
+                    updateChartType(newVal);
+                    updateChart();
+        });
 
-
-        // Map
-        pollutantGroup = new ToggleGroup();
-        RadioButton pm25Radio = new RadioButton("PM2.5");
-        pm25Radio.setToggleGroup(pollutantGroup);
-        pm25Radio.setOnAction(e -> togglePollutant("pm2.5", pm25Radio));
-        RadioButton no2Radio = new RadioButton("NO2");
-        no2Radio.setToggleGroup(pollutantGroup);
-        no2Radio.setOnAction(e -> togglePollutant("no2", no2Radio));
-        RadioButton pm10Radio = new RadioButton("PM10");
-        pm10Radio.setToggleGroup(pollutantGroup);
-        pm10Radio.setOnAction(e -> togglePollutant("pm10", pm10Radio));
-        radioButtons = new HBox(10, pm25Radio, no2Radio, pm10Radio);
-
-
-
+        updateSideBar();  
         borderPane.setRight(rightBar);
+    }
+    
+    private void updateSideBar() {  
+        if (chart.getCurrentChartType() == Chart.ChartType.PIE) {
+            fromYearComboBox.setValue(null);
 
-        isMapVisible = true;
-        toggleView();
+            rightBar.add(titleLabel, 0, 0);
+            rightBar.add(new Label(" "), 0, 1);
+            rightBar.add(pollutantLabel, 0, 2);
+            rightBar.add(toggleButtons, 0, 3);
+            rightBar.add(new Label(" "), 0, 4);
+            rightBar.add(chartTypeLabel, 0, 5);
+            rightBar.add(chartTypeComboBox, 0, 6);
+            rightBar.add(new Label(" "), 0, 7);
+            rightBar.add(fromYearLabel, 0, 8);
+            rightBar.add(fromYearComboBox, 0, 9);
+            rightBar.add(new Label(" "), 0, 10);
+            rightBar.add(new Label(" "), 0, 13);
+            rightBar.add(new Label(" "), 0, 14); 
+            rightBar.add(maxLabel, 0, 15);
+            rightBar.add(maxGridCode, 0, 16);
+            rightBar.add(new Label(" "), 0, 17);
+            rightBar.add(minLabel, 0, 18);
+            rightBar.add(minGridCode, 0, 19);
+
+        } else {
+            rightBar.add(titleLabel, 0, 0);
+            rightBar.add(new Label(" "), 0, 1);
+            rightBar.add(pollutantLabel, 0, 2);
+            rightBar.add(toggleButtons, 0, 3);
+            rightBar.add(new Label(" "), 0, 4);
+            rightBar.add(chartTypeLabel, 0, 5);
+            rightBar.add(chartTypeComboBox, 0, 6);
+            rightBar.add(new Label(" "), 0, 7);
+            rightBar.add(fromYearLabel, 0, 8);
+            rightBar.add(fromYearComboBox, 0, 9);
+            rightBar.add(new Label(" "), 0, 10);
+            rightBar.add(toYearLabel, 0, 11);
+            rightBar.add(toYearComboBox, 0, 12);
+            rightBar.add(new Label(" "), 0, 13);
+            rightBar.add(new Label(" "), 0, 14); 
+            rightBar.add(maxLabel, 0, 15);
+            rightBar.add(maxGridCode, 0, 16);
+            rightBar.add(new Label(" "), 0, 17);
+            rightBar.add(minLabel, 0, 18);
+            rightBar.add(minGridCode, 0, 19);
+        }
+    }
+    
+    private void updateChartType(String chartTypeName) {
+        Chart.ChartType chartType;
+        switch (chartTypeName) {
+            case "Bar Chart":
+                chartType = Chart.ChartType.BAR;
+                break;
+            case "Area Chart":
+                chartType = Chart.ChartType.AREA;
+                break;
+            case "Pie Chart":
+                chartType = Chart.ChartType.PIE;
+                updateSideBar();
+                break;
+            default:
+                chartType = Chart.ChartType.LINE;
+                break;
+        }
+        chart.setChartType(chartType);
     }
 
     private void validateYearSelection(String fromYear, String toYear) {
@@ -199,15 +206,17 @@ public class PollutionStatistics {
 
     private void updateChart() {
         if (fromYearSelected == null || toYearSelected == null || selectedPollutants.isEmpty()) {
-            chart.getChart().getData().clear();
+            // Clear chart data
+            HashMap<String, DataSet> emptyData = new HashMap<>();
+            chart.updateChart(emptyData);
             return;
         }
 
         int startYear = Integer.parseInt(fromYearSelected);
         int endYear = Integer.parseInt(toYearSelected);
         HashMap<String, DataSet> data = new HashMap<>();
-        double maxPollutionLevel = Double.MIN_VALUE;
-        double minPollutionLevel = Double.MAX_VALUE;
+        double maxPolTempValue = Double.MIN_VALUE;
+        double minPolTempValue = Double.MAX_VALUE;
         String maxLocTempValue = "N/A";
         String minLocTempValue = "N/A";
 
@@ -219,13 +228,13 @@ public class PollutionStatistics {
                 for (DataPoint dataPoint : dataSet.getData()) {
                     double value = dataPoint.value();
                     int gridCode = dataPoint.gridCode();
-
-                    if (value > maxPollutionLevel) {
-                        maxPollutionLevel = value;
+                    
+                    if (value > maxPolTempValue) {
+                        maxPolTempValue = value;
                         maxLocTempValue = ((Integer) gridCode).toString();
                     }
-                    if (value < minPollutionLevel) {
-                        minPollutionLevel = value;
+                    if (value < minPolTempValue) {
+                        minPolTempValue = value;
                         minLocTempValue = ((Integer) gridCode).toString();
                     }
                 }
@@ -233,61 +242,17 @@ public class PollutionStatistics {
         }
 
         chart.updateChart(data);
-        maxValue.setText(maxPollutionLevel + " µg/m³");
-        minValue.setText(minPollutionLevel + " µg/m³");
-        maxGridCodeValue.setText(" " + maxLocTempValue);
-        minGridCodeValue.setText(" " + minLocTempValue);
-    }
-
-    private void toggleView() {
-        centerVBox.getChildren().remove(isMapVisible ? anchorPane : chartPane);
-        rightBar.getChildren().clear();
-        isMapVisible = !isMapVisible;
-        centerVBox.getChildren().add(isMapVisible ? anchorPane : chartPane);
-        toggleButton.setText(isMapVisible ? "Switch to Chart" : "Switch to Map");
-        titleLabel.setText(isMapVisible ? "Statistics Panel - Map View" : "Statistics Panel - Chart View");
-        if (isMapVisible) {
-            rightBar.add(titleLabel, 0, 0);
-            rightBar.add(new Label(" "), 0, 1);
-            rightBar.add(pollutantLabel, 0, 2);
-            rightBar.add(radioButtons, 0, 3);
-            rightBar.add(new Label(" "), 0, 4);
-            rightBar.add(fromYearLabel, 0, 5);
-            rightBar.add(fromYearComboBox, 0, 6);
-            rightBar.add(new Label(" "), 0, 7);
-            rightBar.add(new Label(" "), 0, 8);
-        }
-        else {
-            rightBar.add(titleLabel, 0, 0);
-            rightBar.add(new Label(" "), 0, 1);
-            rightBar.add(pollutantLabel, 0, 2);
-            rightBar.add(toggleButtons, 0, 3);
-            rightBar.add(new Label(" "), 0, 4);
-            rightBar.add(fromYearLabel, 0, 5);
-            rightBar.add(fromYearComboBox, 0, 6);
-            rightBar.add(new Label(" "), 0, 7);
-            rightBar.add(toYearLabel, 0, 8);
-            rightBar.add(toYearComboBox, 0, 9);
-            rightBar.add(new Label(" "), 0, 10);
-            rightBar.add(new Label(" "), 0, 11);
-            rightBar.add(new Label(" "), 0, 12);
-            rightBar.add(maxLabel, 0, 13);
-            rightBar.add(maxValue, 1, 13);
-            rightBar.add(maxGridCode, 0, 14);
-            rightBar.add(maxGridCodeValue, 1, 14);
-            rightBar.add(new Label(" "), 0, 15);
-            rightBar.add(minLabel, 0, 16);
-            rightBar.add(minValue, 1, 16);
-            rightBar.add(minGridCode, 0, 17);
-            rightBar.add(minGridCodeValue, 1, 17);
-        }
+        maxLabel.setText("Highest pollution level: " + maxPolTempValue + " µg/m³");
+        minLabel.setText("Lowest pollution level: " + minPolTempValue + " µg/m³");
+        maxGridCode.setText("Grid Code: " + maxLocTempValue);
+        minGridCode.setText("Grid Code: " + minLocTempValue);
     }
 
     private void togglePollutant(String pollutant, ToggleButton button) {
-        if (selectedPollutants.contains(pollutant)) {
-            selectedPollutants.remove(pollutant);
-        } else {
+        if (button.isSelected()) {
             selectedPollutants.add(pollutant);
+        } else {
+            selectedPollutants.remove(pollutant);
         }
         updateChart();
     }

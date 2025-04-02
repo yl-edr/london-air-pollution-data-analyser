@@ -300,7 +300,7 @@ public class City {
         int x = (int) ((mouseX / (double) imageWidth) * (bounds[1] - bounds[0]) + bounds[0]);
         int y = (int) (bounds[3] - ((mouseY / (double) imageHeight) * (bounds[3] - bounds[2])));
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
-        dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
+        dataPointValue.setText(nearestDataPoint.value() + "  µg/m³");
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
     }
 
