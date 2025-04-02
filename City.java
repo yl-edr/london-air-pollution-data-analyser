@@ -13,7 +13,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class City {
-
     private DataAggregator dataAggregator;
     private DataSet selectedDataSet;
     private MapImage map;
@@ -279,18 +278,17 @@ public class City {
         aqiBarContainer.getChildren().addAll(lowLabel, aqiStack, highLabel);
         borderPane.setBottom(aqiBarContainer);
     }
+
     public GridPane getRightBar() {
         return rightBar;
     }
+
     /**
      * Updates the displayed statistics based on the current mouse position on the map.
      * It calculates the corresponding coordinates in the dataset using the current map view
      * dimensions and updates the UI labels with the nearest data point's value and grid code.
      */
-
-
-
-    public void updateStats(){
+    private void updateStats(){
         if (selectedDataSet == null) {
             return;
         }
@@ -321,7 +319,7 @@ public class City {
      * to apply a color mapping, and then updates the map view with a blurred overlay.
      */
 
-    public void updateColourMap(){
+    private void updateColourMap(){
         if (pollutantSelected == null || yearSelected == null) {
             return;
         }
@@ -339,6 +337,7 @@ public class City {
         Image mapImage = map.getCombined();
         mapView.setImage(mapImage);
     }
+
     public static HashMap<String, int[]> getCitiesBoundaries() {
         return CITY_BOUNDARIES;
     }
@@ -352,7 +351,7 @@ public class City {
 
 
 
-    public int[] convertMapViewDimensionsToImageDimensions(int x, int y) {
+    private int[] convertMapViewDimensionsToImageDimensions(int x, int y) {
         double providedAspectRatio = (double) x / y;
         int[] dimensions = new int[2];
         if (providedAspectRatio > mapImageAspectRatio) {
@@ -386,7 +385,7 @@ public class City {
         });
     }
 
-    public void createCitySelector() {
+    private void createCitySelector() {
         Label cityLabel = new Label("Choose a city:");
         cityComboBox = new ComboBox<>();
         cityComboBox.setPromptText(name);
