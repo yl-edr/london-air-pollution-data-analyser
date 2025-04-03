@@ -41,6 +41,8 @@ public class Chart {
     private void lineChart() {
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
+        xAxis.getStyleClass().add("xAxisLC");
+        yAxis.getStyleClass().add("yAxisLC");
 
         xAxis.setLabel("Time (in years)");
         yAxis.setLabel("Average Pollution Level (in µg/m³)");
@@ -69,11 +71,14 @@ public class Chart {
         lineChart.setLegendVisible(true);
         lineChart.setAnimated(false);
         lineChart.setTitle("Pollution Levels Over Time");
+        lineChart.getStyleClass().add("lineChart");
     }
     
     private void barChart() {
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
+        xAxis.getStyleClass().add("xAxisBC");
+        yAxis.getStyleClass().add("yAxisBC");
         
         xAxis.setLabel("Year");
         yAxis.setLabel("Average Pollution Level (in µg/m³)");
@@ -90,11 +95,14 @@ public class Chart {
         barChart.setLegendVisible(true);
         barChart.setAnimated(false);
         barChart.setTitle("Pollution Levels by Year");
+        barChart.getStyleClass().add("barChart");
     }
     
     private void areaChart() {
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
+        xAxis.getStyleClass().add("xAxisAC");
+        yAxis.getStyleClass().add("yAxisAC");
         
         xAxis.setLabel("Time (in years)");
         yAxis.setLabel("Average Pollution Level (in µg/m³)");
@@ -123,6 +131,7 @@ public class Chart {
         areaChart.setLegendVisible(true);
         areaChart.setAnimated(false);
         areaChart.setTitle("Pollution Levels Trend");
+        areaChart.getStyleClass().add("areaChart");
     }
     
     private void pieChart() {

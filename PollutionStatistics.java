@@ -56,14 +56,17 @@ public class PollutionStatistics {
         rightBar.setMinWidth(375);
 
         titleLabel = new Label("Statistics Panel");
-        titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
         titleLabel.getStyleClass().add("titleLabel");
 
         pollutantLabel = new Label("Select Pollutant(s):");
+        pollutantLabel.getStyleClass().add("pollutantLabelSts");
 
         ToggleButton pm25Toggle = new ToggleButton("PM2.5");
+        pm25Toggle.getStyleClass().add("pm25Toggle");
         ToggleButton no2Toggle = new ToggleButton("NO2");
+        no2Toggle.getStyleClass().add("no2Toggle");
         ToggleButton pm10Toggle = new ToggleButton("PM10");
+        pm10Toggle.getStyleClass().add("pm10Toggle");
 
         pm25Toggle.setOnAction(e -> togglePollutant("pm2.5", pm25Toggle));
         no2Toggle.setOnAction(e -> togglePollutant("no2", no2Toggle));
@@ -72,27 +75,40 @@ public class PollutionStatistics {
         toggleButtons = new HBox(10, pm25Toggle, no2Toggle, pm10Toggle);
 
         fromYearLabel = new Label("From Year:");
+        fromYearLabel.getStyleClass().add("fromYearLabelSts");
+
         fromYearComboBox = new ComboBox<>();
         fromYearComboBox.setPromptText("Select Start Year");
         fromYearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
+        fromYearComboBox.getStyleClass().add("fromYearComboBoxSts");
 
         toYearLabel = new Label("To Year:");
+        toYearLabel.getStyleClass().add("toYearLabelSts");
+
         toYearComboBox = new ComboBox<>();
         toYearComboBox.setPromptText("Select End Year");
         toYearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
+        toYearComboBox.getStyleClass().add("toYearComboBoxSts");
         
         // Chart Type Selection
         chartTypeLabel = new Label("Chart Type:");
+        chartTypeLabel.getStyleClass().add("chartTypeLabelSts");
+
         chartTypeComboBox = new ComboBox<>();
         chartTypeComboBox.setPromptText("Select Chart Type");
         chartTypeComboBox.getItems().addAll("Line Chart", "Bar Chart", "Area Chart", "Pie Chart");
         chartTypeComboBox.getSelectionModel().select("Line Chart"); // Default selection
+        chartTypeComboBox.getStyleClass().add("chartTypeComboBoxSts");
 
         maxLabel = new Label("Highest pollution level: 0.0 µg/m³");
         maxGridCode = new Label("Gridcode: N/A");
+        maxLabel.getStyleClass().add("maxLabelSts");
+        maxGridCode.getStyleClass().add("maxGridCodeSts");
 
         minLabel = new Label("Lowest pollution level: 0.0 µg/m³");
         minGridCode = new Label("Gridcode: N/A");
+        minLabel.getStyleClass().add("minLabelSts");
+        minGridCode.getStyleClass().add("minGridCodeSts");
 
         fromYearComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldVal, newVal) -> {

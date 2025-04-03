@@ -363,3 +363,167 @@
 .chart-button:pressed {
     -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
 }
+
+.titleLabel {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.pollutantLabelSts {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.pm25Toggle {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+}
+.pm25Toggle:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.pm25Toggle:selected {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.pm10Toggle {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+}
+.pm10Toggle:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.pm10Toggle:selected {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.no2Toggle {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+}
+.no2Toggle:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.no2Toggle:selected {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+
+.fromYearLabelSts {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.fromYearComboBoxSts {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-padding: 2 6 2 6;
+}
+.fromYearComboBoxSts:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.fromYearComboBoxSts:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
+.toYearLabelSts {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.toYearComboBoxSts {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-padding: 2 6 2 6;
+}
+.toYearComboBoxSts:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.toYearComboBoxSts:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
+.chartTypeLabelSts {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.chartTypeComboBoxSts {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-padding: 2 6 2 6;
+}
+.chartTypeComboBoxSts:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.chartTypeComboBoxSts:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
+.maxLabelSts {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.maxGridCodeSts {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.minLabelSts {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.minGridCodeSts {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.xAxisLC {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.yAxisLC {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.lineChart {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.xAxisBC {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.yAxisBC {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.barChart {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.xAxisAC {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.yAxisAC {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.areaChart {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
