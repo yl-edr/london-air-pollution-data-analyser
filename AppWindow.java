@@ -5,6 +5,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+/**
+ * AppWindow serves as the main application window and manages the display
+ * of different tabs such as the London map, pollution statistics, UK cities,
+ * tube journey, and real time data. It also handles data loading.
+ *
+ * @author Nicolás Alcalá Olea, Rom Steinberg, Anton Davidouski and Yaal Luka Edrey Gatignol
+ */
+
 public class AppWindow extends Application {
 
     private BorderPane root;
@@ -20,29 +28,44 @@ public class AppWindow extends Application {
     private DataAggregator dataAggregator;
     private DataAggregator tubeDataAggregator;
 
+    /**
+     * This method is automatically called when the application starts.
+     * It creates the welcome panel.
+     *
+     * @param stage the primary stage for this application.
+     */
+
     @Override
     public void start(Stage stage) {
         createWelcomePanel(stage);
     }
+
+    /**
+     * Creates and configures the TabPane along with all its associated tabs.
+     */
 
     private void createTabPane() {
         tabPane = new TabPane();
 
         londonTab = new Tab("London Map");
         londonTab.setClosable(false);
+        londonTab.getStyleClass().add("londonTab");
 
         statsTab = new Tab("Pollution Statistics");
         statsTab.setClosable(false);
+        statsTab.getStyleClass().add("statsTab");
 
         UKTab = new Tab("UK Cities");
         UKTab.setClosable(false);
-
+        UKTab.getStyleClass().add("UKTab");
 
         tubeTab = new Tab("Tube Journey");
         tubeTab.setClosable(false);
+        tubeTab.getStyleClass().add("tubeTab");
 
         realTimeDataTab = new Tab("Real Time Data");
         realTimeDataTab.setClosable(false);
+        realTimeDataTab.getStyleClass().add("realTimeDataTab");
 
         tabPane.getTabs().addAll(londonTab, statsTab, UKTab, tubeTab, realTimeDataTab);
 
@@ -64,11 +87,25 @@ public class AppWindow extends Application {
 
     }
 
+    /**
+     * Creates and displays the welcome panel when the application starts.
+     * The welcome panel provides an initial user interface before the main panel is loaded.
+     *
+     * @param stage the primary stage for displaying the welcome panel.
+     */
+
     public void createWelcomePanel(Stage stage) {
         welcomePanel = new WelcomePanel();
         welcomePanel.createWelcomePanel(new Stage());
         //welcome pane initialisation
     }
+
+    /**
+     * Creates and configures the main application panel, it also processes
+     * the data for all the years and pollutants.
+     *
+     * @param stage the primary stage for the main application window.
+     */
 
     public void createInitialPanel(Stage stage) {
         root = new BorderPane();
@@ -109,6 +146,13 @@ public class AppWindow extends Application {
 
         new Thread(dataLoadingTask).start();
     }
+
+    /**
+     * Updates the content of the UK Cities tab with a new City object.
+     *
+     * @param ukCities the City instance containing the updated content for the UK Cities tab.
+     */
+
     public static void setUKCities(City ukCities) {
         UKTab.setContent(ukCities.getPane());
 

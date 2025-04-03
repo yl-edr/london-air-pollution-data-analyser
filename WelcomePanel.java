@@ -6,10 +6,23 @@ import javafx.scene.control.*;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+/**
+ * The WelcomePanel class is responsible for creating and displaying
+ * the welcome screen of the London Air Pollution Viewer application.
+ * It sets up the layout using a BorderPane and populates the top, center,
+ * and bottom sections with appropriate UI elements and styles.
+ */
+
 public class WelcomePanel {
 
     private BorderPane root;
 
+    /**
+     * Creates the welcome panel with all its attributes and configures the
+     * primary Stage to display it.
+     *
+     * @param firstStage The primary Stage on which the welcome panel will be set and displayed.
+     */
 
     public void createWelcomePanel(Stage firstStage) {
         root = new BorderPane();
@@ -21,8 +34,6 @@ public class WelcomePanel {
         firstStage.setScene(scene);
         firstStage.setResizable(false);
         firstStage.show();
-
-        
 
         Label welcomeLabel = new Label("Welcome!");
         GridPane topBar = new GridPane();
@@ -36,6 +47,7 @@ public class WelcomePanel {
                 " exploring air quality in London. Select pollutants and years to view dynamic heat maps, detailed " +
                 "charts, and graphs. Compare London’s data with other UK cities and get predictive insights based " +
                 "on six years of historical data.");
+
         GridPane center = new GridPane();
         informationLabel.setWrapText(true);
         informationLabel.setMaxWidth(650);

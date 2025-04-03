@@ -6,6 +6,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * PollutionStatistics class handles the display of pollution data on various charts
+ * and provides a sidebar for user controls including pollutant selection, year range,
+ * and chart type selection.
+ *
+ * @author Nicolás Alcalá Olea and Yaal Luka Edrey Gatignol
+ */
+
 public class PollutionStatistics {
 
     private BorderPane borderPane;
@@ -36,6 +44,13 @@ public class PollutionStatistics {
     // Chart type selection
     private Label chartTypeLabel;
     private ComboBox<String> chartTypeComboBox;
+
+    /**
+     * Constructor for PollutionStatistics.
+     * Initializes UI components, sets up event handlers for user input, and prepares the layout.
+     *
+     * @param dataAggregator the data source for pollution data
+     */
 
     public PollutionStatistics(DataAggregator dataAggregator) {
         this.dataAggregator = dataAggregator;
@@ -201,6 +216,14 @@ public class PollutionStatistics {
         chart.setChartType(chartType);
     }
 
+    /**
+     * Validates that the selected year range is valid.
+     * If the 'To Year' is earlier than the 'From Year', an error alert is displayed.
+     *
+     * @param fromYear the starting year as a string.
+     * @param toYear   the ending year as a string.
+     */
+
     private void validateYearSelection(String fromYear, String toYear) {
         if (fromYear != null && toYear != null) {
             int from = Integer.parseInt(fromYear);
@@ -273,11 +296,22 @@ public class PollutionStatistics {
         updateChart();
     }
 
-    private HashMap<String, DataSet> dataSetRange(String pollutant, int startYear, int endYear){
+    /**
+     * Retrieves datasets for a given pollutant over a specified range of years.
+     * For each year in the range, data is retrieved for the pollutant in "London".
+     *
+     * @param pollutant the pollutant
+     * @param startYear the starting year
+     * @param endYear   the ending year
+     * @return a HashMap containing datasets keyed by a combination of year and pollutant.
+     */
+
+     private HashMap<String, DataSet> dataSetRange(String pollutant, int startYear, int endYear) {
         HashMap<String, DataSet> dataRange = new HashMap<>();
         for(int i = startYear; i <= endYear; i++){
             dataRange.put(i + "-" + pollutant, dataAggregator.getCityDataSet("London", Integer.toString(i), pollutant));
         }
         return dataRange;
-    }
+     }
 }
+
