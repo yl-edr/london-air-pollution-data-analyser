@@ -135,6 +135,7 @@ public class PollutionStatistics {
     }
     
     private void updateSideBar() {  
+        rightBar.getChildren().clear();
         if (chart.getCurrentChartType() == Chart.ChartType.PIE) {
             fromYearComboBox.setValue(null);
 

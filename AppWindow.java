@@ -89,6 +89,20 @@ public class AppWindow extends Application {
         startAlert.setHeaderText("Please wait...");
         startAlert.setContentText("Data is being loaded. " + "This popup will close when the data is loaded.");
         startAlert.initOwner(stage);
+
+        // Configure dialog pane
+        DialogPane dialogPane = startAlert.getDialogPane();
+        dialogPane.getScene().getWindow().setOnCloseRequest(event -> event.consume());
+        
+        // Disable the OK button, don't remove it
+        Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
+        if (okButton != null) {
+            okButton.setDisable(true);
+        }
+
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        startAlert.setGraphic(progressIndicator);
+
         startAlert.show();
 
         Task<Void> dataLoadingTask = new Task<>() {
@@ -110,6 +124,5 @@ public class AppWindow extends Application {
     }
     public static void setUKCities(City ukCities) {
         UKTab.setContent(ukCities.getPane());
-
     }
 }

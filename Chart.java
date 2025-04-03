@@ -254,10 +254,8 @@ public class Chart {
     }
     
     private void updatePieChart(HashMap<String, DataSet> dataRange) {
-        // For pie chart, we'll show the distribution of different pollutants for the most recent year
-        Map<String, Double> pollutantTotals = new HashMap<>();
+        pieChart.getData().clear();
         
-        // Calculate total for each pollutant
         for (Map.Entry<String, DataSet> entry : dataRange.entrySet()) {
             String[] keyParts = entry.getKey().split("-");
             String pollutant = keyParts[1];
@@ -267,14 +265,8 @@ public class Chart {
                     .average()
                     .orElse(0);
             
-            pollutantTotals.put(pollutant.toUpperCase(), 
-                pollutantTotals.getOrDefault(pollutant.toUpperCase(), 0.0) + avgValue);
-        }
-        
-        // Create pie chart data
-        for (Map.Entry<String, Double> entry : pollutantTotals.entrySet()) {
-            PieChart.Data slice = new PieChart.Data(entry.getKey(), entry.getValue());
-            pieChart.getData().add(slice);
+            PieChart.Data data = new PieChart.Data(pollutant.toUpperCase(), avgValue);
+            pieChart.getData().add(data);
         }
     }
 
