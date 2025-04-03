@@ -151,7 +151,7 @@ public class ApiConnection {
             return matches;
         } catch (Exception e) {
             System.out.println("Error parsing geolocation JSON: " + e.getMessage());
-            return null;
+            return null;   
         }
     }
 }

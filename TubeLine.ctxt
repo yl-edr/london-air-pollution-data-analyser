@@ -1,17 +1,25 @@
 #BlueJ class context
 comment0.target=TubeLine
+comment0.text=\r\n\ Represents\ a\ Tube\ line\ with\ a\ name\ and\ a\ list\ of\ stations.\r\n\ @author\ Rom\ Steinberg\r\n\ @version\ 2.0\r\n
 comment1.params=name
 comment1.target=TubeLine(java.lang.String)
+comment1.text=\r\n\ @param\ name\ The\ name\ of\ the\ tube\ line.\r\n
 comment2.params=station
 comment2.target=void\ addStation(java.lang.String)
+comment2.text=\r\n\ Adds\ a\ single\ station\ to\ the\ tube\ line.\r\n\ @param\ station\ The\ station\ to\ be\ added.\r\n
 comment3.params=stations
 comment3.target=void\ addStations(java.lang.String[])
+comment3.text=\r\n\ Adds\ multiple\ stations\ to\ the\ tube\ line.\r\n\ @param\ stations\ An\ array\ of\ station\ names\ to\ be\ added.\r\n
 comment4.params=
 comment4.target=java.lang.String\ getName()
+comment4.text=\r\n\ @return\ The\ name\ of\ the\ tube\ line.\r\n
 comment5.params=station
 comment5.target=boolean\ isStationOnLine(java.lang.String)
+comment5.text=\r\n\ Checks\ if\ a\ station\ is\ present\ on\ this\ tube\ line.\r\n\ @param\ station\ The\ station\ name\ to\ check.\r\n\ @return\ True\ if\ the\ station\ exists\ on\ the\ line,\ false\ otherwise.\r\n
 comment6.params=
 comment6.target=java.util.ArrayList\ getStations()
+comment6.text=\r\n\ @return\ An\ ArrayList\ containing\ the\ names\ of\ stations.\r\n
 comment7.params=
 comment7.target=java.lang.String\ toString()
+comment7.text=\r\n\ @return\ A\ string\ indicating\ the\ tube\ line's\ name.\r\n
 numComments=8

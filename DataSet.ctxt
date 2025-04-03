@@ -3,24 +3,6 @@ comment0.target=DataSet
 comment0.text=\r\n\ A\ DataSet\ object\ holds\ all\ the\ data\ from\ a\ pollution\ data\ file.\r\n\ \r\n\ It\ is\ assumed\ that\ the\ data\ is\ derived\ from\ a\ DEFRA\ air\ pollution\ file\ (see\r\n\ https\://uk-air.defra.gov.uk/data/pcm-data).\ \r\n\ \r\n\ The\ data\ consists\ of\ a\ few\ bits\ of\ information\ about\ the\ nature\ of\ the\ data,\ and\ a\ list\r\n\ of\ data\ points.\r\n\ \r\n\ @author\ Michael\ K\u00F6lling\r\n\ @version\ 1.0\r\n
 comment1.params=pollutant\ year\ metric\ units
 comment1.target=DataSet(java.lang.String,\ java.lang.String,\ java.lang.String,\ java.lang.String)
-<<<<<<< HEAD
-comment1.text=\n\ Constructor\ for\ objects\ of\ class\ DataSet\n
-comment10.params=values
-comment10.target=void\ addData(java.lang.String[])
-comment10.text=\n\ Add\ a\ data\ point\ to\ this\ dataset.\ \n\ A\ data\ point\ consists\ of\ 4\ pieces\ od\ data\:\n\ \n\ \ \ \ \ gridcode,\ x,\ y,\ value\n\ \ \ \ \ \n\ The\ data\ is\ provided\ in\ a\ String\ array\ of\ length\ 4.\ If\ the\ value\ is\ invalid\ or\n\ missing,\ it\ will\ be\ stored\ as\ -1.\n\n\ @param\ \ values\ \ An\ array\ with\ the\ four\ data\ values\ (as\ Strings)\n
-comment11.params=intString
-comment11.target=int\ toInt(java.lang.String)
-comment11.text=\n\ Convert\ a\ string\ to\ int.\ \n\ @param\ intString\ \ The\ String\ holding\ the\ int\ value\n\ @return\ \ The\ int\ value,\ or\ -1\ if\ the\ string\ is\ not\ a\ readable\ number\n
-comment12.params=doubleString
-comment12.target=double\ toDouble(java.lang.String)
-comment12.text=\n\ Convert\ a\ string\ to\ double.\ \n\ @param\ doubleString\ \ The\ String\ holding\ the\ double\ value\n\ @return\ \ The\ double\ value,\ or\ -1.0\ if\ the\ string\ is\ not\ a\ readable\ number\n
-comment13.params=x\ y
-comment13.target=DataPoint\ getDataPoint(int,\ int)
-comment13.text=\n\ Return\ a\ data\ point\ with\ the\ given\ x\ and\ y\ coordinates.\n\ @param\ x\ coordinates\ in\ the\ map\n\ @param\ y\ coordinates\ in\ the\ map\n\ @return\ Data\ point\n
-comment14.params=
-comment14.target=java.lang.String\ toString()
-comment14.text=\n\ Return\ a\ string\ representation\ of\ this\ dataset\ info.\n
-=======
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ DataSet\r\n
 comment10.params=values
 comment10.target=void\ addData(java.lang.String[])
@@ -31,10 +13,12 @@ comment11.text=\r\n\ Convert\ a\ string\ to\ int.\ \r\n\ @param\ intString\ \ Th
 comment12.params=doubleString
 comment12.target=double\ toDouble(java.lang.String)
 comment12.text=\r\n\ Convert\ a\ string\ to\ double.\ \r\n\ @param\ doubleString\ \ The\ String\ holding\ the\ double\ value\r\n\ @return\ \ The\ double\ value,\ or\ -1.0\ if\ the\ string\ is\ not\ a\ readable\ number\r\n
-comment13.params=
-comment13.target=java.lang.String\ toString()
-comment13.text=\r\n\ Return\ a\ string\ representation\ of\ this\ dataset\ info.\r\n
->>>>>>> ChartDetails
+comment13.params=x\ y
+comment13.target=DataPoint\ getDataPoint(int,\ int)
+comment13.text=\r\n\ Return\ a\ data\ point\ with\ the\ given\ x\ and\ y\ coordinates.\r\n\ @param\ x\ coordinates\ in\ the\ map\r\n\ @param\ y\ coordinates\ in\ the\ map\r\n\ @return\ Data\ point\r\n
+comment14.params=
+comment14.target=java.lang.String\ toString()
+comment14.text=\r\n\ Return\ a\ string\ representation\ of\ this\ dataset\ info.\r\n
 comment2.params=
 comment2.target=java.lang.String\ getPollutant()
 comment2.text=\r\n\ Return\ the\ pollutant\ information\ for\ this\ dataset.\r\n
@@ -49,20 +33,12 @@ comment5.target=java.lang.String\ getUnits()
 comment5.text=\r\n\ Return\ the\ units\ information\ for\ this\ dataset.\r\n
 comment6.params=
 comment6.target=java.util.List\ getData()
-<<<<<<< HEAD
-comment6.text=\n\ Return\ the\ data\ points\ of\ this\ dataset.\n
-=======
 comment6.text=\r\n\ Return\ the\ data\ points\ of\ this\ dataset.\r\n
->>>>>>> ChartDetails
 comment7.params=
 comment7.target=double\ getMax()
 comment8.params=
 comment8.target=double\ getMin()
 comment9.params=x\ y
 comment9.target=DataPoint\ findNearestDataPoint(int,\ int)
-<<<<<<< HEAD
-comment9.text=\n\ Returns\ the\ nearest\ data\ point\ from\ the\ given\ x\ and\ y\ coordinates.\n\ @param\ x\ coordinates\ in\ the\ map\n\ @param\ y\ coordinates\ in\ the\ map\n\ @return\ The\ nearest\ data\ point\n
+comment9.text=\r\n\ Returns\ the\ nearest\ data\ point\ from\ the\ given\ x\ and\ y\ coordinates.\r\n\ @param\ x\ coordinates\ in\ the\ map\r\n\ @param\ y\ coordinates\ in\ the\ map\r\n\ @return\ The\ nearest\ data\ point\r\n
 numComments=15
-=======
-numComments=14
->>>>>>> ChartDetails
