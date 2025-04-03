@@ -1,5 +1,7 @@
 /**
  * A class storing the air pollution data of a city.
+ *
+ * @author Anton Davidouski
  */
 
 public class CityData {
