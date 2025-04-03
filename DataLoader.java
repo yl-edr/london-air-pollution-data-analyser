@@ -8,7 +8,7 @@ import java.net.*;
  * DEFRA files are csv files in a specific format. See https://uk-air.defra.gov.uk/data/pcm-data
  * for detailed information.
  *
- * @author Michael Kölling
+ * @author Michael Kölling, Rom Steinberg
  * @version 1.0
  */
 public class DataLoader

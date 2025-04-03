@@ -164,21 +164,6 @@ public class  DataSet
     }
 
     /**
-     * Return a data point with the given x and y coordinates.
-     * @param x coordinates in the map
-     * @param y coordinates in the map
-     * @return Data point
-     */
-    public DataPoint getDataPoint(int x , int y){
-        for (DataPoint dp : data) {
-            if (dp.x() == x && dp.y() == y){
-                return dp;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Return a string representation of this dataset info.
      */
     public String toString()

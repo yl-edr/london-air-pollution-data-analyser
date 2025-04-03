@@ -59,7 +59,7 @@
 }
 
 .informationLabel {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-font-size: 20px;
     -fx-padding: 0,0,50,0;
 }
@@ -68,7 +68,7 @@
     -fx-background-color: linear-gradient(to bottom, #ffffff, #b1b1b1);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 20px;
     -fx-font-weight: bold;
@@ -105,7 +105,7 @@
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 17px;
     -fx-font-weight: 600;
@@ -122,7 +122,7 @@
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 17px;
     -fx-font-weight: 600;
@@ -140,12 +140,12 @@
 }
 
 .pollutantLabel {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-font-size: 16px;
 }
 
 .yearLabel {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-font-size: 16px;
 }
 
@@ -153,7 +153,7 @@
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -167,32 +167,32 @@
 }
 
 .dataPointValue {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .dataPointLabel {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .gridCodeValue {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .gridCodeLabel {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .xValue {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .yValue {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .lowLabel {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .highLabel {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .pm25 {
@@ -208,13 +208,13 @@
 }
 
 .instructionLabel {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .okButton {
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -229,7 +229,7 @@
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -248,28 +248,28 @@
     -fx-background-color: #DECCCC;
 }
 .inputField {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .londonTab {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .statsTab {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .citiesTab {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .cityLabel {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .cityComboBox {
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 17px;
     -fx-font-weight: 600;
@@ -283,24 +283,24 @@
 }
 
 .startStnLabel {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .startStnText {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .endStnLabel {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .endStnText {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .checkButton {
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -313,16 +313,16 @@
 }
 
 .search-field {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .cities-compared-label {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .compare-add-button {
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -337,7 +337,7 @@
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -352,7 +352,7 @@
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -367,18 +367,18 @@
 .titleLabel {
     -fx-font-size: 40px;
     -fx-font-weight: bold;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .pollutantLabelSts {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .pm25Toggle {
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -394,7 +394,7 @@
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -410,7 +410,7 @@
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -424,14 +424,14 @@
 }
 
 .fromYearLabelSts {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .fromYearComboBoxSts {
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -445,13 +445,13 @@
 }
 
 .toYearLabelSts {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .toYearComboBoxSts {
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -465,14 +465,14 @@
 }
 
 .chartTypeLabelSts {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .chartTypeComboBoxSts {
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
     -fx-font-weight: 600;
@@ -486,44 +486,44 @@
 }
 
 .maxLabelSts {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .maxGridCodeSts {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .minLabelSts {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .minGridCodeSts {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .xAxisLC {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .yAxisLC {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .lineChart {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .xAxisBC {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .yAxisBC {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .barChart {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .xAxisAC {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .yAxisAC {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }
 .areaChart {
-    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-font-family: "Trebuchet MS", sans-serif;
 }

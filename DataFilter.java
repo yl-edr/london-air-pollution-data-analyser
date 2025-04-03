@@ -1,5 +1,12 @@
 import java.util.HashMap;
 
+/**
+ * This class is responsible for filtering air pollution data by city based on predefined boundaries.
+ * It organizes the data into separate datasets for each city.
+ *
+ * @author Rom Steinberg
+ */
+
 public class DataFilter {
 
     private static final HashMap<String, int[]> CITY_BOUNDARIES = City.getCitiesBoundaries();

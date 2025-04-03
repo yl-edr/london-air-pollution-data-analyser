@@ -43,11 +43,6 @@ public class DataAggregator {
         tubeDataSet = dataSet;
     }
 
-    /*private DataSet filterData(DataSet dataSet) {
-
-        return dataFilter.filterCityData(dataSet);
-    }*/
-
     /**
      * Generates a key for the data set based on the city, year, and pollutant.
      * @param city the city of the data set

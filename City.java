@@ -17,6 +17,9 @@ import javafx.stage.Stage;
  * city maps with pollution data overlays. It provides UI components for selecting pollutants,
  * years, and switching between cities. The class manages mouse event tracking
  * and updates the map overlay based on environmental data retrieved from a data aggregator.
+ * 
+ * @author Rom Steinberg, Anton Davidouski, Nicolás Alcalá Olea
+ * @version 28.7
  */
 
 public class City {

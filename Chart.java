@@ -2,7 +2,6 @@ import javafx.scene.chart.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
 import java.util.HashMap;
 import java.util.Map;
 

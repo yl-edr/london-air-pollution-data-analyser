@@ -10,7 +10,6 @@ public class AppWindow extends Application {
     private BorderPane root;
     private TabPane tabPane;
     private WelcomePanel welcomePanel;
-
     private Tab londonTab;
     private Tab statsTab;
     private static Tab UKTab;
