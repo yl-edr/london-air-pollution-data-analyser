@@ -260,3 +260,54 @@
 .citiesTab {
     -fx-font-family: "AppleGothic", sans-serif;
 }
+
+.cityLabel {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.cityComboBox {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 17px;
+    -fx-font-weight: 600;
+    -fx-padding: 2 6 2 6;
+}
+.cityComboBox:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.cityComboBox:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
+.startStnLabel {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.startStnText {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.endStnLabel {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+.endStnText {
+    -fx-font-family: "AppleGothic", sans-serif;
+}
+
+.checkButton {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "AppleGothic", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+}
+.checkButton:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.checkButton:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}

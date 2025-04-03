@@ -13,7 +13,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class City {
-
     private DataAggregator dataAggregator;
     private DataSet selectedDataSet;
     private MapImage map;
@@ -33,6 +32,7 @@ public class City {
     private String yearSelected;
     private BorderPane borderPane;
     protected String name;
+    private Button predictionButton;
     private Label lowLabel;
     private Label highLabel;
     private static final HashMap<String, int[]> CITY_BOUNDARIES = new HashMap<>();
@@ -41,9 +41,9 @@ public class City {
         // Add boundaries for different cities (adjust values as needed)
         CITY_BOUNDARIES.put("London", new int[]{510394, 554000, 168000, 194000, 1});
         CITY_BOUNDARIES.put("Manchester", new int[]{376000, 390901, 393400, 401667, 3});
-        CITY_BOUNDARIES.put("Edinburgh", new int[]{317339, 331640, 668176, 676443, 3});
         CITY_BOUNDARIES.put("Birmingham", new int[]{401000, 415930, 282200, 290530, 3});
         CITY_BOUNDARIES.put("Leeds", new int[]{421070, 436570, 430350, 438580, 3});
+        CITY_BOUNDARIES.put("Bristol", new int[]{354400, 369550, 169150, 177650, 3});
     }
 
     private int mouseX;
@@ -134,7 +134,7 @@ public class City {
         yearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
         yearComboBox.getStyleClass().add("yearComboBox");
 
-        Button predictionButton = new Button("Predict");
+        predictionButton = new Button("Predict");
         predictionButton.setOnAction(event -> {
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -169,6 +169,9 @@ public class City {
                     int year = Integer.parseInt(inputYear);
                     if (year < 2024 || year > 2030) {
                         Alert alert = new Alert(Alert.AlertType.ERROR, "Year must be between 2024 and 2030.");
+                        DialogPane dialogPane = alert.getDialogPane();
+                        dialogPane.getStylesheets().add(getClass().getResource("custom-alert.css").toExternalForm());
+                        dialogPane.getStyleClass().add("error-alert");
                         alert.showAndWait();
                     } else {
                         if (!yearComboBox.getItems().contains(inputYear)) {
@@ -223,7 +226,6 @@ public class City {
         rightBar.add(pollutantComboBox, 0, 3);
         rightBar.add(yearLabel, 0, 4);
         rightBar.add(yearComboBox, 0, 5);
-        rightBar.add(predictionButton, 0, 6);
         rightBar.add(dataPointLabel, 0, 8);
         rightBar.add(dataPointValue, 0, 9);
         rightBar.add(gridCodeLabel, 0, 10);
@@ -233,7 +235,6 @@ public class City {
 
         GridPane.setMargin(yearLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(yearComboBox, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(predictionButton, new Insets(10, 0, 10, 0));
         GridPane.setMargin(dataPointLabel, new Insets(10, 0, 0, 0));
         GridPane.setMargin(dataPointValue, new Insets(0, 0, 10, 0));
         GridPane.setMargin(gridCodeLabel, new Insets(10, 0, 0, 0));
@@ -241,6 +242,10 @@ public class City {
         GridPane.setMargin(xValue, new Insets(20, 0, 10, 0));
         GridPane.setMargin(yValue, new Insets(5, 0, 10, 0));
 
+        if("London".equals(name)){
+            rightBar.add(predictionButton, 0, 6);
+            GridPane.setMargin(predictionButton, new Insets(10, 0, 10, 0));
+        }
         borderPane.setRight(rightBar);
 
         HBox aqiBarContainer = new HBox(10);
@@ -273,18 +278,17 @@ public class City {
         aqiBarContainer.getChildren().addAll(lowLabel, aqiStack, highLabel);
         borderPane.setBottom(aqiBarContainer);
     }
+
     public GridPane getRightBar() {
         return rightBar;
     }
+
     /**
      * Updates the displayed statistics based on the current mouse position on the map.
      * It calculates the corresponding coordinates in the dataset using the current map view
      * dimensions and updates the UI labels with the nearest data point's value and grid code.
      */
-
-
-
-    public void updateStats(){
+    private void updateStats(){
         if (selectedDataSet == null) {
             return;
         }
@@ -295,7 +299,7 @@ public class City {
         int x = (int) ((mouseX / (double) imageWidth) * (bounds[1] - bounds[0]) + bounds[0]);
         int y = (int) (bounds[3] - ((mouseY / (double) imageHeight) * (bounds[3] - bounds[2])));
         DataPoint nearestDataPoint = selectedDataSet.findNearestDataPoint(x, y);
-        dataPointValue.setText(nearestDataPoint.value() + " " + selectedDataSet.getUnits());
+        dataPointValue.setText(nearestDataPoint.value() + "  µg/m³");
         gridCodeValue.setText(String.valueOf(nearestDataPoint.gridCode()));
     }
 
@@ -315,7 +319,7 @@ public class City {
      * to apply a color mapping, and then updates the map view with a blurred overlay.
      */
 
-    public void updateColourMap(){
+    private void updateColourMap(){
         if (pollutantSelected == null || yearSelected == null) {
             return;
         }
@@ -333,6 +337,7 @@ public class City {
         Image mapImage = map.getCombined();
         mapView.setImage(mapImage);
     }
+
     public static HashMap<String, int[]> getCitiesBoundaries() {
         return CITY_BOUNDARIES;
     }
@@ -346,7 +351,7 @@ public class City {
 
 
 
-    public int[] convertMapViewDimensionsToImageDimensions(int x, int y) {
+    private int[] convertMapViewDimensionsToImageDimensions(int x, int y) {
         double providedAspectRatio = (double) x / y;
         int[] dimensions = new int[2];
         if (providedAspectRatio > mapImageAspectRatio) {
@@ -380,10 +385,11 @@ public class City {
         });
     }
 
-    public void createCitySelector() {
+    private void createCitySelector() {
         Label cityLabel = new Label("Choose a city:");
         cityComboBox = new ComboBox<>();
         cityComboBox.setPromptText(name);
+        cityLabel.getStyleClass().add("cityLabel");
 
         Set<String> cities = new HashSet<>(CITY_BOUNDARIES.keySet());
         cities.remove("London"); // Remove London from the list
@@ -401,6 +407,8 @@ public class City {
         GridPane.setMargin(cityComboBox, new Insets(0, 0, 10, 0));
         getRightBar().add(cityLabel, 0, 0);
         getRightBar().add(cityComboBox, 0, 1);
+
+        cityComboBox.getStyleClass().add("cityComboBox");
     }
 
     private void updateCity(String cityName) {
@@ -409,14 +417,14 @@ public class City {
             case "Manchester":
                 this.name = "Manchester";
                 break;
-            case "Edinburgh":
-                this.name = "Edinburgh";
-                break;
             case "Birmingham":
                 this.name = "Birmingham";
                 break;
             case "Leeds":
                 this.name = "Leeds";
+                break;
+            case "Bristol":
+                this.name = "Bristol";
                 break;
 
             default:
