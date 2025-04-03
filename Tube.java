@@ -157,7 +157,7 @@ public class Tube {
 
         // Validate the input, might return an error msg
         if (startStn.isEmpty() || endStn.isEmpty() || getTubeDataSet().findStationData(startStn.trim()) == null || getTubeDataSet().findStationData(endStn.trim()) == null) {
-            errorHandler.showError("Please enter a valid station name.");
+            errorHandler.showError("Please enter a valid station name inside zone 1.");
             return;
         }
 
