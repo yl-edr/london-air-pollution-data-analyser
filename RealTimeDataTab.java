@@ -15,8 +15,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
 import java.util.HashMap;
+
+
+/**
+ * The real time data tab
+ *
+ * @author Anton Davidouski
+ */
+
 
 public class RealTimeDataTab {
 
@@ -45,6 +52,9 @@ public class RealTimeDataTab {
         create();
     }
 
+    /**
+     * Creates the real time data tab.
+     */
     public void create() {
         searchBorderPane = new BorderPane();
 
@@ -60,6 +70,7 @@ public class RealTimeDataTab {
         searchBox.getChildren().addAll(searchField);
         searchBox.setAlignment(Pos.CENTER);
 
+        // needs to be in a container so it can be centered
         container = new VBox(10);
         container.setAlignment(Pos.TOP_CENTER);
         container.getChildren().add(searchBox);
@@ -68,7 +79,7 @@ public class RealTimeDataTab {
         dataGrid.setHgap(20);
         dataGrid.setVgap(20);
         dataGrid.setPadding(new Insets(20));
-        dataGrid.setAlignment(Pos.CENTER);
+        dataGrid.setAlignment(Pos.CENTER); // gridpane to hold the pollution blocks
 
         numberOfCitiesComparedLabel = new Label("Cities in comparison: " + numberOfCitiesCompared);
         numberOfCitiesComparedLabel.setStyle("-fx-font-size: 14px");
@@ -91,19 +102,21 @@ public class RealTimeDataTab {
 
         container.getChildren().addAll(dataGrid, numberOfCitiesComparedLabel, compareAddButton, compareRemoveButton, chartButton);
 
-        ProgressIndicator spinner = new ProgressIndicator();
+        ProgressIndicator spinner = new ProgressIndicator(); // loading spinner
         spinner.setMaxSize(50, 50);
         spinner.setVisible(false);
 
         searchBorderPane.setCenter(container);
         searchBorderPane.setTop(spinner);
 
-        ContextMenu suggestionsPopup = new ContextMenu();
+        ContextMenu suggestionsPopup = new ContextMenu(); // for search suggestions
 
         PauseTransition pause = new PauseTransition(Duration.millis(500));
+        // pause will run when user stops typing - only then make
+        // api call to get suggestions so to not hit rate limit
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            pause.stop();
-            lat = 0;
+            pause.stop(); // restart the pause
+            lat = 0; // reset the last accessed lat and lon
             lon = 0;
 
             if (newValue.trim().isEmpty()) {
@@ -114,7 +127,7 @@ public class RealTimeDataTab {
             pause.setOnFinished(event -> {
                 spinner.setVisible(true);
 
-                Task<HashMap<String, double[]>> apiCall = new Task<>() {
+                Task<HashMap<String, double[]>> apiCall = new Task<>() { // api call in separate thread so loading spinner can show
                     @Override
                     protected HashMap<String, double[]> call() {
                         return apiConnection.getTopLocationsForSearch(newValue.trim());
@@ -131,23 +144,22 @@ public class RealTimeDataTab {
                             MenuItem item = new MenuItem(result);
                             item.setOnAction(actionEvent -> {
                                 compareAddButton.setVisible(true);
-                                compareRemoveButton.setVisible(true);
+                                compareRemoveButton.setVisible(true); // make all buttons visible if this is the search the user has made
                                 chartButton.setVisible(true);
                                 numberOfCitiesComparedLabel.setVisible(true);
 
                                 searchField.setText(result);
-                                searchField.getParent().requestFocus();
+                                searchField.getParent().requestFocus(); // remove focus from search field
 
-                                lastLocation = result;
                                 suggestionsPopup.hide();
 
-                                lat = results.get(result)[0];
+                                lat = results.get(result)[0]; // set the lat and lon for the location clicked
                                 lon = results.get(result)[1];
 
-                                lastLocation = result;
-                                displayData(spinner);
+                                lastLocation = result; // store formatted location name
+                                displayData(spinner); // display the data for the location, pass the spinner in as another call will be made there too
                             });
-                            suggestionsPopup.getItems().add(item);
+                            suggestionsPopup.getItems().add(item); // add all suggestions to the context menu
                         }
                     } else {
                         MenuItem item = new MenuItem("No results found");
@@ -155,24 +167,29 @@ public class RealTimeDataTab {
                     }
 
                     if (!suggestionsPopup.isShowing()) {
-                        suggestionsPopup.show(searchField, Side.BOTTOM, 0, 0);
+                        suggestionsPopup.show(searchField, Side.BOTTOM, 0, 0); // display the context menu under the search field
                     }
                     spinner.setVisible(false);
                 });
 
-                new Thread(apiCall).start();
+                new Thread(apiCall).start(); // start the api call
             });
-            pause.playFromStart();
+            pause.playFromStart(); // start the pause
         });
 
         searchField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
+            if (!newValue) { // hide the context menu if the search field loses focus
                 pause.stop();
                 suggestionsPopup.hide();
             }
         });
 
     }
+
+    /**
+     * Displays the data for a given location.
+     * @param spinner The loading spinner.
+     */
     public void displayData(ProgressIndicator spinner) {
         spinner.setVisible(true);
         Task<Void> apiCall = new Task<>() {
@@ -190,14 +207,24 @@ public class RealTimeDataTab {
         new Thread(apiCall).start();
     }
 
+    /**
+     * Gets the main border pane to return to the main application.
+     * @return The pane.
+     */
     public BorderPane getPane() {
         return searchBorderPane;
     }
 
-    private void renderData(double[] data, GridPane dataGrid) {
-        dataGrid.getChildren().clear();
 
-        if (data == null) {
+    /**
+     * Renders the data for a given location.
+     * @param data The data to render.
+     * @param dataGrid The grid to render the data in.
+     */
+    private void renderData(double[] data, GridPane dataGrid) {
+        dataGrid.getChildren().clear(); // empty the grid
+
+        if (data == null) { // means the api call failed somehow, so let the user know
             dataGrid.add(new Text("Failed to retrieve data."), 0, 0);
             return;
         }
@@ -205,6 +232,7 @@ public class RealTimeDataTab {
         String[] labels = {"AQI", "CO", "NO2", "O3", "SO2", "PM2.5", "PM10", "NH3"};
 
         for (int i = 0; i < data.length; i++) {
+            // for each data point, create a rectangle with the colour based on the value
             double value = data[i];
             String label = labels[i];
 
@@ -217,7 +245,7 @@ public class RealTimeDataTab {
             labelText.setFont(Font.font("Arial", FontWeight.BOLD, 16));
             labelText.setFill(Color.WHITE);
 
-            Text valueText = new Text(String.format("%.1f", value));
+            Text valueText = new Text(String.format("%.1f", value)); // round to 1 dp
             valueText.setFont(Font.font("Arial", FontWeight.BOLD, 22));
             valueText.setFill(Color.WHITE);
 
@@ -232,6 +260,9 @@ public class RealTimeDataTab {
         }
     }
 
+    /**
+     * Adds a city to the comparison chart
+     */
     private void addCityToCompare() {
         if (dataComparison.addCityData(lastLocation, data)) {
             numberOfCitiesCompared++;
@@ -239,6 +270,9 @@ public class RealTimeDataTab {
         }
     }
 
+    /**
+     * Removes a city from the comparison chart
+     */
     private void removeCityFromCompare() {
         if (dataComparison.removeCityData(lastLocation)) {
             numberOfCitiesCompared--;
@@ -246,6 +280,9 @@ public class RealTimeDataTab {
         }
     }
 
+    /**
+     * Displays the comparison chart
+     */
     private void displayChart() {
         if (numberOfCitiesCompared < 2) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -266,10 +303,19 @@ public class RealTimeDataTab {
         searchBorderPane.setCenter(chart);
     }
 
+    /**
+     * Hides the comparison chart
+     */
     private void hideChart() {
         searchBorderPane.setCenter(container);
     }
 
+    /**
+     * Gets the colour for a given value and pollutant.
+     * @param value The value.
+     * @param pollutant The pollutant.
+     * @return The colour.
+     */
     private Color getColor(double value, String pollutant) {
         // ranges taken from API source's own documentation:
         // https://openweathermap.org/api/air-pollution

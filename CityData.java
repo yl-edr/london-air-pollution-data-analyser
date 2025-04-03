@@ -1,3 +1,7 @@
+/**
+ * A class storing the air pollution data of a city.
+ */
+
 public class CityData {
     private String name;
     private double[] data;

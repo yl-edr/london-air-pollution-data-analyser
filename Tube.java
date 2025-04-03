@@ -35,7 +35,7 @@ public class Tube {
     }
 
     public void create() { 
-        map = new MapImage("resources/TubeMap.png");
+        map = new MapImage("N/A", "resources/TubeMap.png");
         mapImage = map.getImage();
         mapView = new ImageView(mapImage);
         mapView.setPreserveRatio(true);

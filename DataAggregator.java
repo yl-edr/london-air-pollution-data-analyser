@@ -3,6 +3,8 @@ import java.io.File;
 
 /**
  * This class is responsible for loading and storing all the available pollution data.
+ *
+ * @author Anton Davidouski, Rom Steinberg
  */
 
 public class DataAggregator {
@@ -18,6 +20,10 @@ public class DataAggregator {
         citiesDataSets = new HashMap<>();
     }
 
+    /**
+     * Adds a data set to the data aggregator. Filters the dataset.
+     * @param dataSet the data set to add
+     */
     public void addDataSet(DataSet dataSet) {
         HashMap<String, DataSet> filteredDataSets = DataFilter.filterCityData(dataSet);
 
@@ -29,6 +35,10 @@ public class DataAggregator {
         }
     }
 
+    /**
+     * Adds a tube data set to the data aggregator.
+     * @param dataSet the tube data set to add
+     */
     public void addDataSet(TubeDataSet dataSet) {
         tubeDataSet = dataSet;
     }
@@ -38,13 +48,21 @@ public class DataAggregator {
         return dataFilter.filterCityData(dataSet);
     }*/
 
+    /**
+     * Generates a key for the data set based on the city, year, and pollutant.
+     * @param city the city of the data set
+     * @param year the year of the data set
+     * @param pollutant the pollutant of the data set
+     * @return the key
+     */
     private String generateKey(String city, String year, String pollutant) {
         return city + "_" + year + "_" + pollutant;
     }
 
     /**
-     * Processes all the csv files in a given directory. This structure allows for another pollutant to be added easily in the future.
-     * @param directoryPath
+     * Processes all the csv files in a given directory. This structure allows for
+     * another pollutant to be added easily in the future.
+     * @param directoryPath the path to the directory of csv files to process
      */
     public void processDirectory(String directoryPath) {
         File directory = new File(directoryPath);
@@ -60,7 +78,6 @@ public class DataAggregator {
                             addDataSet((TubeDataSet) dataSet);
                         else
                             addDataSet(dataSet);
-                    
                 }
             }
         }
@@ -81,6 +98,10 @@ public class DataAggregator {
         return citiesDataSets.get(key);
     }
 
+    /**
+     * Returns the tube data set
+     * @return the tube data set
+     */
     public TubeDataSet getTubeDataSet() {
         return tubeDataSet;
     }
