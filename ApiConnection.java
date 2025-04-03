@@ -1,11 +1,17 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+
+/**
+ * This class is responsible for connecting to the OpenWeatherMap API and retrieving air pollution data.
+ *
+ * @author Anton Davidouski
+ */
+
 
 public class ApiConnection {
 
@@ -13,6 +19,11 @@ public class ApiConnection {
 
     public ApiConnection() {}
 
+    /**
+     * Retrieves the top 5 locations that match the search query.
+     * @param location The user's search query.
+     * @return A HashMap containing the top 5 locations and their latitude and longitude.
+     */
     public HashMap<String, double[]> getTopLocationsForSearch(String location) {
         String locationJson = makeApiCallToGeolocatorAPI(location);
         if (locationJson == null) {
@@ -22,6 +33,12 @@ public class ApiConnection {
         return extractTopMatches(locationJson);
     }
 
+    /**
+     * Retrieves air pollution data for a given latitude and longitude.
+     * @param lat Latitude
+     * @param lon Longitude
+     * @return An array of doubles containing the air pollution data.
+     */
     public double[] getDataForLatLon(double lat, double lon) {
         String airPollutionJson = makeApiCallToLocation(lat, lon);
         if (airPollutionJson == null) {
@@ -31,17 +48,33 @@ public class ApiConnection {
         return processDataJsonString(airPollutionJson);
     }
 
+    /**
+     * Makes an API call to the OpenWeatherMap API to retrieve air pollution data for a given latitude and longitude.
+     * @param lat
+     * @param lon
+     * @return
+     */
     private String makeApiCallToLocation(double lat, double lon) {
         String urlString = "https://api.openweathermap.org/data/2.5/air_pollution?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
         return makeHttpRequest(urlString);
     }
 
+    /**
+     * Makes an API call to the OpenWeatherMap GeoLocator API to retrieve the top 5 locations that match the search query.
+     * @param location
+     * @return
+     */
     private String makeApiCallToGeolocatorAPI(String location) {
         location = location.replace(" ", "%20");
-        String urlString = "http://api.openweathermap.org/geo/1.0/direct?q=" + location + "&limit=8&appid=" + apiKey;
+        String urlString = "https://api.openweathermap.org/geo/1.0/direct?q=" + location + "&limit=5&appid=" + apiKey;
         return makeHttpRequest(urlString);
     }
 
+    /**
+     * Makes an HTTP request to the given URL and returns the response as a string.
+     * @param urlString The URL to make the request to.
+     * @return The response from the server as a string.
+     */
     private String makeHttpRequest(String urlString) {
         try {
             URL url = new URL(urlString);
@@ -68,6 +101,11 @@ public class ApiConnection {
         }
     }
 
+    /**
+     * Processes the JSON string returned by the OpenWeatherMap API and extracts the air pollution data.
+     * @param jsonString The JSON string returned by the API.
+     * @return An array of doubles containing the air pollution data.
+     */
     private double[] processDataJsonString(String jsonString) {
         try {
             JSONObject root = new JSONObject(jsonString);
@@ -91,6 +129,11 @@ public class ApiConnection {
         }
     }
 
+    /**
+     * Extracts the top 5 locations that match the search query from the JSON string returned by the OpenWeatherMap GeoLocator API.
+     * @param jsonString The JSON string returned by the API.
+     * @return A HashMap containing the top 5 locations and their latitude and longitude.
+     */
     private HashMap<String, double[]> extractTopMatches(String jsonString) {
         HashMap<String, double[]> matches = new HashMap<>();
         try {
@@ -108,7 +151,7 @@ public class ApiConnection {
             return matches;
         } catch (Exception e) {
             System.out.println("Error parsing geolocation JSON: " + e.getMessage());
-            return null;
+            return null;   
         }
     }
 }

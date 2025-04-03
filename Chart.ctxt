@@ -2,15 +2,6 @@
 comment0.target=Chart
 comment1.params=
 comment1.target=Chart()
-<<<<<<< HEAD
-comment2.params=value
-comment2.target=java.lang.String\ toString(java.lang.Number)
-comment3.params=dataRange
-comment3.target=void\ updateChart(java.util.HashMap)
-comment4.params=
-comment4.target=javafx.scene.chart.LineChart\ getChart()
-numComments=5
-=======
 comment10.params=dataRange
 comment10.target=void\ updateLineAndAreaChart(java.util.HashMap)
 comment11.params=dataRange
@@ -18,22 +9,23 @@ comment11.target=void\ updateBarChart(java.util.HashMap)
 comment12.params=dataRange
 comment12.target=void\ updatePieChart(java.util.HashMap)
 comment13.params=
-comment13.target=javafx.scene.layout.Pane\ getChartBox()
+comment13.target=Chart.ChartType\ getCurrentChartType()
+comment14.params=
+comment14.target=javafx.scene.layout.Pane\ getChartBox()
 comment2.params=
-comment2.target=void\ initLineChart()
+comment2.target=void\ lineChart()
 comment3.params=value
 comment3.target=java.lang.String\ toString(java.lang.Number)
 comment4.params=
-comment4.target=void\ initBarChart()
+comment4.target=void\ barChart()
 comment5.params=
-comment5.target=void\ initAreaChart()
+comment5.target=void\ areaChart()
 comment6.params=value
 comment6.target=java.lang.String\ toString(java.lang.Number)
 comment7.params=
-comment7.target=void\ initPieChart()
+comment7.target=void\ pieChart()
 comment8.params=type
 comment8.target=void\ setChartType(Chart.ChartType)
 comment9.params=dataRange
 comment9.target=void\ updateChart(java.util.HashMap)
-numComments=14
->>>>>>> ChartDetails
+numComments=15

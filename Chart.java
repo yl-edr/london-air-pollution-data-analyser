@@ -53,15 +53,17 @@ public class Chart {
         yAxis.setLowerBound(0);
         yAxis.setUpperBound(30);
 
+        // Format the x axis
         xAxis.setTickLabelFormatter(new NumberAxis.DefaultFormatter(xAxis) {
             @Override
             public String toString(Number value) {
-                return String.valueOf(value.intValue()); // Convert to int to remove decimal
+                return String.valueOf(value.intValue());
             }
         });
 
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setPrefSize(750, 575);
+
         // Allow the chart to resize with the window
         lineChart.prefWidthProperty().bind(chartContainer.widthProperty());
         lineChart.prefHeightProperty().bind(chartContainer.heightProperty());
@@ -84,6 +86,7 @@ public class Chart {
         
         barChart = new BarChart<>(xAxis, yAxis);
         barChart.setPrefSize(750, 575);
+
         // Allow the chart to resize with the window
         barChart.prefWidthProperty().bind(chartContainer.widthProperty());
         barChart.prefHeightProperty().bind(chartContainer.heightProperty());
@@ -116,6 +119,7 @@ public class Chart {
         
         areaChart = new AreaChart<>(xAxis, yAxis);
         areaChart.setPrefSize(750, 575);
+
         // Allow the chart to resize with the window
         areaChart.prefWidthProperty().bind(chartContainer.widthProperty());
         areaChart.prefHeightProperty().bind(chartContainer.heightProperty());
@@ -128,6 +132,7 @@ public class Chart {
     private void pieChart() {
         pieChart = new PieChart();
         pieChart.setPrefSize(750, 575);
+
         // Allow the chart to resize with the window
         pieChart.prefWidthProperty().bind(chartContainer.widthProperty());
         pieChart.prefHeightProperty().bind(chartContainer.heightProperty());
@@ -202,7 +207,7 @@ public class Chart {
             String[] keyParts = entry.getKey().split("-");
             int year = Integer.parseInt(keyParts[0]);
             String pollutant = keyParts[1];
-    
+
             // Create a new series for each pollutant if it doesn't exist
             seriesMap.putIfAbsent(pollutant, new XYChart.Series<>());
             XYChart.Series<Number, Number> series = seriesMap.get(pollutant);
