@@ -439,6 +439,9 @@ public class City {
             case "Leeds":
                 this.name = "Leeds";
                 break;
+            case "Bristol":
+                this.name = "Bristol";
+                break;
 
             default:
                 break;
