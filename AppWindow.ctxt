@@ -3,7 +3,6 @@ comment0.target=AppWindow
 comment1.params=stage
 comment1.target=void\ start(javafx.stage.Stage)
 comment2.params=
-<<<<<<< HEAD
 comment2.target=void\ createTabPane()
 comment3.params=stage
 comment3.target=void\ createWelcomePanel(javafx.stage.Stage)
@@ -16,11 +15,3 @@ comment6.target=void\ succeeded()
 comment7.params=ukCities
 comment7.target=void\ setUKCities(City)
 numComments=8
-=======
-comment2.target=java.lang.Void\ call()
-comment3.params=
-comment3.target=void\ succeeded()
-comment4.params=
-comment4.target=void\ createTabPane()
-numComments=5
->>>>>>> ChartDetails

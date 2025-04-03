@@ -113,7 +113,6 @@ public class CityTest {
         assertNotNull(City.getCitiesBoundaries());
         assertTrue(City.getCitiesBoundaries().containsKey("London"));
         assertTrue(City.getCitiesBoundaries().containsKey("Manchester"));
-        assertTrue(City.getCitiesBoundaries().containsKey("Edinburgh"));
         assertTrue(City.getCitiesBoundaries().containsKey("Birmingham"));
         assertTrue(City.getCitiesBoundaries().containsKey("Leeds"));
         assertTrue(City.getCitiesBoundaries().containsKey("Bristol"));

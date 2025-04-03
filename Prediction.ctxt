@@ -1,10 +1,12 @@
 #BlueJ class context
 comment0.target=Prediction
-comment0.text=\n\ This\ class\ generates\ a\ prediction\ for\ future\ years\ based\ on\ the\n\ data\ given\ in\ the\ CSV\ files.\n\n\ @author\ Nicol\u00E1s\ Alcal\u00E1\ Olea\n
+comment0.text=\r\n\ The\ Prediction\ class\ generates\ future\ pollution\ predictions\ based\ on\ historical\ data\r\n\ from\ CSV\ files.\ It\ utilizes\ a\ data\ aggregator\ to\ retrieve\ past\ pollution\ data\ and\ uses\r\n\ simple\ linear\ regression\ to\ forecast\ values\ for\ a\ future\ year.\r\n\r\n\ Predictions\ are\ generated\ concurrently\ while\ displaying\ a\ loading\ popup,\ and\ the\ resulting\r\n\ data\ is\ integrated\ into\ a\ new\ data\ set\ for\ further\ processing.\r\n\r\n\ @author\ Nicol\u00E1s\ Alcal\u00E1\ Olea\r\n
 comment1.params=dataAggregator\ yearSelected
 comment1.target=Prediction(DataAggregator,\ java.lang.String)
+comment1.text=\r\n\ Constructs\ a\ new\ Prediction\ instance\ for\ generating\ pollution\ predictions\ for\ a\r\n\ specified\ future\ year.\r\n\r\n\ @param\ dataAggregator\ the\ data\ aggregator\ used\ to\ retrieve\ historical\ pollution\ data\r\n\ @param\ yearSelected\ \ \ the\ future\ year\ for\ which\ the\ prediction\ is\ to\ be\ generated\r\n
 comment2.params=
 comment2.target=void\ showLoadingPopup()
+comment2.text=\r\n\ Displays\ a\ loading\ popup\ while\ generating\ predictions\ concurrently.\r\n\r\n\ A\ background\ task\ is\ started\ to\ process\ the\ historical\ data\ and\ generate\ predictions.\r\n\ Once\ the\ task\ completes\ successfully,\ the\ popup\ is\ closed.\ If\ the\ task\ fails,\ an\ error\r\n\ message\ is\ displayed\ in\ the\ popup.\r\n
 comment3.params=
 comment3.target=java.lang.Void\ call()
 comment4.params=
@@ -13,6 +15,8 @@ comment5.params=
 comment5.target=void\ failed()
 comment6.params=
 comment6.target=void\ dataPointList()
+comment6.text=\r\n\ Processes\ historical\ pollution\ data\ to\ generate\ predictions\ for\ each\ pollutant.\r\n\r\n\ For\ each\ pollutant,\ a\ new\ data\ set\ is\ created\ for\ the\ selected\ future\ year.\ The\ method\ iterates\r\n\ over\ a\ grid\ defined\ by\ the\ geographic\ boundaries\ (MIN_X,\ MAX_X,\ MIN_Y,\ MAX_Y)\ and\ collects\ historical\r\n\ data\ points\ from\ 2018\ to\ 2023\ for\ each\ grid\ cell.\ Using\ these\ data\ points,\ a\ prediction\ is\ calculated\r\n\ using\ linear\ regression,\ and\ the\ result\ is\ added\ to\ the\ new\ data\ set.\ Finally,\ the\ new\ data\ set\r\n\ is\ added\ to\ the\ data\ aggregator.\r\n
 comment7.params=dataPoints
 comment7.target=double\ calculatePrediction(java.util.List)
+comment7.text=\r\n\ Calculates\ a\ predicted\ pollution\ value\ for\ the\ selected\ future\ year\ using\ linear\ regression.\r\n\r\n\ Historical\ data\ points\ corresponding\ to\ the\ years\ 2018\ to\ 2023\ are\ used\ to\ fit\ a\ linear\ model\:\r\n\r\n\ \ \ \ \ y\ \=\ slope\ *\ x\ +\ intercept\r\n\r\n\ where\ x\ represents\ the\ year\ and\ y\ the\ pollution\ value.\ The\ model\ is\ then\ used\ to\ predict\ the\r\n\ value\ for\ the\ future\ year\ specified\ in\ yearSelected.\ If\ no\ data\ points\ are\ available,\ the\r\n\ method\ returns\ 0.\r\n\r\n\ @param\ dataPoints\ a\ list\ of\ historical\ data\ point\ objects\ containing\ pollution\ data\r\n\ @return\ the\ predicted\ pollution\ value\ for\ the\ selected\ future\ year\r\n
 numComments=8
