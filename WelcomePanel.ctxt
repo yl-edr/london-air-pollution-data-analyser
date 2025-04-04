@@ -1,5 +1,7 @@
 #BlueJ class context
 comment0.target=WelcomePanel
+comment0.text=\r\n\ The\ WelcomePanel\ class\ is\ responsible\ for\ creating\ and\ displaying\r\n\ the\ welcome\ screen\ of\ the\ London\ Air\ Pollution\ Viewer\ application.\r\n\ It\ sets\ up\ the\ layout\ using\ a\ BorderPane\ and\ populates\ the\ top,\ center,\r\n\ and\ bottom\ sections\ with\ appropriate\ UI\ elements\ and\ styles.\r\n
 comment1.params=firstStage
 comment1.target=void\ createWelcomePanel(javafx.stage.Stage)
+comment1.text=\r\n\ Creates\ the\ welcome\ panel\ with\ all\ its\ attributes\ and\ configures\ the\r\n\ primary\ Stage\ to\ display\ it.\r\n\r\n\ @param\ firstStage\ The\ primary\ Stage\ on\ which\ the\ welcome\ panel\ will\ be\ set\ and\ displayed.\r\n
 numComments=2

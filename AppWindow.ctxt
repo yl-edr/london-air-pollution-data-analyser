@@ -1,17 +1,23 @@
 #BlueJ class context
 comment0.target=AppWindow
+comment0.text=\r\n\ AppWindow\ serves\ as\ the\ main\ application\ window\ and\ manages\ the\ display\r\n\ of\ different\ tabs\ such\ as\ the\ London\ map,\ pollution\ statistics,\ UK\ cities,\r\n\ tube\ journey,\ and\ real\ time\ data.\ It\ also\ handles\ data\ loading.\r\n\r\n\ @author\ Nicol\u00E1s\ Alcal\u00E1\ Olea,\ Rom\ Steinberg,\ Anton\ Davidouski\ and\ Yaal\ Luka\ Edrey\ Gatignol\r\n
 comment1.params=stage
 comment1.target=void\ start(javafx.stage.Stage)
+comment1.text=\r\n\ This\ method\ is\ automatically\ called\ when\ the\ application\ starts.\r\n\ It\ creates\ the\ welcome\ panel.\r\n\r\n\ @param\ stage\ the\ primary\ stage\ for\ this\ application.\r\n
 comment2.params=
 comment2.target=void\ createTabPane()
+comment2.text=\r\n\ Creates\ and\ configures\ the\ TabPane\ along\ with\ all\ its\ associated\ tabs.\r\n
 comment3.params=stage
 comment3.target=void\ createWelcomePanel(javafx.stage.Stage)
+comment3.text=\r\n\ Creates\ and\ displays\ the\ welcome\ panel\ when\ the\ application\ starts.\r\n\ The\ welcome\ panel\ provides\ an\ initial\ user\ interface\ before\ the\ main\ panel\ is\ loaded.\r\n\r\n\ @param\ stage\ the\ primary\ stage\ for\ displaying\ the\ welcome\ panel.\r\n
 comment4.params=stage
 comment4.target=void\ createInitialPanel(javafx.stage.Stage)
+comment4.text=\r\n\ Creates\ and\ configures\ the\ main\ application\ panel,\ it\ also\ processes\r\n\ the\ data\ for\ all\ the\ years\ and\ pollutants.\r\n\r\n\ @param\ stage\ the\ primary\ stage\ for\ the\ main\ application\ window.\r\n
 comment5.params=
 comment5.target=java.lang.Void\ call()
 comment6.params=
 comment6.target=void\ succeeded()
 comment7.params=ukCities
 comment7.target=void\ setUKCities(City)
+comment7.text=\r\n\ Updates\ the\ content\ of\ the\ UK\ Cities\ tab\ with\ a\ new\ City\ object.\r\n\r\n\ @param\ ukCities\ the\ City\ instance\ containing\ the\ updated\ content\ for\ the\ UK\ Cities\ tab.\r\n
 numComments=8

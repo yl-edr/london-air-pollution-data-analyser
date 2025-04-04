@@ -31,10 +31,10 @@ public class TubeSystem {
         String[] hammersmithAndCityStations = {"aldgate east", "liverpool street", "moorgate", "barbican", "farringdon", "kings cross", "euston square", "great portland street", "baker street", "edgware road", "paddington"};
         hammersmithAndCity.addStations(hammersmithAndCityStations);
 
-        String[] circleStations = {"edgware road", "baker street", "great portland street", "euston square", "king's cross", "farringdon", "barbican", "moorgate", "liverpool street", "aldgate", "tower hill", "monument", "cannon street", "mansion house", "blackfriars", "temple", "embankment", "westminster", "st. james's park", "victoria", "sloane square", "south kensington", "gloucester road", "high street kensington", "notting hill gate", "bayswater", "paddington"};
+        String[] circleStations = {"edgware road", "baker street", "great portland street", "euston square", "kings cross", "farringdon", "barbican", "moorgate", "liverpool street", "aldgate", "tower hill", "monument", "cannon street", "mansion house", "blackfriars", "temple", "embankment", "westminster", "st jamess park", "victoria", "sloane square", "south kensington", "gloucester road", "high street kensington", "notting hill gate", "bayswater", "paddington"};
         circle.addStations(circleStations);
 
-        String[] districtStations = {"aldgate east", "tower hill", "monument", "cannon street", "mansion house", "blackfriars", "temple", "embankment", "westminster", "st. james's park", "victoria", "sloane square", "south kensington", "gloucester road", "high street kensington", "notting hill gate", "bayswater", "paddington", "earl's court"};
+        String[] districtStations = {"aldgate east", "tower hill", "monument", "cannon street", "mansion house", "blackfriars", "temple", "embankment", "westminster", "st jamess park", "victoria", "sloane square", "south kensington", "gloucester road", "high street kensington", "notting hill gate", "bayswater", "paddington", "earls court"};
         district.addStations(districtStations);
 
         String[] jubileeStations = {"london bridge", "southwark", "waterloo", "westminster", "green park", "bond street",  "baker street"};
