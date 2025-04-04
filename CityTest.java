@@ -8,21 +8,36 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
+/**
+ * Test class for the City class that verifies its functionality.
+ * Tests proper initialization, component creation, and boundary data.
+ * Uses JUnit 5 and JavaFX Platform for UI component testing.
+ * 
+ * @author Yaal Luka Edrey Gatignol
+ * @version 1.0
+ */
 public class CityTest {
     
     private City city;
     private DataAggregator dataAggregator;
-    private static boolean jfxIsSetup = false;
+    private static boolean isSetup = false;
     
-    // Initialize JavaFX toolkit
+    /**
+     * Initializes the JavaFX toolkit if it hasn't been initialized yet.
+     * Required for testing JavaFX components.
+     */
     static void initJavaFX() {
-        if (!jfxIsSetup) {
-            // Initialize the JavaFX platform
+        if (!isSetup) {
             new JFXPanel();
-            jfxIsSetup = true;
+            isSetup = true;
         }
     }
 
+    /**
+     * Sets up the test environment before each test execution.
+     * Initializes JavaFX, creates a DataAggregator with test data,
+     * and instantiates a City object on the JavaFX thread.
+     */
     @BeforeEach
     public void setUp() {
         initJavaFX();
@@ -31,18 +46,13 @@ public class CityTest {
         dataAggregator = new DataAggregator();
         
         // Create City object
-        Platform.runLater(() -> {
-            city = new City("London", dataAggregator);
-        });
-        
-        // Wait for JavaFX operations to complete
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        city = new City("London", dataAggregator);
     }
 
+    /**
+     * Tests that the City object is properly initialized with correct values.
+     * Verifies the city name is set correctly and necessary components are not null.
+     */
     @Test
     public void testCityInitialization() {
         Platform.runLater(() -> {
@@ -54,6 +64,10 @@ public class CityTest {
         });
     }
 
+    /**
+     * Tests the getPane method to verify it returns a properly configured BorderPane.
+     * Checks that the BorderPane contains all expected components (center, right, bottom).
+     */
     @Test
     public void testGetPane() {
         Platform.runLater(() -> {
@@ -61,10 +75,14 @@ public class CityTest {
             assertNotNull(pane);
             assertNotNull(pane.getCenter()); // Should have the anchorPane with map
             assertNotNull(pane.getRight()); // Should have the rightBar
-            assertNotNull(pane.getBottom()); // Should have the AQI bar
+            assertNotNull(pane.getBottom()); // Should have the coloured bar
         });
     }
 
+    /**
+     * Tests the getRightBar method to ensure it returns a GridPane with expected components.
+     * Specifically checks for the presence of pollutant and year ComboBoxes.
+     */
     @Test
     public void testGetRightBar() {
         Platform.runLater(() -> {
@@ -88,6 +106,10 @@ public class CityTest {
         });
     }
 
+    /**
+     * Tests the getDataAggregator method to ensure it returns the correct DataAggregator instance.
+     * Verifies that the returned aggregator is not null and is the same instance used to create the City.
+     */
     @Test
     public void testGetDataAggregator() {
         Platform.runLater(() -> {
@@ -97,6 +119,10 @@ public class CityTest {
         });
     }
 
+    /**
+     * Tests that city boundaries are properly defined and accessible.
+     * Verifies that boundaries exist for all expected cities and have the correct structure.
+     */
     @Test
     public void testCityBoundaries() {
         // Test that city boundaries are properly defined

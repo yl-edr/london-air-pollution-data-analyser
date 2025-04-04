@@ -8,24 +8,41 @@ import java.util.Map;
 import javafx.scene.Node;
 
 import javafx.application.Platform;
-import javafx.geometry.Side;
 
 
+/**
+ * The Chart class is responsible for creating and managing three types of charts
+ * (LineChart, BarChart, and PieChart) using JavaFX. It also updates the charts based on
+ * provided data and allows switching between different chart types.
+ * 
+ * @author Yaal Luka Edrey Gatignol
+ * @version 1.0
+ */
 public class Chart {
     private VBox chartContainer;
     private LineChart<Number, Number> lineChart;
     private BarChart<String, Number> barChart;
     private PieChart pieChart;
-    
+
     private Map<String, XYChart.Series<Number, Number>> seriesMap;
     private ChartType currentChartType;
 
     private HashMap<String, String> pollutantColors = new HashMap<>();
 
+    /**
+     * Enumeration representing the different types of charts supported.
+     */
     public enum ChartType {
         LINE, BAR, PIE
     }
 
+    /**
+     * Constructor for the Chart class.
+     * 
+     * Initializes the chart container, sets up the different chart types (line, bar, and pie),
+     * defines color mappings for pollutants, and sets the default chart type to LINE.
+     * 
+     */
     public Chart() {
         chartContainer = new VBox();
         // Make the chart container expandable
@@ -47,6 +64,11 @@ public class Chart {
         setChartType(ChartType.LINE);
     }
     
+    /**
+     * Initializes the LineChart.
+     * Sets up the X and Y axes with proper labels, bounds, and formatting. Configures
+     * the chart appearance, disables symbols, and binds its size to the container.
+     */
     private void lineChart() {
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
@@ -80,11 +102,16 @@ public class Chart {
         lineChart.prefHeightProperty().bind(chartContainer.heightProperty());
         lineChart.setCreateSymbols(false);
         lineChart.setLegendVisible(false);
-        lineChart.setAnimated(true);
+        lineChart.setAnimated(false);
         lineChart.setTitle("Pollution Levels Over Time");
         lineChart.getStyleClass().add("lineChart");
     }
     
+    /**
+     * Initializes the BarChart.
+     * Configures category (X) and numeric (Y) axes with labels and fixed bounds. Binds the 
+     * chart's size to the container, sets the chart properties, and applies styling.
+     */
     private void barChart() {
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
@@ -105,11 +132,16 @@ public class Chart {
         barChart.prefWidthProperty().bind(chartContainer.widthProperty());
         barChart.prefHeightProperty().bind(chartContainer.heightProperty());
         barChart.setLegendVisible(false);
-        barChart.setAnimated(true);
+        barChart.setAnimated(false);
         barChart.setTitle("Pollution Levels by Year");
         barChart.getStyleClass().add("barChart");
     }
     
+    /**
+     * Initializes the PieChart.
+     * Sets up the PieChart with preferred size, binds it to the container, hides the legend,
+     * and enables animations.
+     */
     private void pieChart() {
         pieChart = new PieChart();
         pieChart.setPrefSize(750, 575);
@@ -122,6 +154,12 @@ public class Chart {
         pieChart.setTitle("Pollution Distribution");
     }
     
+    /**
+     * Sets the current chart type and updates the displayed chart accordingly.
+     * Clears the chart container and adds the chart corresponding to the provided type.
+     *
+     * @param type The new ChartType (LINE, BAR, or PIE).
+     */
     public void setChartType(ChartType type) {
         this.currentChartType = type;
         
@@ -142,6 +180,13 @@ public class Chart {
         }
     }
 
+    /**
+     * Updates the current chart with new data.
+     * Clears all existing data from every chart type, resets the series map, and calls the specific
+     * update method for the currently active chart.
+     *
+     * @param dataRange A HashMap containing data sets keyed by a combination of year and pollutant.
+     */
     public void updateChart(HashMap<String, DataSet> dataRange) {
         // Clear existing data from all charts
         lineChart.getData().clear();
@@ -163,9 +208,17 @@ public class Chart {
         }
     }
     
+    /**
+     * Processes the provided data and updates the LineChart.
+     * Iterates over the data, creates or updates series for each pollutant, calculates the average
+     * value for each data point, and applies the pollutant-specific colors after rendering.
+     *
+     * @param dataRange A HashMap containing data sets keyed by a combination of year and pollutant.
+     */
     private void updateLineChart(HashMap<String, DataSet> dataRange) {
-
+        // Calculate the average value for each pollutant
         for (Map.Entry<String, DataSet> entry : dataRange.entrySet()) {
+            // Key's format being: "year-pollutant"
             String[] keyParts = entry.getKey().split("-");
             int year = Integer.parseInt(keyParts[0]);
             String pollutant = keyParts[1].toUpperCase();
@@ -174,7 +227,6 @@ public class Chart {
             seriesMap.putIfAbsent(pollutant, new XYChart.Series<>());
             XYChart.Series<Number, Number> series = seriesMap.get(pollutant);
     
-            // Calculate the average value for the pollutant
             double avgValue = entry.getValue().getData().stream()
                     .mapToDouble(DataPoint::value)
                     .average()
@@ -182,19 +234,17 @@ public class Chart {
     
 
             series.setName(pollutant);
-            // Add the data point to the series
             series.getData().add(new XYChart.Data<>(year, avgValue));
         }
     
-        // Add all series to the chart
         lineChart.getData().addAll(seriesMap.values());
         
-        // Apply colors to each series after they are rendered
+        // Apply consistent colouring to each line
         Platform.runLater(() -> {
             for (XYChart.Series<Number, Number> series : lineChart.getData()) {
                 String pollutant = series.getName();
+                // Get the color for the pollutant in the map.
                 String color = pollutantColors.getOrDefault(pollutant, "black");
-
                 Node node = series.getNode();
                 if (node != null) {
                     String style = String.format("-fx-stroke: %s;", color);
@@ -204,14 +254,24 @@ public class Chart {
         });
     }
     
+    /**
+     * Processes the provided data and updates the BarChart.
+     * Organizes data into series based on pollutant type, calculates the average values per year,
+     * and applies the corresponding color styles to each bar.
+     *
+     * @param dataRange A HashMap containing data sets keyed by a combination of year and pollutant.
+     */
     private void updateBarChart(HashMap<String, DataSet> dataRange) {
         Map<String, XYChart.Series<String, Number>> barSeriesMap = new HashMap<>();
         
+        // Calculate the average value for each pollutant
         for (Map.Entry<String, DataSet> entry : dataRange.entrySet()) {
+            // Key's format being: "year-pollutant"
             String[] keyParts = entry.getKey().split("-");
             String year = keyParts[0];
             String pollutant = keyParts[1].toUpperCase();
             
+            // Create a new series for each pollutant if it doesn't exist
             barSeriesMap.putIfAbsent(pollutant, new XYChart.Series<>());
             XYChart.Series<String, Number> series = barSeriesMap.get(pollutant);
             
@@ -227,12 +287,12 @@ public class Chart {
         
         barChart.getData().addAll(barSeriesMap.values());
 
-        // Apply colors to each series after they are rendered
+        // Apply consistent colouring to each bar
         Platform.runLater(() -> {
             for (XYChart.Series<String, Number> series : barChart.getData()) {
                 String pollutant = series.getName();
+                // Get the color for the pollutant in the map.
                 String color = pollutantColors.getOrDefault(pollutant, "black");
-        
                 for (XYChart.Data<String, Number> data : series.getData()) {
                     Node barNode = data.getNode();
                     if (barNode != null) {
@@ -243,14 +303,19 @@ public class Chart {
         });
     }
     
-
+    /**
+     * Processes the provided data and updates the PieChart.
+     * Calculates the average pollution level for each pollutant, creates pie chart data items,
+     * adds them to the PieChart, and applies the appropriate color to each slice.
+     *
+     * @param dataRange A HashMap containing data sets keyed by a combination of year and pollutant.
+     */
     private void updatePieChart(HashMap<String, DataSet> dataRange) {
-        pieChart.getData().clear();
-        
         Map<String, Double> pollutantAverages = new HashMap<>();
         
-        // Calculate average for each pollutant
+        // Calculate the average value for each pollutant
         for (Map.Entry<String, DataSet> entry : dataRange.entrySet()) {
+            // Key's format being: "year-pollutant"
             String[] keyParts = entry.getKey().split("-");
             String pollutant = keyParts[1].toLowerCase();
             
@@ -262,7 +327,7 @@ public class Chart {
             pollutantAverages.put(pollutant, avgValue);
         }
         
-        // Add data to the pie chart
+        // Add data (the average values) to the pie chart
         for (Map.Entry<String, Double> entry : pollutantAverages.entrySet()) {
             String pollutant = entry.getKey();
             double value = entry.getValue();
@@ -271,23 +336,31 @@ public class Chart {
             pieChart.getData().add(data);
         }
         
-        // Apply consistent colors
+        // Apply consistent colouring to each slice
         Platform.runLater(() -> {
-            int i = 0;
             for (PieChart.Data data : pieChart.getData()) {
                 String pollutant = data.getName().toLowerCase();
+                // Get the color for the pollutant in the map.
                 String color = pollutantColors.getOrDefault(pollutant.toUpperCase(), "black");
-                
                 data.getNode().setStyle(String.format("-fx-pie-color: %s;", color));
-                i++;
             }
         });
     }
 
+    /**
+     * Returns the current chart type.
+     *
+     * @return The currently active ChartType.
+     */
     public ChartType getCurrentChartType() {
         return currentChartType;
     }
 
+    /**
+     * Returns the container (Pane) that holds the currently displayed chart.
+     *
+     * @return A VBox that contains the chart.
+     */
     public Pane getChartBox() {
         return chartContainer;
     }

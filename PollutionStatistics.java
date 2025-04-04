@@ -41,7 +41,7 @@ public class PollutionStatistics {
     private Label minLabel;
     private Label minGridCode;
     
-    // Chart type selection
+
     private Label chartTypeLabel;
     private ComboBox<String> chartTypeComboBox;
 
@@ -105,7 +105,6 @@ public class PollutionStatistics {
         toYearComboBox.getItems().addAll("2018", "2019", "2020", "2021", "2022", "2023");
         toYearComboBox.getStyleClass().add("toYearComboBoxSts");
         
-        // Chart Type Selection
         chartTypeLabel = new Label("Chart Type:");
         chartTypeLabel.getStyleClass().add("chartTypeLabelSts");
 
@@ -149,10 +148,14 @@ public class PollutionStatistics {
         borderPane.setRight(rightBar);
     }
     
+    /**
+     * Updates the sidebar for the pie chart to remove the toYearComboBox
+     * and to reset the selections.
+     */
     private void updateSideBar() {  
         rightBar.getChildren().clear();
         if (chart.getCurrentChartType() == Chart.ChartType.PIE) {
-            // Reset selections when switching to pie chart
+            // Reset selections and takes off toYear when switching to pie chart
             toYearComboBox.setValue(null);
 
             rightBar.add(titleLabel, 0, 0);
@@ -163,12 +166,11 @@ public class PollutionStatistics {
             rightBar.add(chartTypeLabel, 0, 5);
             rightBar.add(chartTypeComboBox, 0, 6);
             rightBar.add(new Label(" "), 0, 7);
-            rightBar.add(new Label("Select Year:"), 0, 8); // Changed label to be clearer
+            rightBar.add(new Label("Select Year:"), 0, 8); 
             rightBar.add(fromYearComboBox, 0, 9);
             rightBar.add(new Label(" "), 0, 10);
             rightBar.add(new Label(" "), 0, 11);
             rightBar.add(new Label(" "), 0, 12);
-            // Removed to year selection for pie chart
             rightBar.add(new Label(" "), 0, 13);
             rightBar.add(new Label(" "), 0, 14); 
             rightBar.add(maxLabel, 0, 15);
@@ -201,7 +203,7 @@ public class PollutionStatistics {
     }
 
     private void updateChart() {
-        // For pie chart, we only need the fromYearSelected
+        // For pie chart, only the fromYearComboBox is used
         if (chart.getCurrentChartType() == Chart.ChartType.PIE) {
             if (fromYearSelected == null || selectedPollutants.isEmpty()) {
                 // Clear chart data
@@ -217,7 +219,7 @@ public class PollutionStatistics {
             String maxLocTempValue = "N/A";
             String minLocTempValue = "N/A";
 
-            // Get data for each selected pollutant for the selected year
+            // Iterate through selected pollutants and get their data for the selected year
             for (String pollutant : selectedPollutants) {
                 DataSet pollutantData = dataAggregator.getCityDataSet("London", Integer.toString(year), pollutant);
                 data.put(year + "-" + pollutant, pollutantData);
@@ -237,13 +239,16 @@ public class PollutionStatistics {
                 }
             }
 
+            // Display the results
             chart.updateChart(data);
-            maxLabel.setText("Highest pollution level: " + String.format("%.2f", maxPolTempValue) + " µg/m³");
-            minLabel.setText("Lowest pollution level: " + String.format("%.2f", minPolTempValue) + " µg/m³");
+            maxLabel.setText("Highest pollution level: " + maxPolTempValue + " µg/m³");
+            minLabel.setText("Lowest pollution level: " + minPolTempValue + " µg/m³");
             maxGridCode.setText("Grid Code: " + maxLocTempValue);
             minGridCode.setText("Grid Code: " + minLocTempValue);
         } else {
-            // Original logic for line and bar charts
+            // For line and bar charts, both fromYearComboBox and toYearComboBox are used
+
+            // Check if both years are selected and if any pollutants are selected
             if (fromYearSelected == null || toYearSelected == null || selectedPollutants.isEmpty()) {
                 // Clear chart data
                 HashMap<String, DataSet> emptyData = new HashMap<>();
@@ -263,6 +268,7 @@ public class PollutionStatistics {
             String maxLocTempValue = "N/A";
             String minLocTempValue = "N/A";
 
+            // Iterate through selected pollutants and get their data for the selected year range
             for (String pollutant : selectedPollutants) {
                 HashMap<String, DataSet> pollutantData = dataSetRange(pollutant, startYear, endYear);
                 data.putAll(pollutantData);
@@ -284,14 +290,22 @@ public class PollutionStatistics {
                 }
             }
 
+            // Display the results
             chart.updateChart(data);
-            maxLabel.setText("Highest pollution level: " + String.format("%.2f", maxPolTempValue) + " µg/m³");
-            minLabel.setText("Lowest pollution level: " + String.format("%.2f", minPolTempValue) + " µg/m³");
+            maxLabel.setText("Highest pollution level: " + maxPolTempValue + " µg/m³");
+            minLabel.setText("Lowest pollution level: " + minPolTempValue + " µg/m³");
             maxGridCode.setText("Grid Code: " + maxLocTempValue);
             minGridCode.setText("Grid Code: " + minLocTempValue);
         }
     }
 
+    /**
+     * Validates the year selection to ensure that the 'To Year' is not earlier than the 'From Year'.
+     *
+     * @param fromYear the selected 'From Year'
+     * @param toYear   the selected 'To Year'
+     * @return true if the selection is valid, false otherwise
+     */
     private boolean validateYearSelection(String fromYear, String toYear) {
         if (fromYear != null && toYear != null) {
             int from = Integer.parseInt(fromYear);
@@ -303,12 +317,25 @@ public class PollutionStatistics {
                 alert.setHeaderText("Invalid Range");
                 alert.setContentText("The 'To Year' cannot be earlier than the 'From Year'!");
                 alert.showAndWait();
+    
+                // Reset the 'To Year' selection
+                toYearSelected = null;
+                javafx.application.Platform.runLater(() -> {
+                    toYearComboBox.valueProperty().set(null);
+                });
+                
                 return false;
             }
         }
         return true;
     }
 
+    /**
+     * Toggles the selection of a pollutant based on the state of the corresponding ToggleButton.
+     *
+     * @param pollutant the name of the pollutant
+     * @param button    the ToggleButton associated with the pollutant
+     */
     private void togglePollutant(String pollutant, ToggleButton button) {
         if (button.isSelected()) {
             selectedPollutants.add(pollutant);
@@ -318,6 +345,11 @@ public class PollutionStatistics {
         updateChart();
     }
 
+    /**
+     * Updates the chart type based on the selected option from the ComboBox.
+     *
+     * @param chartTypeName the name of the selected chart type
+     */
     private void updateChartType(String chartTypeName) {
         Chart.ChartType chartType;
         switch (chartTypeName) {
@@ -335,15 +367,25 @@ public class PollutionStatistics {
         updateSideBar();
     }
 
-    public BorderPane getBorderPane() {
-        return borderPane;
-    }
-
+    /**
+     * Returns the selected pollutants.
+     *
+     * @return a set of selected pollutants
+     */
     private HashMap<String, DataSet> dataSetRange(String pollutant, int startYear, int endYear){
         HashMap<String, DataSet> dataRange = new HashMap<>();
         for(int i = startYear; i <= endYear; i++){
             dataRange.put(i + "-" + pollutant, dataAggregator.getCityDataSet("London", Integer.toString(i), pollutant));
         }
         return dataRange;
+    }
+
+    /**
+     * Returns the BorderPane containing the chart and sidebar.
+     *
+     * @return the BorderPane
+     */
+    public BorderPane getBorderPane() {
+        return borderPane;
     }
 }

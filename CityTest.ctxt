@@ -1,17 +1,25 @@
 #BlueJ class context
 comment0.target=CityTest
+comment0.text=\r\n\ Test\ class\ for\ the\ City\ class\ that\ verifies\ its\ functionality.\r\n\ Tests\ proper\ initialization,\ component\ creation,\ and\ boundary\ data.\r\n\ Uses\ JUnit\ 5\ and\ JavaFX\ Platform\ for\ UI\ component\ testing.\r\n\ \r\n\ @author\ Yaal\ Luka\ Edrey\ Gatignol\r\n\ @version\ 1.0\r\n
 comment1.params=
 comment1.target=void\ initJavaFX()
+comment1.text=\r\n\ Initializes\ the\ JavaFX\ toolkit\ if\ it\ hasn't\ been\ initialized\ yet.\r\n\ Required\ for\ testing\ JavaFX\ components.\r\n
 comment2.params=
 comment2.target=void\ setUp()
+comment2.text=\r\n\ Sets\ up\ the\ test\ environment\ before\ each\ test\ execution.\r\n\ Initializes\ JavaFX,\ creates\ a\ DataAggregator\ with\ test\ data,\r\n\ and\ instantiates\ a\ City\ object\ on\ the\ JavaFX\ thread.\r\n
 comment3.params=
 comment3.target=void\ testCityInitialization()
+comment3.text=\r\n\ Tests\ that\ the\ City\ object\ is\ properly\ initialized\ with\ correct\ values.\r\n\ Verifies\ the\ city\ name\ is\ set\ correctly\ and\ necessary\ components\ are\ not\ null.\r\n
 comment4.params=
 comment4.target=void\ testGetPane()
+comment4.text=\r\n\ Tests\ the\ getPane\ method\ to\ verify\ it\ returns\ a\ properly\ configured\ BorderPane.\r\n\ Checks\ that\ the\ BorderPane\ contains\ all\ expected\ components\ (center,\ right,\ bottom).\r\n
 comment5.params=
 comment5.target=void\ testGetRightBar()
+comment5.text=\r\n\ Tests\ the\ getRightBar\ method\ to\ ensure\ it\ returns\ a\ GridPane\ with\ expected\ components.\r\n\ Specifically\ checks\ for\ the\ presence\ of\ pollutant\ and\ year\ ComboBoxes.\r\n
 comment6.params=
 comment6.target=void\ testGetDataAggregator()
+comment6.text=\r\n\ Tests\ the\ getDataAggregator\ method\ to\ ensure\ it\ returns\ the\ correct\ DataAggregator\ instance.\r\n\ Verifies\ that\ the\ returned\ aggregator\ is\ not\ null\ and\ is\ the\ same\ instance\ used\ to\ create\ the\ City.\r\n
 comment7.params=
 comment7.target=void\ testCityBoundaries()
+comment7.text=\r\n\ Tests\ that\ city\ boundaries\ are\ properly\ defined\ and\ accessible.\r\n\ Verifies\ that\ boundaries\ exist\ for\ all\ expected\ cities\ and\ have\ the\ correct\ structure.\r\n
 numComments=8
