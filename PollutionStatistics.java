@@ -288,6 +288,15 @@ public class PollutionStatistics {
                 alert.setHeaderText("Invalid Range");
                 alert.setContentText("The 'To Year' cannot be earlier than the 'From Year'!");
                 alert.showAndWait();
+    
+                // Set toYearSelected to null but don't update the UI component
+                toYearSelected = null;
+                
+                // This will update the UI without triggering the listener
+                javafx.application.Platform.runLater(() -> {
+                    toYearComboBox.valueProperty().set(null);
+                });
+                
                 return false;
             }
         }

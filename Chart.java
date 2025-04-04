@@ -80,7 +80,7 @@ public class Chart {
         lineChart.prefHeightProperty().bind(chartContainer.heightProperty());
         lineChart.setCreateSymbols(false);
         lineChart.setLegendVisible(false);
-        lineChart.setAnimated(true);
+        lineChart.setAnimated(false);
         lineChart.setTitle("Pollution Levels Over Time");
         lineChart.getStyleClass().add("lineChart");
     }
@@ -105,7 +105,7 @@ public class Chart {
         barChart.prefWidthProperty().bind(chartContainer.widthProperty());
         barChart.prefHeightProperty().bind(chartContainer.heightProperty());
         barChart.setLegendVisible(false);
-        barChart.setAnimated(true);
+        barChart.setAnimated(false);
         barChart.setTitle("Pollution Levels by Year");
         barChart.getStyleClass().add("barChart");
     }
