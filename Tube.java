@@ -222,7 +222,6 @@ public class Tube {
         // Iterate through each station in the journey
         for (String station : journey) {
             TubeDataPoint tdp = getTubeDataSet().findStationData(station);
-            System.out.println(tdp);
             totalBG += tdp.tubeData();
             totalOG += tdp.streetData();
 
