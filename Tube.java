@@ -103,6 +103,7 @@ public class Tube {
         viewDetailsButton = new Button("View Journey Details");
         viewDetailsButton.setVisible(false);
         viewDetailsButton.setOnAction(e -> showJourneyDetailsPopup());
+        viewDetailsButton.getStyleClass().add("viewDetailsButton");
 
         // Create a container for journey information display
         journeyInfoContainer = new VBox(10);
@@ -183,21 +184,25 @@ public class Tube {
 
         VBox popupLayout = new VBox(10);
         popupLayout.setPadding(new Insets(10));
+        popupLayout.getStyleClass().add("popupLayout");
 
         // Create a text area to display journey details
         TextArea journeyTextArea = new TextArea(journeyDetailsText.getText());
         journeyTextArea.setEditable(false);
         journeyTextArea.setWrapText(true);
         journeyTextArea.setPrefSize(400, 300); // Set the preferred size of the text area
+        journeyTextArea.getStyleClass().add("journeyTextArea");
 
         Button closeButton = new Button("Close");
         closeButton.setOnAction(e -> popupStage.close());
+        closeButton.getStyleClass().add("closeButton");
 
         popupLayout.getChildren().addAll(journeyTextArea, closeButton);
 
         Scene popupScene = new Scene(popupLayout, 420, 350);
         popupStage.setScene(popupScene);
         popupStage.show(); // Display the popup window
+        popupScene.getStylesheets().add("style.css");
     }
 
 
@@ -217,6 +222,7 @@ public class Tube {
         // Iterate through each station in the journey
         for (String station : journey) {
             TubeDataPoint tdp = getTubeDataSet().findStationData(station);
+            System.out.println(tdp);
             totalBG += tdp.tubeData();
             totalOG += tdp.streetData();
 

@@ -41,7 +41,6 @@ public class Prediction {
 
     /**
      * Displays a loading popup while generating predictions concurrently.
-     *
      * A background task is started to process the historical data and generate predictions.
      * Once the task completes successfully, the popup is closed. If the task fails, an error
      * message is displayed in the popup.
@@ -81,31 +80,26 @@ public class Prediction {
 
     /**
      * Processes historical pollution data to generate predictions for each pollutant.
-     *
-     * For each pollutant, a new data set is created for the selected future year. The method iterates
-     * over a grid defined by the geographic boundaries (MIN_X, MAX_X, MIN_Y, MAX_Y) and collects historical
-     * data points from 2018 to 2023 for each grid cell. Using these data points, a prediction is calculated
-     * using linear regression, and the result is added to the new data set. Finally, the new data set
-     * is added to the data aggregator.
+     * For each pollutant, a new data set is created for the selected future year. Using these data
+     * points, a prediction is calculated using linear regression.
      */
 
     public void dataPointList() {
 
         String[] pollutantsList = new String[]{"pm2.5", "pm10", "no2"};
-        for (String pollutant : pollutantsList) {
+        for (String pollutant : pollutantsList) { // Goes over the pollutants
             DataSet newDataSet = new DataSet(pollutant, yearSelected, "annual mean", "ug m-3");
             for (int x = MIN_X; x <= MAX_X; x += 1010) {
-                for (int y = MIN_Y; y <= MAX_Y; y += 1010) {
+                for (int y = MIN_Y; y <= MAX_Y; y += 1010) { // Goes over the grid codes
                     DataPoint dp = null;
                     List<DataPoint> pastDataPoints = new ArrayList<>();
 
-                    for (int year = 2018; year <= 2023; year++) {
-                        DataSet dataSet = dataAggregator.getCityDataSet("London", String.valueOf(year), pollutant);
+                    for (int year = 2018; year <= 2023; year++) { // Goes over the years
+                        DataSet dataSet = dataAggregator.getCityDataSet("London", String.valueOf(year), pollutant); // Look for specific grid code
                         if (dataSet != null) {
                             dp = dataSet.findNearestDataPoint(x, y);
                             if (dp != null) {
                                 pastDataPoints.add(dp);
-
                             }
                         }
                     }
@@ -115,7 +109,7 @@ public class Prediction {
                         String Y = String.valueOf(dp.y());
                         String value = String.valueOf(calculatePrediction(pastDataPoints));
 
-                        newDataSet.addData(new String[]{gridCode, X, Y, value});
+                        newDataSet.addData(new String[]{gridCode, X, Y, value}); // New data set with data from a specific grid code
                     }
                 }
             }
@@ -125,14 +119,6 @@ public class Prediction {
 
     /**
      * Calculates a predicted pollution value for the selected future year using linear regression.
-     *
-     * Historical data points corresponding to the years 2018 to 2023 are used to fit a linear model:
-     *
-     *     y = slope * x + intercept
-     *
-     * where x represents the year and y the pollution value. The model is then used to predict the
-     * value for the future year specified in yearSelected. If no data points are available, the
-     * method returns 0.
      *
      * @param dataPoints a list of historical data point objects containing pollution data
      * @return the predicted pollution value for the selected future year

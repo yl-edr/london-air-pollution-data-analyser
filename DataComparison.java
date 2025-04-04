@@ -71,14 +71,17 @@ public class DataComparison {
     public BorderPane createChart() {
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Pollutant");
+        xAxis.getStyleClass().add("xAxisAPI");
 
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("Pollutant Level (Scaled)");
+        yAxis.getStyleClass().add("yAxisAPI");
 
         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
         barChart.setTitle("Pollutant Levels by City - Above 1 indicates an unhealthy pollutant level");
         barChart.setCategoryGap(30);
         barChart.setBarGap(5);
+        barChart.getStyleClass().add("barChartAPI");
 
         String[] pollutantNames = {"AQI", "CO", "NO2", "O3", "SO2", "PM2.5", "PM10", "NH3"};
 
