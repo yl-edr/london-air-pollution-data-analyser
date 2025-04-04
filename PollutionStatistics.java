@@ -6,6 +6,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * PollutionStatistics class handles the display of pollution data on various charts
+ * and provides a sidebar for user controls including pollutant selection, year range,
+ * and chart type selection.
+ *
+ * @author Nicolás Alcalá Olea and Yaal Luka Edrey Gatignol
+ */
+
 public class PollutionStatistics {
 
     private BorderPane borderPane;
@@ -36,6 +44,13 @@ public class PollutionStatistics {
     // Chart type selection
     private Label chartTypeLabel;
     private ComboBox<String> chartTypeComboBox;
+
+    /**
+     * Constructor for PollutionStatistics.
+     * Initializes UI components, sets up event handlers for user input, and prepares the layout.
+     *
+     * @param dataAggregator the data source for pollution data
+     */
 
     public PollutionStatistics(DataAggregator dataAggregator) {
         this.dataAggregator = dataAggregator;
@@ -139,7 +154,7 @@ public class PollutionStatistics {
         if (chart.getCurrentChartType() == Chart.ChartType.PIE) {
             // Reset selections when switching to pie chart
             toYearComboBox.setValue(null);
-            
+
             rightBar.add(titleLabel, 0, 0);
             rightBar.add(new Label(" "), 0, 1);
             rightBar.add(pollutantLabel, 0, 2);
@@ -184,7 +199,7 @@ public class PollutionStatistics {
             rightBar.add(minGridCode, 0, 19);
         }
     }
-    
+
     private void updateChart() {
         // For pie chart, we only need the fromYearSelected
         if (chart.getCurrentChartType() == Chart.ChartType.PIE) {
@@ -194,23 +209,23 @@ public class PollutionStatistics {
                 chart.updateChart(emptyData);
                 return;
             }
-            
+
             int year = Integer.parseInt(fromYearSelected);
             HashMap<String, DataSet> data = new HashMap<>();
             double maxPolTempValue = Double.MIN_VALUE;
             double minPolTempValue = Double.MAX_VALUE;
             String maxLocTempValue = "N/A";
             String minLocTempValue = "N/A";
-            
+
             // Get data for each selected pollutant for the selected year
             for (String pollutant : selectedPollutants) {
                 DataSet pollutantData = dataAggregator.getCityDataSet("London", Integer.toString(year), pollutant);
                 data.put(year + "-" + pollutant, pollutantData);
-                
+
                 for (DataPoint dataPoint : pollutantData.getData()) {
                     double value = dataPoint.value();
                     int gridCode = dataPoint.gridCode();
-                    
+
                     if (value > maxPolTempValue) {
                         maxPolTempValue = value;
                         maxLocTempValue = ((Integer) gridCode).toString();
@@ -221,7 +236,7 @@ public class PollutionStatistics {
                     }
                 }
             }
-            
+
             chart.updateChart(data);
             maxLabel.setText("Highest pollution level: " + String.format("%.2f", maxPolTempValue) + " µg/m³");
             minLabel.setText("Lowest pollution level: " + String.format("%.2f", minPolTempValue) + " µg/m³");
@@ -239,7 +254,7 @@ public class PollutionStatistics {
             if (!validateYearSelection(fromYearSelected, toYearSelected)) {
                 return;
             }
-    
+
             int startYear = Integer.parseInt(fromYearSelected);
             int endYear = Integer.parseInt(toYearSelected);
             HashMap<String, DataSet> data = new HashMap<>();
@@ -247,16 +262,16 @@ public class PollutionStatistics {
             double minPolTempValue = Double.MAX_VALUE;
             String maxLocTempValue = "N/A";
             String minLocTempValue = "N/A";
-    
+
             for (String pollutant : selectedPollutants) {
                 HashMap<String, DataSet> pollutantData = dataSetRange(pollutant, startYear, endYear);
                 data.putAll(pollutantData);
-    
+
                 for (DataSet dataSet : pollutantData.values()) {
                     for (DataPoint dataPoint : dataSet.getData()) {
                         double value = dataPoint.value();
                         int gridCode = dataPoint.gridCode();
-                        
+
                         if (value > maxPolTempValue) {
                             maxPolTempValue = value;
                             maxLocTempValue = ((Integer) gridCode).toString();
@@ -268,7 +283,7 @@ public class PollutionStatistics {
                     }
                 }
             }
-    
+
             chart.updateChart(data);
             maxLabel.setText("Highest pollution level: " + String.format("%.2f", maxPolTempValue) + " µg/m³");
             minLabel.setText("Lowest pollution level: " + String.format("%.2f", minPolTempValue) + " µg/m³");
@@ -281,7 +296,7 @@ public class PollutionStatistics {
         if (fromYear != null && toYear != null) {
             int from = Integer.parseInt(fromYear);
             int to = Integer.parseInt(toYear);
-    
+
             if (to < from) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Year Selection");

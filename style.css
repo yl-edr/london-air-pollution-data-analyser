@@ -1,7 +1,3 @@
-.root {
-    -fx-background-color: #ffffff;
-}
-
 .tab-pane {
     -fx-background-color: #DECCCC;
     -fx-tab-min-width: 120;
@@ -30,7 +26,7 @@
 
 .label {
     -fx-font-size: 16px;
-    -fx-text-fill: #333;
+    -fx-text-fill: black;
 }
 
 .aqiBar {
@@ -45,8 +41,8 @@
 
 .welcomePanel {
     -fx-background-color: #1098F7;
-    -fx-background-image: url("resources/welcomeImage.png"); /* adjust the path accordingly */
-    -fx-background-size: cover; /* or specify "contain", or specific dimensions */
+    -fx-background-image: url("resources/welcomeImage.png");
+    -fx-background-size: cover;
     -fx-background-position: center center;
     -fx-background-repeat: no-repeat;
 }
@@ -61,6 +57,7 @@
 .informationLabel {
     -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-font-size: 20px;
+    -fx-text-fill: #000000;
     -fx-padding: 0,0,50,0;
 }
 
@@ -142,11 +139,13 @@
 .pollutantLabel {
     -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-font-size: 16px;
+    -fx-text-fill: black;
 }
 
 .yearLabel {
     -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-font-size: 16px;
+    -fx-text-fill: black;
 }
 
 .predictButton {
@@ -168,47 +167,44 @@
 
 .dataPointValue {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .dataPointLabel {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .gridCodeValue {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .gridCodeLabel {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .xValue {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .yValue {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .lowLabel {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .highLabel {
     -fx-font-family: "Trebuchet MS", sans-serif;
-}
-
-.pm25 {
-    -fx-stroke: red; /* Color for PM2.5 */
-}
-
-.pm10 {
-    -fx-stroke: blue; /* Color for PM10 */
-}
-
-.no2 {
-    -fx-stroke: green; /* Color for NO2 */
+    -fx-text-fill: black;
 }
 
 .instructionLabel {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .okButton {
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
@@ -249,20 +245,33 @@
 }
 .inputField {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .londonTab {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .statsTab {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
-.citiesTab {
+.UKTab {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
+}
+.tubeTab{
+    -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
+}
+.realTimeDataTab {
+    -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .cityLabel {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .cityComboBox {
@@ -284,16 +293,20 @@
 
 .startStnLabel {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .startStnText {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .endStnLabel {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .endStnText {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .checkButton {
@@ -314,9 +327,11 @@
 
 .search-field {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .cities-compared-label {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .compare-add-button {
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
@@ -368,10 +383,12 @@
     -fx-font-size: 40px;
     -fx-font-weight: bold;
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .pollutantLabelSts {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .pm25Toggle {
@@ -381,9 +398,7 @@
     -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #e74c3c;
-    -fx-text-bold: true;
+    -fx-font-weight: 600;
 }
 .pm25Toggle:hover {
     -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
@@ -399,9 +414,7 @@
     -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #3498db;
-    -fx-text-bold: true;
+    -fx-font-weight: 600;
 }
 .pm10Toggle:hover {
     -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
@@ -417,9 +430,7 @@
     -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #2ecc71;
-
+    -fx-font-weight: 600;
 }
 .no2Toggle:hover {
     -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
@@ -431,6 +442,7 @@
 
 .fromYearLabelSts {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .fromYearComboBoxSts {
@@ -452,6 +464,7 @@
 
 .toYearLabelSts {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .toYearComboBoxSts {
     -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
@@ -472,6 +485,7 @@
 
 .chartTypeLabelSts {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .chartTypeComboBoxSts {
@@ -493,46 +507,126 @@
 
 .maxLabelSts {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .maxGridCodeSts {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .minLabelSts {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .minGridCodeSts {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .xAxisLC {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .yAxisLC {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .lineChart {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .xAxisBC {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .yAxisBC {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .barChart {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 
 .xAxisAC {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .yAxisAC {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
 .areaChart {
     -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
 }
-.chart-title {
-    -fx-underline: true;
+
+.backButton {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
 }
+.backButton:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.backButton:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
+.xAxisAPI {
+    -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
+}
+.yAxisAPI {
+    -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
+}
+.barChartAPI {
+    -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
+}
+
+.viewDetailsButton {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+}
+.viewDetailsButton:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.viewDetailsButton:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
+.popupLayout {
+    -fx-background-color: #DECCCC;
+}
+.journeyTextArea {
+    -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
+}
+
+.closeButton {
+    -fx-background-color: linear-gradient(to bottom, #d8bcbc, #B89E97);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "Trebuchet MS", sans-serif;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+}
+.closeButton:hover {
+    -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
+}
+.closeButton:pressed {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 2);
+}
+
