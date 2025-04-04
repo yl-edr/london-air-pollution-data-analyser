@@ -96,7 +96,7 @@ public class PollutionStatistics {
 
         chartTypeComboBox = new ComboBox<>();
         chartTypeComboBox.setPromptText("Select Chart Type");
-        chartTypeComboBox.getItems().addAll("Line Chart", "Bar Chart", "Area Chart", "Pie Chart");
+        chartTypeComboBox.getItems().addAll("Line Chart", "Bar Chart", "Pie Chart");
         chartTypeComboBox.getSelectionModel().select("Line Chart"); // Default selection
         chartTypeComboBox.getStyleClass().add("chartTypeComboBoxSts");
 
@@ -137,8 +137,9 @@ public class PollutionStatistics {
     private void updateSideBar() {  
         rightBar.getChildren().clear();
         if (chart.getCurrentChartType() == Chart.ChartType.PIE) {
-            fromYearComboBox.setValue(null);
-
+            // Reset selections when switching to pie chart
+            toYearComboBox.setValue(null);
+            
             rightBar.add(titleLabel, 0, 0);
             rightBar.add(new Label(" "), 0, 1);
             rightBar.add(pollutantLabel, 0, 2);
@@ -147,9 +148,12 @@ public class PollutionStatistics {
             rightBar.add(chartTypeLabel, 0, 5);
             rightBar.add(chartTypeComboBox, 0, 6);
             rightBar.add(new Label(" "), 0, 7);
-            rightBar.add(fromYearLabel, 0, 8);
+            rightBar.add(new Label("Select Year:"), 0, 8); // Changed label to be clearer
             rightBar.add(fromYearComboBox, 0, 9);
             rightBar.add(new Label(" "), 0, 10);
+            rightBar.add(new Label(" "), 0, 11);
+            rightBar.add(new Label(" "), 0, 12);
+            // Removed to year selection for pie chart
             rightBar.add(new Label(" "), 0, 13);
             rightBar.add(new Label(" "), 0, 14); 
             rightBar.add(maxLabel, 0, 15);
@@ -157,7 +161,6 @@ public class PollutionStatistics {
             rightBar.add(new Label(" "), 0, 17);
             rightBar.add(minLabel, 0, 18);
             rightBar.add(minGridCode, 0, 19);
-
         } else {
             rightBar.add(titleLabel, 0, 0);
             rightBar.add(new Label(" "), 0, 1);
@@ -182,67 +185,29 @@ public class PollutionStatistics {
         }
     }
     
-    private void updateChartType(String chartTypeName) {
-        Chart.ChartType chartType;
-        switch (chartTypeName) {
-            case "Bar Chart":
-                chartType = Chart.ChartType.BAR;
-                break;
-            case "Area Chart":
-                chartType = Chart.ChartType.AREA;
-                break;
-            case "Pie Chart":
-                chartType = Chart.ChartType.PIE;
-                updateSideBar();
-                break;
-            default:
-                chartType = Chart.ChartType.LINE;
-                break;
-        }
-        chart.setChartType(chartType);
-    }
-
-    private void validateYearSelection(String fromYear, String toYear) {
-        if (fromYear != null && toYear != null) {
-            int from = Integer.parseInt(fromYear);
-            int to = Integer.parseInt(toYear);
-
-            if (to < from) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Invalid Year Selection");
-                alert.setHeaderText("Invalid Range");
-                alert.setContentText("The 'To Year' cannot be earlier than the 'From Year'!");
-                alert.showAndWait();
-            }
-        }
-    }
-
-    public BorderPane getBorderPane() {
-        return borderPane;
-    }
-
     private void updateChart() {
-        if (fromYearSelected == null || toYearSelected == null || selectedPollutants.isEmpty()) {
-            // Clear chart data
-            HashMap<String, DataSet> emptyData = new HashMap<>();
-            chart.updateChart(emptyData);
-            return;
-        }
-
-        int startYear = Integer.parseInt(fromYearSelected);
-        int endYear = Integer.parseInt(toYearSelected);
-        HashMap<String, DataSet> data = new HashMap<>();
-        double maxPolTempValue = Double.MIN_VALUE;
-        double minPolTempValue = Double.MAX_VALUE;
-        String maxLocTempValue = "N/A";
-        String minLocTempValue = "N/A";
-
-        for (String pollutant : selectedPollutants) {
-            HashMap<String, DataSet> pollutantData = dataSetRange(pollutant, startYear, endYear);
-            data.putAll(pollutantData);
-
-            for (DataSet dataSet : pollutantData.values()) {
-                for (DataPoint dataPoint : dataSet.getData()) {
+        // For pie chart, we only need the fromYearSelected
+        if (chart.getCurrentChartType() == Chart.ChartType.PIE) {
+            if (fromYearSelected == null || selectedPollutants.isEmpty()) {
+                // Clear chart data
+                HashMap<String, DataSet> emptyData = new HashMap<>();
+                chart.updateChart(emptyData);
+                return;
+            }
+            
+            int year = Integer.parseInt(fromYearSelected);
+            HashMap<String, DataSet> data = new HashMap<>();
+            double maxPolTempValue = Double.MIN_VALUE;
+            double minPolTempValue = Double.MAX_VALUE;
+            String maxLocTempValue = "N/A";
+            String minLocTempValue = "N/A";
+            
+            // Get data for each selected pollutant for the selected year
+            for (String pollutant : selectedPollutants) {
+                DataSet pollutantData = dataAggregator.getCityDataSet("London", Integer.toString(year), pollutant);
+                data.put(year + "-" + pollutant, pollutantData);
+                
+                for (DataPoint dataPoint : pollutantData.getData()) {
                     double value = dataPoint.value();
                     int gridCode = dataPoint.gridCode();
                     
@@ -256,13 +221,77 @@ public class PollutionStatistics {
                     }
                 }
             }
-        }
+            
+            chart.updateChart(data);
+            maxLabel.setText("Highest pollution level: " + String.format("%.2f", maxPolTempValue) + " µg/m³");
+            minLabel.setText("Lowest pollution level: " + String.format("%.2f", minPolTempValue) + " µg/m³");
+            maxGridCode.setText("Grid Code: " + maxLocTempValue);
+            minGridCode.setText("Grid Code: " + minLocTempValue);
+        } else {
+            // Original logic for line and bar charts
+            if (fromYearSelected == null || toYearSelected == null || selectedPollutants.isEmpty()) {
+                // Clear chart data
+                HashMap<String, DataSet> emptyData = new HashMap<>();
+                chart.updateChart(emptyData);
+                return;
+            }
 
-        chart.updateChart(data);
-        maxLabel.setText("Highest pollution level: " + maxPolTempValue + " µg/m³");
-        minLabel.setText("Lowest pollution level: " + minPolTempValue + " µg/m³");
-        maxGridCode.setText("Grid Code: " + maxLocTempValue);
-        minGridCode.setText("Grid Code: " + minLocTempValue);
+            if (!validateYearSelection(fromYearSelected, toYearSelected)) {
+                return;
+            }
+    
+            int startYear = Integer.parseInt(fromYearSelected);
+            int endYear = Integer.parseInt(toYearSelected);
+            HashMap<String, DataSet> data = new HashMap<>();
+            double maxPolTempValue = Double.MIN_VALUE;
+            double minPolTempValue = Double.MAX_VALUE;
+            String maxLocTempValue = "N/A";
+            String minLocTempValue = "N/A";
+    
+            for (String pollutant : selectedPollutants) {
+                HashMap<String, DataSet> pollutantData = dataSetRange(pollutant, startYear, endYear);
+                data.putAll(pollutantData);
+    
+                for (DataSet dataSet : pollutantData.values()) {
+                    for (DataPoint dataPoint : dataSet.getData()) {
+                        double value = dataPoint.value();
+                        int gridCode = dataPoint.gridCode();
+                        
+                        if (value > maxPolTempValue) {
+                            maxPolTempValue = value;
+                            maxLocTempValue = ((Integer) gridCode).toString();
+                        }
+                        if (value < minPolTempValue) {
+                            minPolTempValue = value;
+                            minLocTempValue = ((Integer) gridCode).toString();
+                        }
+                    }
+                }
+            }
+    
+            chart.updateChart(data);
+            maxLabel.setText("Highest pollution level: " + String.format("%.2f", maxPolTempValue) + " µg/m³");
+            minLabel.setText("Lowest pollution level: " + String.format("%.2f", minPolTempValue) + " µg/m³");
+            maxGridCode.setText("Grid Code: " + maxLocTempValue);
+            minGridCode.setText("Grid Code: " + minLocTempValue);
+        }
+    }
+
+    private boolean validateYearSelection(String fromYear, String toYear) {
+        if (fromYear != null && toYear != null) {
+            int from = Integer.parseInt(fromYear);
+            int to = Integer.parseInt(toYear);
+    
+            if (to < from) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Year Selection");
+                alert.setHeaderText("Invalid Range");
+                alert.setContentText("The 'To Year' cannot be earlier than the 'From Year'!");
+                alert.showAndWait();
+                return false;
+            }
+        }
+        return true;
     }
 
     private void togglePollutant(String pollutant, ToggleButton button) {
@@ -272,6 +301,27 @@ public class PollutionStatistics {
             selectedPollutants.remove(pollutant);
         }
         updateChart();
+    }
+
+    private void updateChartType(String chartTypeName) {
+        Chart.ChartType chartType;
+        switch (chartTypeName) {
+            case "Bar Chart":
+                chartType = Chart.ChartType.BAR;
+                break;
+            case "Pie Chart":
+                chartType = Chart.ChartType.PIE;
+                break;
+            default:
+                chartType = Chart.ChartType.LINE;
+                break;
+        }
+        chart.setChartType(chartType);
+        updateSideBar();
+    }
+
+    public BorderPane getBorderPane() {
+        return borderPane;
     }
 
     private HashMap<String, DataSet> dataSetRange(String pollutant, int startYear, int endYear){

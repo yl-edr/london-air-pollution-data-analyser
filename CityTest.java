@@ -30,16 +30,6 @@ public class CityTest {
         // Initialize DataAggregator with test data
         dataAggregator = new DataAggregator();
         
-        // Create test datasets
-        //DataSet londonPM25 = new DataSet("pm2.5", "2020", "average", "µg/m³");
-        //londonPM25.getData().add(new DataPoint(12345, 530000, 180000, 15.2));
-        //DataSet londonNO2 = new DataSet("no2", "2020", "average", "µg/m³");
-        //londonNO2.getData().add(new DataPoint(12345, 530000, 180000, 25.4));
-        
-        // Add to DataAggregator (using reflection or manual assignment since we can't directly add)
-        //dataAggregator.citiesDataSets.put("London_2020_pm2.5", londonPM25);
-        //dataAggregator.citiesDataSets.put("London_2020_no2", londonNO2);
-        
         // Create City object
         Platform.runLater(() -> {
             city = new City("London", dataAggregator);

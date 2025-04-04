@@ -381,7 +381,9 @@
     -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
-    -fx-font-weight: 600;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e74c3c;
+    -fx-text-bold: true;
 }
 .pm25Toggle:hover {
     -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
@@ -397,7 +399,9 @@
     -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
-    -fx-font-weight: 600;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3498db;
+    -fx-text-bold: true;
 }
 .pm10Toggle:hover {
     -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
@@ -413,7 +417,9 @@
     -fx-font-family: "Trebuchet MS", sans-serif;
     -fx-text-fill: black;
     -fx-font-size: 15px;
-    -fx-font-weight: 600;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2ecc71;
+
 }
 .no2Toggle:hover {
     -fx-background-color: linear-gradient(to bottom, #c39797, #B58C80FF);
@@ -526,4 +532,7 @@
 }
 .areaChart {
     -fx-font-family: "Trebuchet MS", sans-serif;
+}
+.chart-title {
+    -fx-underline: true;
 }
