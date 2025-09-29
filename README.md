@@ -67,7 +67,7 @@ cd london-air-pollution-data-analyser
 2. **Place data & resources**
 
 * Put CSVs inside `UKAirPollutionData/NO2/`, `UKAirPollutionData/pm10/`, `UKAirPollutionData/pm2.5/`, and tube data in `UKAirPollutionData/Tube/`. 
-* Ensure images live in `resources/` (e.g., `London.png`, `TubeMap.png`, `welcomeImage.png`). The CSS references `resources/welcomeImage.png`.   
+* Ensure images live in `resources/`.  
 
 3. **API key (real-time tab)**
    Edit `ApiConnection.java` and replace the `apiKey` constant with your **OpenWeatherMap** key. 
