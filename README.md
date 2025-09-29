@@ -29,18 +29,18 @@ A desktop app to explore **historical UK air pollution** (2018–2023), compare 
 ## 📁 Project Structure
 
 ```
-├── AppWindow.java            # Main JavaFX app; loads tabs & data            :contentReference[oaicite:21]{index=21}
-├── City.java                 # Map UI per city + Predict button (London)     :contentReference[oaicite:22]{index=22}
-├── Chart.java                # Line / Bar / Pie chart manager                :contentReference[oaicite:23]{index=23}
-├── DataAggregator.java       # Load/filter CSVs; keyed by city/year/pollutant:contentReference[oaicite:24]{index=24}
-├── RealTimeDataTab.java      # Search + realtime metrics + compare           :contentReference[oaicite:25]{index=25}
-├── ApiConnection.java        # OpenWeatherMap API calls                      :contentReference[oaicite:26]{index=26}
-├── Tube.java                 # Tube map UI and journey planner               :contentReference[oaicite:27]{index=27}
-├── TubeSystem*.java          # Route calculation + tests                     :contentReference[oaicite:28]{index=28}
+├── AppWindow.java            # Main JavaFX app; loads tabs & data
+├── City.java                 # Map UI per city + Predict button (London)
+├── Chart.java                # Line / Bar / Pie chart manager
+├── DataAggregator.java       # Load/filter CSVs; keyed by city/year/pollutant
+├── RealTimeDataTab.java      # Search + realtime metrics + compare
+├── ApiConnection.java        # OpenWeatherMap API calls
+├── Tube.java                 # Tube map UI and journey planner
+├── TubeSystem*.java          # Route calculation + tests
 ├── MapImage.java, Data*.java # Map colouring, CSV load, filtering...
-├── style.css                 # JavaFX styling (uses images from /resources)  :contentReference[oaicite:29]{index=29}
-├── UKAirPollutionData/       # CSVs: NO2/, pm10/, pm2.5/, Tube/              :contentReference[oaicite:30]{index=30}
-└── resources/                # London.png, TubeMap.png, welcomeImage.png...  :contentReference[oaicite:31]{index=31} :contentReference[oaicite:32]{index=32} :contentReference[oaicite:33]{index=33}
+├── style.css                 # JavaFX styling (uses images from /resources)
+├── UKAirPollutionData/       # CSVs             
+└── resources/                # PNGs
 ```
 
 ---
